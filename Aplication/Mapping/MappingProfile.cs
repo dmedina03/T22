@@ -20,16 +20,20 @@ namespace Aplication.Mapping
             CreateMap<ParametroDetalle, ParametroDetalleDTO>().ReverseMap();
 
             CreateMap<Solicitud, SolicitudDTORequest>().ReverseMap();
+
             CreateMap<Solicitud, SolicitudBandejaSolicitudesDTOResponse>().ReverseMap();
 
             CreateMap<DocumentoSolicitud, DocumentoSolicitudDTORequest>().ReverseMap();
 
             CreateMap<CapacitadorSolicitud, CapacitadorSolicitudDTORequest>().ReverseMap()
                 .ForMember(x => x.IntTelefono, src => src.MapFrom(p => p.IntTelefono));
+
             CreateMap<CapacitadorTipoCapacitacion, CapacitadorTipoCapacitacionDTORequest>().ReverseMap();
+
             CreateMap<TipoCapacitacion, TipoCapacitacionDTOResponse>().ReverseMap();
-                
-            
+            CreateMap<SeguimientoAuditoriaSolicitud, SeguimientoAuditoriaSolicitudDTORequest>().ReverseMap();
+            CreateMap<SubsanacionSolicitud, SubsanacionSolicitudDTORequest>().ReverseMap();
+            CreateMap<CancelacionSolicitud, CancelacionIncumplimientoSolicitudDTORequest>().ReverseMap();
 
         }
     }

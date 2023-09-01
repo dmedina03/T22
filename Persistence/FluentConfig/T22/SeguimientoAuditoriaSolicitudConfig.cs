@@ -13,7 +13,7 @@ namespace Persistence.FluentConfig.T22
     {
         public SeguimientoAuditoriaSolicitudConfig(EntityTypeBuilder<SeguimientoAuditoriaSolicitud> entity)
         {
-            entity.ToTable("SeguimientoAuditoriaSolicitudes");
+            entity.ToTable("SeguimientoAuditoriaSolicitudes", schema: "manipalimentos");
             entity.HasKey(p => p.IdObservacion);
 
             entity.HasOne(p => p.Solicitud)

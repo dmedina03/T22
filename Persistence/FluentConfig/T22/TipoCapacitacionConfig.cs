@@ -13,7 +13,7 @@ namespace Persistence.FluentConfig.T22
     {
         public TipoCapacitacionConfig(EntityTypeBuilder<TipoCapacitacion> entity)
         {
-            entity.ToTable("TipoCapacitaciones");
+            entity.ToTable("TipoCapacitaciones", schema: "manipalimentos");
             entity.HasKey(p => p.IdTipoCapacitacion);
 
             entity.HasMany(p => p.CapacitadorTipoCapacitacion)

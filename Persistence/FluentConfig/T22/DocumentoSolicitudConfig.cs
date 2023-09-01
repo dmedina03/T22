@@ -13,7 +13,7 @@ namespace Persistence.FluentConfig.T22
     {
         public DocumentoSolicitudConfig(EntityTypeBuilder<DocumentoSolicitud> entity)
         {
-            entity.ToTable("DocumentoSolicitudes");
+            entity.ToTable("DocumentoSolicitudes",schema: "manipalimentos");
             entity.HasKey(p => p.IdDocumento);
 
             entity.Property(p => p.SolicitudId).IsRequired();

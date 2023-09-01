@@ -16,7 +16,8 @@ namespace Aplication.Utilities.Enum
         VencimientoDeTerminos = 6,
         Aprobado = 7,
         EnSubsanacion = 8,
-        Anulado = 9,
-        Negado = 10
+        Cancelado = 9,
+        Negado = 10,
+        CanceladoPorInclumplimiento = 11
     }
 }

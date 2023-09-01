@@ -82,7 +82,7 @@ namespace Persistence.Context.Seed
                 {
                     IdEstado = 9,
                     
-                    VcTipoEstado = "Anulado",
+                    VcTipoEstado = "Cancelado",
                     VcDescripcion = "",
                     BlIsEnable = true
                 },
@@ -91,6 +91,14 @@ namespace Persistence.Context.Seed
                     IdEstado = 10,
                     
                     VcTipoEstado = "Negado",
+                    VcDescripcion = "",
+                    BlIsEnable = true
+                },
+                new Estado
+                {
+                    IdEstado = 11,
+                    
+                    VcTipoEstado = "Cancelado por incumplimiento",
                     VcDescripcion = "",
                     BlIsEnable = true
                 });

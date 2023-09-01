@@ -8,7 +8,7 @@ namespace Persistence.FluentConfig.ParametroConfig
     {
         public ParametroDetalleConfig(EntityTypeBuilder<ParametroDetalle> entity)
         {
-            entity.ToTable("ParametroDetalle");
+            entity.ToTable("ParametroDetalle", schema: "manipalimentos");
             entity.HasKey(p => p.IdParametroDetalle);
             
 

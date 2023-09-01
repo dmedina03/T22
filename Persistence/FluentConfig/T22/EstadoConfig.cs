@@ -13,7 +13,7 @@ namespace Persistence.FluentConfig.T22
     {
         public EstadoConfig(EntityTypeBuilder<Estado> entity)
         {
-            entity.ToTable("Estados");
+            entity.ToTable("Estados",schema: "manipalimentos");
             entity.HasKey(p => p.IdEstado);
 
             entity.Property(p => p.VcTipoEstado).IsRequired().HasMaxLength(150);

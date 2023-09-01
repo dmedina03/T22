@@ -54,7 +54,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("IdParametro");
 
-                    b.ToTable("Parametro", (string)null);
+                    b.ToTable("Parametro", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.Parametro.ParametroDetalle", b =>
@@ -101,7 +101,118 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ParametroId");
 
-                    b.ToTable("ParametroDetalle", (string)null);
+                    b.ToTable("ParametroDetalle", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.CancelacionSolicitud", b =>
+                {
+                    b.Property<int>("IdCancelacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCancelacion"));
+
+                    b.Property<DateTime>("DtFechaCancelacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SolicitudId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VcCancelacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdCancelacion");
+
+                    b.HasIndex("SolicitudId")
+                        .IsUnique();
+
+                    b.ToTable("CancelacionSolicitudes", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.CapacitacionCapacitadorSolicitud", b =>
+                {
+                    b.Property<int>("IdCapacitacionSolicitud")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCapacitacionSolicitud"));
+
+                    b.Property<bool?>("BlSeguimiento")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CapacitadorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardinalidadCompId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CardinalidadPplId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CharLetraComp")
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("CharLetraPpl")
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<int>("CiudadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComplementoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartamentoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DtFechaCapacitacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IntNumeroAsistentes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IntNumeroComp")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IntNumeroPpl")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IntPlaca")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioRevisionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VcBis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcInformacionAdicional")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcMetodologiaCapacitacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcPublicoObjetivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcTemaCapacitacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViaPrincipalId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdCapacitacionSolicitud");
+
+                    b.ToTable("CapacitacionCapacitadorSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.CapacitadorSolicitud", b =>
@@ -163,7 +274,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SolicitudId");
 
-                    b.ToTable("CapacitadorSolicitudes", (string)null);
+                    b.ToTable("CapacitadorSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.CapacitadorTipoCapacitacion", b =>
@@ -178,7 +289,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("IdCapacitadorSolicitud");
 
-                    b.ToTable("CapacitadorTipoCapacitaciones", (string)null);
+                    b.ToTable("CapacitadorTipoCapacitaciones", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.DocumentoSolicitud", b =>
@@ -221,7 +332,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("IdDocumento");
 
-                    b.ToTable("DocumentoSolicitudes", (string)null);
+                    b.ToTable("DocumentoSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.Estado", b =>
@@ -247,7 +358,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("IdEstado");
 
-                    b.ToTable("Estados", (string)null);
+                    b.ToTable("Estados", "manipalimentos");
 
                     b.HasData(
                         new
@@ -311,7 +422,7 @@ namespace Persistence.Migrations
                             IdEstado = 9,
                             BlIsEnable = true,
                             VcDescripcion = "",
-                            VcTipoEstado = "Anulado"
+                            VcTipoEstado = "Cancelado"
                         },
                         new
                         {
@@ -319,7 +430,118 @@ namespace Persistence.Migrations
                             BlIsEnable = true,
                             VcDescripcion = "",
                             VcTipoEstado = "Negado"
+                        },
+                        new
+                        {
+                            IdEstado = 11,
+                            BlIsEnable = true,
+                            VcDescripcion = "",
+                            VcTipoEstado = "Cancelado por incumplimiento"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.Firma", b =>
+                {
+                    b.Property<int>("IdFirma")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdFirma"));
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VcDescripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcFirma")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdFirma");
+
+                    b.ToTable("Firmas", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.FormatoPlantilla", b =>
+                {
+                    b.Property<int>("IdFormato")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdFormato"));
+
+                    b.Property<string>("VcDescripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VcPlantilla")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdFormato");
+
+                    b.ToTable("FormatoPlantillas", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.HorariosCapacitacionSolicitud", b =>
+                {
+                    b.Property<int>("IdHonorarios")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdHonorarios"));
+
+                    b.Property<int>("CapacitacionSolicitudId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DtFechaCapacitacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HoraFin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HoraInicio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdHonorarios");
+
+                    b.ToTable("HorariosCapacitacionSolicitudes", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.ResolucionSolicitud", b =>
+                {
+                    b.Property<int>("IdResolucionSolicitud")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdResolucionSolicitud"));
+
+                    b.Property<bool>("BlActiva")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaResolucion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IntNumeroResolucion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SolicitudId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoResolucionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdResolucionSolicitud");
+
+                    b.ToTable("ResolucionSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.SeguimientoAuditoriaSolicitud", b =>
@@ -350,7 +572,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("SolicitudId");
 
-                    b.ToTable("SeguimientoAuditoriaSolicitudes", (string)null);
+                    b.ToTable("SeguimientoAuditoriaSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.Solicitud", b =>
@@ -399,7 +621,39 @@ namespace Persistence.Migrations
                     b.HasIndex("EstadoId")
                         .IsUnique();
 
-                    b.ToTable("Solicitudes", (string)null);
+                    b.ToTable("Solicitudes", "manipalimentos");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.SubsanacionSolicitud", b =>
+                {
+                    b.Property<int>("IdSubsanacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSubsanacion"));
+
+                    b.Property<DateTime>("DtFechaSubsanacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SolicitudId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VcSubsanacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdSubsanacion");
+
+                    b.HasIndex("SolicitudId")
+                        .IsUnique();
+
+                    b.ToTable("SubsanacionSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.TipoCapacitacion", b =>
@@ -419,7 +673,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("IdTipoCapacitacion");
 
-                    b.ToTable("TipoCapacitaciones", (string)null);
+                    b.ToTable("TipoCapacitaciones", "manipalimentos");
 
                     b.HasData(
                         new
@@ -458,6 +712,17 @@ namespace Persistence.Migrations
                     b.Navigation("Padre");
 
                     b.Navigation("Parametro");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.CancelacionSolicitud", b =>
+                {
+                    b.HasOne("Domain.Models.T22.Solicitud", "Solicitud")
+                        .WithOne("CancelacionIncumplimientoSolicitud")
+                        .HasForeignKey("Domain.Models.T22.CancelacionSolicitud", "SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.CapacitadorSolicitud", b =>
@@ -512,6 +777,17 @@ namespace Persistence.Migrations
                     b.Navigation("Estado");
                 });
 
+            modelBuilder.Entity("Domain.Models.T22.SubsanacionSolicitud", b =>
+                {
+                    b.HasOne("Domain.Models.T22.Solicitud", "Solicitud")
+                        .WithOne("SubsanacionSolicitud")
+                        .HasForeignKey("Domain.Models.T22.SubsanacionSolicitud", "SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
+                });
+
             modelBuilder.Entity("Domain.Models.Parametro.Parametro", b =>
                 {
                     b.Navigation("ParametroDetalles");
@@ -535,9 +811,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Models.T22.Solicitud", b =>
                 {
+                    b.Navigation("CancelacionIncumplimientoSolicitud");
+
                     b.Navigation("CapacitadorSolicitud");
 
                     b.Navigation("SeguimientoAuditoriaSolicitud");
+
+                    b.Navigation("SubsanacionSolicitud");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.TipoCapacitacion", b =>

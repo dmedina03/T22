@@ -13,13 +13,19 @@ namespace Persistence.FluentConfig.T22
     {
         public SolicitudConfig(EntityTypeBuilder<Solicitud> entity)
         {
-            entity.ToTable("Solicitudes");
+            entity.ToTable("Solicitudes", schema: "manipalimentos");
             entity.HasKey(p => p.IdSolicitud);
 
             entity.HasMany(p => p.CapacitadorSolicitud)
                 .WithOne(p => p.Solicitud);
 
             entity.HasMany(p => p.SeguimientoAuditoriaSolicitud)
+                .WithOne(p => p.Solicitud);
+
+            entity.HasOne(p => p.SubsanacionSolicitud)
+                .WithOne(p => p.Solicitud);
+
+            entity.HasOne(p => p.CancelacionIncumplimientoSolicitud)
                 .WithOne(p => p.Solicitud);
 
             entity.HasOne(p => p.Estado)

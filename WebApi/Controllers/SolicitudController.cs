@@ -30,16 +30,27 @@ namespace WebApi.Controllers
             => await _solicitudService.GetSolicitudesByRadicado(usuarioId, radicado);
 
         [HttpGet("BandejaValidador")]
-        public async Task<object> GetSolicitudesBandejaValidador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(int? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaValidador(UsuarioAsignadoId);
 
         [HttpGet("BandejaCoordinador")]
-        public async Task<object> GetSolicitudesBandejaCoordinador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(int? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaCoordinador(UsuarioAsignadoId);
         [HttpGet("BandejaSubdirector")]
-        public async Task<object> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaSubdirector(UsuarioAsignadoId);
-
+        [HttpGet("{SolicitudId}")]
+        public async Task<ResponseBase<SolicitudDTOResponse>> GetSolicitudById(int SolicitudId)
+            => await _solicitudService.GetById(SolicitudId);
+        [HttpPost("RevisionValidador")]
+        public async Task<ResponseBase<bool>> RevisionValidador(SolicitudRevisionValidadorDTORequest Dto)
+            => await _solicitudService.CreateRevisionValidador(Dto);
+        [HttpPost("RevisionCoodinador")]
+        public async Task<ResponseBase<bool>> RevisionCoordinador(SolicitudRevisionCoordinadorSubdirectorDTORequest Dto)
+            => await _solicitudService.CreateRevisionCoordinador(Dto);
+        [HttpPost("RevisionSubdirector")]
+        public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionCoordinadorSubdirectorDTORequest Dto)
+            => await _solicitudService.CreateRevisionSubdirector(Dto);
 
     }
 }

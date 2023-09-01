@@ -125,7 +125,6 @@ namespace Persistence.Repository.Repositories.BaseRepository
         {
             ValidateEntity(entity);
             _unitOfWork.GetSet<TId, TEntity>().Update(entity);
-            await _unitOfWork.GetContext().SaveChangesAsync();
         }
 
         public async Task UpdateRangeAsync(IEnumerable<TEntity> entities)

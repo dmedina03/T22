@@ -14,7 +14,7 @@ namespace Persistence.FluentConfig.T22
         public CapacitadorSolicitudConfig(EntityTypeBuilder<CapacitadorSolicitud> entity)
         {
 
-            entity.ToTable("CapacitadorSolicitudes");
+            entity.ToTable("CapacitadorSolicitudes", schema: "manipalimentos");
             entity.HasKey(p => p.IdCapacitadorSolicitud);
 
             entity.HasOne(p => p.Solicitud)

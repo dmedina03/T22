@@ -13,7 +13,5 @@ namespace Domain.DTOs.Response.T22
         public string VcNombreTramite { get; set; }
         public string DtFechaSolicitud { get; set; }
         public string VcEstado { get; set; }
-        public List<string> AccionesPermitidas { get; set; } 
-        public string TiempoAtencionRestante { get; set; }
     }
 }

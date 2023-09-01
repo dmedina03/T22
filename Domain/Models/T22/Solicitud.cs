@@ -22,5 +22,7 @@ namespace Domain.Models.T22
         public virtual Estado Estado { get; set; }
         public virtual ICollection<CapacitadorSolicitud> CapacitadorSolicitud { get; set; }
         public virtual ICollection<SeguimientoAuditoriaSolicitud>? SeguimientoAuditoriaSolicitud { get; set; }
+        public virtual SubsanacionSolicitud? SubsanacionSolicitud { get; set; }
+        public virtual CancelacionSolicitud? CancelacionIncumplimientoSolicitud { get; set; }
     }
 }

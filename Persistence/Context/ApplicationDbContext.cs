@@ -24,6 +24,20 @@ namespace Persistence.Context
         //DbSet de las entidades
         DbSet<Parametro> Parametro { get; set; }
         DbSet<ParametroDetalle> ParametroDetalle { get; set; }
+        DbSet<Solicitud> Solicitud { get; set; }
+        DbSet<TipoCapacitacion> TipoCapacitacion { get; set; }
+        DbSet<SeguimientoAuditoriaSolicitud> SeguimientoAuditoriaSolicitud { get; set; }
+        DbSet<Estado> Estado { get; set; }
+        DbSet<DocumentoSolicitud> DocumentoSolicitud { get; set; }
+        DbSet<CapacitadorTipoCapacitacion> CapacitadorTipoCapacitacion { get; set; }
+        DbSet<CapacitadorSolicitud> CapacitadorSolicitud { get; set; }
+        DbSet<CancelacionSolicitud> CancelacionSolicitud { get; set; }
+        DbSet<SubsanacionSolicitud> SubsanacionSolicitud { get; set; }
+        DbSet<Firma> Firma { get; set; }
+        DbSet<FormatoPlantilla> FormatoPlantilla { get; set; }
+        DbSet<ResolucionSolicitud> ResolucionSolicitud { get; set; }
+        DbSet<CapacitacionCapacitadorSolicitud> CapacitacionCapacitadorSolicitud { get; set; }
+        DbSet<HorariosCapacitacionSolicitud> HorariosCapacitacionSolicitud { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +52,13 @@ namespace Persistence.Context
             new DocumentoSolicitudConfig(modelBuilder.Entity<DocumentoSolicitud>());
             new CapacitadorTipoCapacitacionConfig(modelBuilder.Entity<CapacitadorTipoCapacitacion>());
             new CapacitadorSolicitudConfig(modelBuilder.Entity<CapacitadorSolicitud>());
+            new CancelacionSolicitudConfig(modelBuilder.Entity<CancelacionSolicitud>());
+            new SubsanacionSolicitudConfig(modelBuilder.Entity<SubsanacionSolicitud>());
+            new FirmaConfig(modelBuilder.Entity<Firma>());
+            new FormatoPlantillaConfig(modelBuilder.Entity<FormatoPlantilla>());
+            new ResolucionSolicitudConfig(modelBuilder.Entity<ResolucionSolicitud>());
+            new CapacitacionCapacitadorSolicitudConfig(modelBuilder.Entity<CapacitacionCapacitadorSolicitud>());
+            new HorariosCapacitacionSolicitudConfig(modelBuilder.Entity<HorariosCapacitacionSolicitud>());
 
             //Seeds
             new TipoCapacitacionSeedConfig(modelBuilder.Entity<TipoCapacitacion>());

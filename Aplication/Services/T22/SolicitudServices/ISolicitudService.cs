@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.SolicitudServices
 {
-    public interface ISolicitudService : ICreateService<SolicitudDTORequest>
+    public interface ISolicitudService : ICreateService<SolicitudDTORequest>, IGetService<SolicitudDTOResponse>
     {
         /// <summary>
         /// Método para buscar las solicitudes del ciudadano logueado y también es posible por el radicado
@@ -40,7 +40,9 @@ namespace Aplication.Services.T22.SolicitudServices
         /// <param name="UsuarioAsignadoId">Parametro opcional, el cual hace referencia al Id de algun usuario Subdirector</param>
         /// <returns>Lista de solicitudes</returns>
         Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId);
-
+        Task<ResponseBase<bool>> CreateRevisionValidador(SolicitudRevisionValidadorDTORequest request);
+        Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorSubdirectorDTORequest request);
+        Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionCoordinadorSubdirectorDTORequest request);
 
     }
 }

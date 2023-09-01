@@ -18,6 +18,7 @@ namespace Domain.DTOs.Request.T22
         [JsonIgnore]
         public DateTime DtFechaCargue { get; set; } = DateTime.UtcNow.AddHours(-5);
         public string VcPath { get; set; }
+        [JsonIgnore]
         public int IntVersion { get; set; } = 1;
         [JsonIgnore]
         public bool? BlIsValid { get; set; } = null;

@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using Aplication.Utilities.Enum;
+using AutoMapper;
 using Domain.DTOs.Response.Parametro;
 using Domain.Models.Parametro;
+using Domain.Models.T22;
 using Dominio.DTOs.Response.ResponseBase;
 using Persistence.Repository.IRepositories.Generic;
 using Persistence.Repository.IRepositories.IParametroRepository;
@@ -49,6 +51,31 @@ namespace Aplication.Services.Parametro
             lista.Add(solicitud.ElementAt(0));
 
             return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+        }
+
+        public async Task<ResponseBase<List<ParametroDetalleDTO>>> GetResultadoValidacion(int SolicitudId)
+        {
+            var query = (await _solicitudRepository.GetAsync(x => x.IdSolicitud == SolicitudId)).EstadoId;
+
+            var resultadoValidacion = (await listarPorCodigoInterno("bResultadoValidacion")).Data;
+
+            var lista = new List<ParametroDetalleDTO>();
+
+            resultadoValidacion = resultadoValidacion.OrderByDescending(x => x.IdParametroDetalle).ToList();
+
+            if (query == (int)EstadoEnum.Aprobado)
+            {
+                lista.Add(resultadoValidacion.ElementAt(0));
+
+                return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+            }
+            else
+            {
+                resultadoValidacion.RemoveAt(0);
+                resultadoValidacion = resultadoValidacion.OrderBy(x => x.IdParametroDetalle).ToList();
+                return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", resultadoValidacion, resultadoValidacion.Count());
+
+            }
         }
 
         public async Task<ResponseBase<List<ParametroDetalleDTO>>> listarPorCodigoInterno(string codigoInterno)

@@ -54,6 +54,9 @@ namespace Aplication.Extensions
             services.AddScoped<IDocumentoSolicitudRepository, DocumentoSolicitudRepository>();
             services.AddScoped<ITipoCapacitacionRepository, TipoCapacitacionRepository>();
             services.AddScoped<IEstadoRepository, EstadoRepository>();
+            services.AddScoped<ICapacitadorTipoCapacitacionRepository, CapacitadorTipoCapacitacionRepository>();
+            services.AddScoped<ISubsanacionSolicitudRepository, SubsanacionSolicitudRepository>();
+            services.AddScoped<ISeguimientoAuditoriaSolicitudRepository, SeguimientoAuditoriaSolicitudRepository>();
 
             #endregion
 
@@ -83,6 +86,8 @@ namespace Aplication.Extensions
 
             services.AddScoped<IValidator<SolicitudDTORequest>, SolicitudValidator>();
             services.AddScoped<IValidator<IEnumerable<DocumentoSolicitud>>, DocumentoSolicitudValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionValidadorDTORequest>, SolicitudRevisionValidadorValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionCoordinadorSubdirectorDTORequest>, SolicitudRevisionCoordinadorSubdirectorValidator>();
 
             return services;
         }
