@@ -1,4 +1,5 @@
-﻿using Domain.Models.Parametro;
+﻿using Domain.DTOs.Response.T22;
+using Domain.Models.Parametro;
 using Domain.Models.T22;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context.Seed;
@@ -38,6 +39,7 @@ namespace Persistence.Context
         DbSet<ResolucionSolicitud> ResolucionSolicitud { get; set; }
         DbSet<CapacitacionCapacitadorSolicitud> CapacitacionCapacitadorSolicitud { get; set; }
         DbSet<HorariosCapacitacionSolicitud> HorariosCapacitacionSolicitud { get; set; }
+        DbSet<BandejaResgistrarCapacitacionesDTOResponse> Bandeja { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

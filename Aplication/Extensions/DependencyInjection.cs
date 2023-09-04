@@ -1,9 +1,11 @@
 ﻿using Aplication.Mapping;
 using Aplication.Services.Parametro;
+using Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices;
 using Aplication.Services.T22.DocumentoSolicitudServices.Validation;
 using Aplication.Services.T22.SolicitudServices;
 using Aplication.Services.T22.SolicitudServices.Validation;
 using Aplication.Services.T22.TipoCapacitacionServices;
+using Aplication.Utilities;
 using AutoMapper;
 using Domain.DTOs.Request.T22;
 using Domain.Models.T22;
@@ -41,11 +43,13 @@ namespace Aplication.Extensions
             services.AddScoped<IParametroService, ParametroService>();
             services.AddScoped<ISolicitudService, SolicitudService>();
             services.AddScoped<ITipoCapacitacionService, TipoCapacitacionService>();
+            services.AddScoped<ICapacitacionCapacitadorService, CapacitacionCapacitadorService>();
 
             #endregion
 
             #region Repositories
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
+            services.AddScoped(typeof(StoredProcedure), typeof(StoredProcedure));
             services.AddScoped<IParametroDetalleRepository, ParametroDetalleRepository>();
             services.AddScoped<ISolicitudRespository, SolicitudRepository>();
             services.AddScoped<IParametroRepository, ParametroRepository>();
@@ -57,6 +61,8 @@ namespace Aplication.Extensions
             services.AddScoped<ICapacitadorTipoCapacitacionRepository, CapacitadorTipoCapacitacionRepository>();
             services.AddScoped<ISubsanacionSolicitudRepository, SubsanacionSolicitudRepository>();
             services.AddScoped<ISeguimientoAuditoriaSolicitudRepository, SeguimientoAuditoriaSolicitudRepository>();
+            services.AddScoped<IResolucionSolicitudRepository, ResolucionSolicitudRepository>();
+            services.AddScoped<ICapacitacionCapacitadorRepository, CapacitacionCapacitadorRepository>();
 
             #endregion
 

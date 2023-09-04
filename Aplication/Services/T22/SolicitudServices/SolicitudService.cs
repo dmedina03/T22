@@ -581,6 +581,9 @@ namespace Aplication.Services.T22.SolicitudServices
             //Asignacion de auditoria seguimiento
             solicitud.SeguimientoAuditoriaSolicitud = listSeguimientoAuditoria;
 
+
+            //Falta crear la resolucion, consultar con pablo
+
             await _solicitudRespository.UpdateAsync(solicitud);
             await _unitOfWork.CommitAsync();
 

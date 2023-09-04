@@ -24,5 +24,6 @@ namespace Domain.Models.T22
         public virtual ICollection<SeguimientoAuditoriaSolicitud>? SeguimientoAuditoriaSolicitud { get; set; }
         public virtual SubsanacionSolicitud? SubsanacionSolicitud { get; set; }
         public virtual CancelacionSolicitud? CancelacionIncumplimientoSolicitud { get; set; }
+        public virtual ICollection<ResolucionSolicitud> ResolucionSolicitud { get; set; }
     }
 }

@@ -16,7 +16,13 @@ namespace Persistence.FluentConfig.T22
             entity.ToTable("ResolucionSolicitudes", schema:"manipalimentos");
             entity.HasKey(p => p.IdResolucionSolicitud);
 
+            entity.HasOne(p => p.Solicitud)
+                .WithMany(p => p.ResolucionSolicitud)
+                .HasForeignKey(p => p.SolicitudId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             entity.Property(p => p.SolicitudId).IsRequired();
+            entity.Property(p => p.DocumentoSolicitudId).IsRequired();
             entity.Property(p => p.TipoResolucionId).IsRequired();
             entity.Property(p => p.FechaResolucion).IsRequired();
             entity.Property(p => p.IntNumeroResolucion).IsRequired();
