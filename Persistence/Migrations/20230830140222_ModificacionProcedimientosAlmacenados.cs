@@ -91,9 +91,6 @@ namespace Persistence.Migrations
 
                 ");
 
-            migrationBuilder.Sql("DROP PROCEDURE dbo.ObtenerSolicitudesBandejaValidador");
-            migrationBuilder.Sql("DROP PROCEDURE dbo.ObtenerSolicitudesBandejaCoordinador");
-            migrationBuilder.Sql("DROP PROCEDURE dbo.ObtenerSolicitudesBandejaSubdirector");
         }
 
         /// <inheritdoc />

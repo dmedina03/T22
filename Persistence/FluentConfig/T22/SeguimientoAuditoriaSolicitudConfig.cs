@@ -23,6 +23,7 @@ namespace Persistence.FluentConfig.T22
             entity.Property(p => p.SolicitudId).IsRequired();
             entity.Property(p => p.DtFechaObservacion).IsRequired();
             entity.Property(p => p.VcObservacion).IsRequired();
+            entity.Property(p => p.VcNombreUsuario).IsRequired();
             entity.Property(p => p.UsuarioId).IsRequired();
             entity.Property(p => p.EstadoId).IsRequired();
             

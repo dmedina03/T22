@@ -1,6 +1,7 @@
 ﻿using Aplication.Mapping;
 using Aplication.Services.Parametro;
 using Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices;
+using Aplication.Services.T22.CapacitadorSolicitudServices;
 using Aplication.Services.T22.DocumentoSolicitudServices.Validation;
 using Aplication.Services.T22.SolicitudServices;
 using Aplication.Services.T22.SolicitudServices.Validation;
@@ -44,12 +45,12 @@ namespace Aplication.Extensions
             services.AddScoped<ISolicitudService, SolicitudService>();
             services.AddScoped<ITipoCapacitacionService, TipoCapacitacionService>();
             services.AddScoped<ICapacitacionCapacitadorService, CapacitacionCapacitadorService>();
+            services.AddScoped<ICapacitadorSolicitudService, CapacitadorSolicitudService>();
 
             #endregion
 
             #region Repositories
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-            services.AddScoped(typeof(StoredProcedure), typeof(StoredProcedure));
             services.AddScoped<IParametroDetalleRepository, ParametroDetalleRepository>();
             services.AddScoped<ISolicitudRespository, SolicitudRepository>();
             services.AddScoped<IParametroRepository, ParametroRepository>();
@@ -93,7 +94,8 @@ namespace Aplication.Extensions
             services.AddScoped<IValidator<SolicitudDTORequest>, SolicitudValidator>();
             services.AddScoped<IValidator<IEnumerable<DocumentoSolicitud>>, DocumentoSolicitudValidator>();
             services.AddScoped<IValidator<SolicitudRevisionValidadorDTORequest>, SolicitudRevisionValidadorValidator>();
-            services.AddScoped<IValidator<SolicitudRevisionCoordinadorSubdirectorDTORequest>, SolicitudRevisionCoordinadorSubdirectorValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionCoordinadorDTORequest>, SolicitudRevisionCoordinadorValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionSubdirectorDTORequest>, SolicitudRevisionSubdirectorValidator>();
 
             return services;
         }

@@ -17,10 +17,10 @@ namespace Persistence.Context
             CargarTipoSolicitud(context);
             CargarTipoIdentificacion(context);
             CargarConstantes(context);
-            CargarResultadoValidacion(context);
             CargarDocumentosSolicitud(context);
             CargarCiudadanoFiltroPor(context);
             CargarFiltroPor(context);
+
             context.Commit();
         }
 
@@ -371,106 +371,6 @@ namespace Persistence.Context
             }
             context.Commit();
         }
-        private static void CargarResultadoValidacion(IUnitOfWork context)
-        {
-            IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
-
-            query = query.Where(prop => prop.VcCodigoInterno == "bResultadoValidacion");
-
-            Parametro parametroPuente = null;
-            Parametro parametro = query.AsNoTracking().FirstOrDefault();
-
-            if (parametro is null)
-            {
-                var parametroAguardar = new Parametro
-                {
-                    VcNombre = "Resultado de la validación",
-                    VcCodigoInterno = "bResultadoValidacion",
-                    BEstado = true,
-                    DtFechaCreacion = DateTime.Now,
-                    DtFechaActualizacion = DateTime.Now
-                };
-
-                context.GetSet<long, Parametro>().Add(parametroAguardar);
-                context.Commit();
-
-                parametroPuente = parametroAguardar;
-            }
-            else
-            {
-                parametroPuente = parametro;
-            }
-
-            List<ParametroDetalle> listaResultadoValidacion = new List<ParametroDetalle>();
-
-            listaResultadoValidacion.Add(new ParametroDetalle
-            {
-                ParametroId = parametroPuente.IdParametro,
-                VcNombre = "Aprobar solicitud",
-                TxDescripcion = "Aprobación",
-                VcCodigoInterno = "",
-                DCodigoIterno = 0,
-                BEstado = true,
-                RangoDesde = 0,
-                RangoHasta = 0
-            });
-
-            listaResultadoValidacion.Add(new ParametroDetalle
-            {
-                ParametroId = parametroPuente.IdParametro,
-                VcNombre = "Cancelar solicitud",
-                TxDescripcion = "Cancelación",
-                VcCodigoInterno = "",
-                DCodigoIterno = 0,
-                BEstado = true,
-                RangoDesde = 0,
-                RangoHasta = 0
-            });
-
-            listaResultadoValidacion.Add(new ParametroDetalle
-            {
-                ParametroId = parametroPuente.IdParametro,
-                VcNombre = "Negar solicitud",
-                TxDescripcion = "Negación",
-                VcCodigoInterno = "",
-                DCodigoIterno = 0,
-                BEstado = true,
-                RangoDesde = 0,
-                RangoHasta = 0
-            });
-            listaResultadoValidacion.Add(new ParametroDetalle
-            {
-                ParametroId = parametroPuente.IdParametro,
-                VcNombre = "Para Subsanación",
-                TxDescripcion = "Subsanación",
-                VcCodigoInterno = "",
-                DCodigoIterno = 0,
-                BEstado = true,
-                RangoDesde = 0,
-                RangoHasta = 0
-            });
-            listaResultadoValidacion.Add(new ParametroDetalle
-            {
-                ParametroId = parametroPuente.IdParametro,
-                VcNombre = "Cancelar por incumplimiento",
-                TxDescripcion = "Cancelación por incumplimiento",
-                VcCodigoInterno = "",
-                DCodigoIterno = 0,
-                BEstado = true,
-                RangoDesde = 0,
-                RangoHasta = 0
-            });
-            
-            foreach (ParametroDetalle item in listaResultadoValidacion)
-            {
-                //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
-                if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))
-                {
-                    context.GetSet<long, ParametroDetalle>().Add(item);
-                }
-            }
-
-        }
         private static void CargarDocumentosSolicitud(IUnitOfWork context)
         {
             IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
@@ -597,6 +497,17 @@ namespace Persistence.Context
             {
                 ParametroId = parametroPuente.IdParametro,
                 VcNombre = "Memorias ilustradas",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaDocumentos.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Resolución",
                 TxDescripcion = "",
                 VcCodigoInterno = "",
                 DCodigoIterno = 0,
@@ -826,7 +737,7 @@ namespace Persistence.Context
             }
 
         }
-
+        
 
     }
 }

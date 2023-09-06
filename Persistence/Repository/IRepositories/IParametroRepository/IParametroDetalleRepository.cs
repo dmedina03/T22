@@ -10,5 +10,7 @@ namespace Persistence.Repository.IRepositories.IParametroRepository
 {
     public interface IParametroDetalleRepository : IBaseRepository<int,ParametroDetalle>
     {
+        Task<string> VcNombre(int IdParametroDetalle);
+
     }
 }

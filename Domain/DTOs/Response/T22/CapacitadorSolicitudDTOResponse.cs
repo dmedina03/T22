@@ -15,7 +15,7 @@ namespace Domain.DTOs.Response.T22
         public string VcPrimerApellido { get; set; }
         public string VcSegundoApellido { get; set; }
         public string VcTipoIdentificacion { get; set; }
-        public int IntNumeroIdentificacion { get; set; }
+        public long IntNumeroIdentificacion { get; set; }
         public string VcTituloProfesional { get; set; }
         public string vcNumeroTarjetaProfesional { get; set; }
         public long IntTelefono { get; set; }

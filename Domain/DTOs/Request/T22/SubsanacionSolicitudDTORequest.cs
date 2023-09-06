@@ -19,6 +19,8 @@ namespace Domain.DTOs.Request.T22
         /// Usuario quien realiza la subsanacion
         /// </summary>
         public int UsuarioId { get; set; }
+        public string VcNombreUsuario { get; set; }
+
         /// <summary>
         /// Estado en el cual se encuentra la solicitud cuando generan la subsanacion
         /// </summary>

@@ -13,7 +13,7 @@ namespace Domain.Models.T22
         public int DocumentoSolicitudId { get; set; }
         public int TipoResolucionId { get; set; }
         public DateTime FechaResolucion { get; set; }
-        public int IntNumeroResolucion { get; set; }
+        public long IntNumeroResolucion { get; set; }
         public bool BlActiva { get; set; }
         public Solicitud Solicitud { get; set; }
     }

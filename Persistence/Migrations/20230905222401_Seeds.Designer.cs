@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230905222401_Seeds")]
+    partial class Seeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Bandeja", (string)null);
+                    b.ToTable("Bandeja");
                 });
 
             modelBuilder.Entity("Domain.Models.Parametro.Parametro", b =>
@@ -96,8 +99,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 1L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8935),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8921),
+                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 24, 1, 231, DateTimeKind.Local).AddTicks(5316),
+                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 24, 1, 231, DateTimeKind.Local).AddTicks(5306),
                             VcCodigoInterno = "bTipoResolucion",
                             VcNombre = "Tipo resolución"
                         },
@@ -105,19 +108,10 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 2L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8957),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8946),
+                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 24, 1, 231, DateTimeKind.Local).AddTicks(5320),
+                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 24, 1, 231, DateTimeKind.Local).AddTicks(5319),
                             VcCodigoInterno = "bResultadoValidacion",
                             VcNombre = "Resultado de la validación"
-                        },
-                        new
-                        {
-                            IdParametro = 3L,
-                            BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
-                            VcCodigoInterno = "bTipoSolicitud",
-                            VcNombre = "Tipo de solicitud"
                         });
                 });
 
@@ -287,66 +281,6 @@ namespace Persistence.Migrations
                             TxDescripcion = "Cancelación por incumplimiento",
                             VcCodigoInterno = "",
                             VcNombre = "Cancelar por incumplimiento"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 11L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Primera vez"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 12L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Renovación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 13L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Modificación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 14L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Recurso de reposición"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 15L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Cancelación"
                         });
                 });
 

@@ -46,10 +46,10 @@ namespace WebApi.Controllers
         public async Task<ResponseBase<bool>> RevisionValidador(SolicitudRevisionValidadorDTORequest Dto)
             => await _solicitudService.CreateRevisionValidador(Dto);
         [HttpPost("RevisionCoodinador")]
-        public async Task<ResponseBase<bool>> RevisionCoordinador(SolicitudRevisionCoordinadorSubdirectorDTORequest Dto)
+        public async Task<ResponseBase<bool>> RevisionCoordinador(SolicitudRevisionCoordinadorDTORequest Dto)
             => await _solicitudService.CreateRevisionCoordinador(Dto);
         [HttpPost("RevisionSubdirector")]
-        public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionCoordinadorSubdirectorDTORequest Dto)
+        public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionSubdirectorDTORequest Dto)
             => await _solicitudService.CreateRevisionSubdirector(Dto);
 
     }

@@ -70,6 +70,7 @@ namespace Persistence.Migrations
                     DtFechaCancelacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VcCancelacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    VcNombreUsuario = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     EstadoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -189,6 +190,7 @@ namespace Persistence.Migrations
                     DtFechaSubsanacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VcSubsanacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    VcNombreUsuario = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     EstadoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

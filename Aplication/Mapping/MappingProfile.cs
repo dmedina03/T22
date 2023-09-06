@@ -34,6 +34,7 @@ namespace Aplication.Mapping
             CreateMap<SeguimientoAuditoriaSolicitud, SeguimientoAuditoriaSolicitudDTORequest>().ReverseMap();
             CreateMap<SubsanacionSolicitud, SubsanacionSolicitudDTORequest>().ReverseMap();
             CreateMap<CancelacionSolicitud, CancelacionIncumplimientoSolicitudDTORequest>().ReverseMap();
+            CreateMap<ResolucionSolicitud, ResolucionSolicitudDTORequest>().ReverseMap();
 
         }
     }

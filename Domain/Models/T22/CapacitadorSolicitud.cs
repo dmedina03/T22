@@ -15,7 +15,7 @@ namespace Domain.Models.T22
         public string VcPrimerApellido { get; set; }
         public string VcSegundoApellido { get; set; }
         public int TipoIdentificacionId { get; set; }
-        public int IntNumeroIdentificacion { get; set; }
+        public long IntNumeroIdentificacion { get; set; }
         public string VcTituloProfesional { get; set; }
         public string vcNumeroTarjetaProfesional { get; set; }
         public long IntTelefono { get; set; }

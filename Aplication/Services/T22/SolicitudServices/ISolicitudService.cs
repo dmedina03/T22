@@ -41,8 +41,8 @@ namespace Aplication.Services.T22.SolicitudServices
         /// <returns>Lista de solicitudes</returns>
         Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId);
         Task<ResponseBase<bool>> CreateRevisionValidador(SolicitudRevisionValidadorDTORequest request);
-        Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorSubdirectorDTORequest request);
-        Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionCoordinadorSubdirectorDTORequest request);
+        Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorDTORequest request);
+        Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionSubdirectorDTORequest request);
 
     }
 }

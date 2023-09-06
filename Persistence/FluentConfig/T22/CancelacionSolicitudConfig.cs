@@ -24,6 +24,7 @@ namespace Persistence.FluentConfig.T22
             entity.Property(p => p.DtFechaCancelacion).IsRequired();
             entity.Property(p => p.VcCancelacion).IsRequired();
             entity.Property(p => p.UsuarioId).IsRequired();
+            entity.Property(p => p.VcNombreUsuario).IsRequired();
             entity.Property(p => p.EstadoId).IsRequired();
 
         }

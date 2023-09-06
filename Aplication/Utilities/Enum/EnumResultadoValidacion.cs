@@ -8,10 +8,10 @@ namespace Aplication.Utilities.Enum
 {
     public enum EnumResultadoValidacion
     {
-        Aprobación = 18,
-        Cancelación = 19,
-        Negación = 20,
-        Subsanación = 21,
-        CancelaciónIncumplimiento = 22
+        Aprobación = 6,
+        Cancelación = 7,
+        Negación = 8,
+        Subsanación = 9,
+        CancelaciónIncumplimiento = 10
     }
 }

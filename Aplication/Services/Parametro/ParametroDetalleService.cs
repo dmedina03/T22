@@ -63,7 +63,7 @@ namespace Aplication.Services.Parametro
 
             resultadoValidacion = resultadoValidacion.OrderByDescending(x => x.IdParametroDetalle).ToList();
 
-            if (query == (int)EstadoEnum.Aprobado)
+            if (query == (int)EnumEstado.Aprobado)
             {
                 lista.Add(resultadoValidacion.ElementAt(0));
 

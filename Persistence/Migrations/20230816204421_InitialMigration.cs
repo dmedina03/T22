@@ -150,7 +150,7 @@ namespace Persistence.Migrations
                     VcPrimerApellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VcSegundoApellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoIdentificacionId = table.Column<int>(type: "int", nullable: false),
-                    IntNumeroIdentificacion = table.Column<int>(type: "int", nullable: false),
+                    IntNumeroIdentificacion = table.Column<long>(type: "bigint", nullable: false),
                     VcTituloProfesional = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     vcNumeroTarjetaProfesional = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IntTelefono = table.Column<int>(type: "int", nullable: false),
@@ -178,6 +178,7 @@ namespace Persistence.Migrations
                     DtFechaObservacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VcObservacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    VcNombreUsuario = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     EstadoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

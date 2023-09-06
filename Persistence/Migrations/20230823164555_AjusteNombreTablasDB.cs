@@ -111,7 +111,7 @@ namespace Persistence.Migrations
             migrationBuilder.AddColumn<int>(
                 name: "IntNumeroIdentificacionUsuario",
                 table: "Solicitudes",
-                type: "int",
+                type: "bigint",
                 nullable: false,
                 defaultValue: 0);
 

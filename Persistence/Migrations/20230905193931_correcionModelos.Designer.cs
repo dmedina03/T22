@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230905193931_correcionModelos")]
+    partial class correcionModelos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Bandeja", (string)null);
+                    b.ToTable("Bandeja");
                 });
 
             modelBuilder.Entity("Domain.Models.Parametro.Parametro", b =>
@@ -90,35 +93,6 @@ namespace Persistence.Migrations
                     b.HasKey("IdParametro");
 
                     b.ToTable("Parametro", "manipalimentos");
-
-                    b.HasData(
-                        new
-                        {
-                            IdParametro = 1L,
-                            BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8935),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8921),
-                            VcCodigoInterno = "bTipoResolucion",
-                            VcNombre = "Tipo resolución"
-                        },
-                        new
-                        {
-                            IdParametro = 2L,
-                            BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8957),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8946),
-                            VcCodigoInterno = "bResultadoValidacion",
-                            VcNombre = "Resultado de la validación"
-                        },
-                        new
-                        {
-                            IdParametro = 3L,
-                            BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
-                            VcCodigoInterno = "bTipoSolicitud",
-                            VcNombre = "Tipo de solicitud"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Parametro.ParametroDetalle", b =>
@@ -166,188 +140,6 @@ namespace Persistence.Migrations
                     b.HasIndex("ParametroId");
 
                     b.ToTable("ParametroDetalle", "manipalimentos");
-
-                    b.HasData(
-                        new
-                        {
-                            IdParametroDetalle = 1L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 1L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Resolución de aprobación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 2L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 1L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Resolución de cancelación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 3L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 1L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Resolución de negación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 4L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 1L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Resolución de modificación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 5L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 1L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Resolución de cancelación por incumplimiento"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 6L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 2L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "Aprobación",
-                            VcCodigoInterno = "",
-                            VcNombre = "Aprobar solicitud"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 7L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 2L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "Cancelación",
-                            VcCodigoInterno = "",
-                            VcNombre = "Cancelar solicitud"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 8L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 2L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "Negación",
-                            VcCodigoInterno = "",
-                            VcNombre = "Negar solicitud"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 9L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 2L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "Subsanación",
-                            VcCodigoInterno = "",
-                            VcNombre = "Para Subsanación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 10L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 2L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "Cancelación por incumplimiento",
-                            VcCodigoInterno = "",
-                            VcNombre = "Cancelar por incumplimiento"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 11L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Primera vez"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 12L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Renovación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 13L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Modificación"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 14L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Recurso de reposición"
-                        },
-                        new
-                        {
-                            IdParametroDetalle = 15L,
-                            BEstado = true,
-                            DCodigoIterno = 0m,
-                            ParametroId = 3L,
-                            RangoDesde = 0,
-                            RangoHasta = 0,
-                            TxDescripcion = "",
-                            VcCodigoInterno = "",
-                            VcNombre = "Cancelación"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.T22.CancelacionSolicitud", b =>
@@ -783,8 +575,8 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("FechaResolucion")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("IntNumeroResolucion")
-                        .HasColumnType("bigint");
+                    b.Property<int>("IntNumeroResolucion")
+                        .HasColumnType("int");
 
                     b.Property<int>("SolicitudId")
                         .HasColumnType("int");

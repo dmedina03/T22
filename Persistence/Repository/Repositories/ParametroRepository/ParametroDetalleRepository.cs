@@ -17,5 +17,9 @@ namespace Persistence.Repository.Repositories.ParametroRepository
         public ParametroDetalleRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
+        public async Task<string> VcNombre(int IdParametroDetalle)
+            => (await GetAsync(x => x.IdParametroDetalle == IdParametroDetalle)).VcNombre;
+        
     }
 }

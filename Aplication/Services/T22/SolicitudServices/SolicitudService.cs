@@ -38,10 +38,12 @@ namespace Aplication.Services.T22.SolicitudServices
         private readonly ICapacitadorTipoCapacitacionRepository _capacitadorTipoCapacitacionRepository;
         private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaSolicitudRepository;
         private readonly ISubsanacionSolicitudRepository _subsanacionSolicitudRepository;
+        private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
         private readonly IValidator<SolicitudDTORequest> _validatorSolicitud;
         private readonly IValidator<IEnumerable<DocumentoSolicitud>> _validatorDocumento;
         private readonly IValidator<SolicitudRevisionValidadorDTORequest> _validatorSolicitudRevisionValidador;
-        private readonly IValidator<SolicitudRevisionCoordinadorSubdirectorDTORequest> _validatorSolicitudRevisionCoordinadorSubdirector;
+        private readonly IValidator<SolicitudRevisionCoordinadorDTORequest> _validatorSolicitudRevisionCoordinador;
+        private readonly IValidator<SolicitudRevisionSubdirectorDTORequest> _validatorSolicitudRevisionSubdirector;
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -51,7 +53,8 @@ namespace Aplication.Services.T22.SolicitudServices
             IValidator<IEnumerable<DocumentoSolicitud>> validatorDocumento, IEstadoRepository estadoRepository, IParametroDetalleRepository parametroDetalleRepository,
             ITipoCapacitacionRepository tipoCapacitacionRepository, ICapacitadorTipoCapacitacionRepository capacitadorTipoCapacitacionRepository,
             ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitud, ISubsanacionSolicitudRepository subsanacionSolicitudRepository,
-            IValidator<SolicitudRevisionValidadorDTORequest> validatorSolicitudRevisionValidador, IValidator<SolicitudRevisionCoordinadorSubdirectorDTORequest> validatorSolicitudRevisionCoordinadorSubdirector)
+            IValidator<SolicitudRevisionValidadorDTORequest> validatorSolicitudRevisionValidador, IValidator<SolicitudRevisionCoordinadorDTORequest> validatorSolicitudRevisionCoordinadorSubdirector, 
+            IResolucionSolicitudRepository resolucionSolicitudRepository, IValidator<SolicitudRevisionSubdirectorDTORequest> validatorSolicitudRevisionSubdirector)
         {
             _solicitudRespository = solicitudRespository;
             _validatorSolicitud = validatorSolicitud;
@@ -67,7 +70,9 @@ namespace Aplication.Services.T22.SolicitudServices
             _subsanacionSolicitudRepository = subsanacionSolicitudRepository;
             _seguimientoAuditoriaSolicitudRepository = seguimientoAuditoriaSolicitud;
             _validatorSolicitudRevisionValidador = validatorSolicitudRevisionValidador;
-            _validatorSolicitudRevisionCoordinadorSubdirector = validatorSolicitudRevisionCoordinadorSubdirector;
+            _validatorSolicitudRevisionCoordinador = validatorSolicitudRevisionCoordinadorSubdirector;
+            _resolucionSolicitudRepository = resolucionSolicitudRepository;
+            _validatorSolicitudRevisionSubdirector = validatorSolicitudRevisionSubdirector;
         }
         public async Task<ResponseBase<bool>> CreateAsync(SolicitudDTORequest request)
         {
@@ -86,7 +91,7 @@ namespace Aplication.Services.T22.SolicitudServices
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "Ocurrio un error con la cantidad de capacitadores, verifique nuevamente", false);
             }
             //asignación de estado
-            entitySolicitud.EstadoId = (int)EstadoEnum.EnRevision;
+            entitySolicitud.EstadoId = (int)EnumEstado.EnRevision;
 
             await _unitOfWork.CommitAsync();
 
@@ -134,7 +139,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
         public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesByRadicado(int usuarioId, string? radicado)
         {
-            var query = (await _solicitudRespository.GetAllAsync(x => x.UsuarioId == usuarioId)).ToList();
+            var query = (await _solicitudRespository.GetAllAsync(x => x.UsuarioId == usuarioId));
 
             if (query is null)
             {
@@ -171,7 +176,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaValidador {UsuarioAsignadoId}")).ToList();
 
-            if (data is null)
+            if (data is null || data.Count == 0)
             {
                 return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
@@ -201,7 +206,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaCoordinador {UsuarioAsignadoId}")).ToList();
 
-            if (data is null)
+            if (data is null || data.Count == 0)
             {
                 return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
@@ -216,7 +221,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaSubdirector {UsuarioAsignadoId}")).ToList();
 
-            if (data is null)
+            if (data is null || data.Count == 0)
             {
                 return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
@@ -278,7 +283,7 @@ namespace Aplication.Services.T22.SolicitudServices
             }
 
             //Se valida que el estado de la solicitud sea el correcto para realizar la actualizacion de los campos
-            if (solicitud.EstadoId != (int)EstadoEnum.EnRevision && solicitud.EstadoId != (int)EstadoEnum.DevueltaPorCoordinador && solicitud.EstadoId != (int)EstadoEnum.Aprobado)
+            if (solicitud.EstadoId != (int)EnumEstado.EnRevision && solicitud.EstadoId != (int)EnumEstado.DevueltaPorCoordinador && solicitud.EstadoId != (int)EnumEstado.Aprobado)
             {
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, "La solicitud no se encuentra en el estado correcto, verifique nuevamente.", null);
             }
@@ -295,7 +300,7 @@ namespace Aplication.Services.T22.SolicitudServices
             var estadoId = solicitud.EstadoId;
             solicitud.ResultadoValidacionId = request.ResultadoValidacionId;
 
-            if (estadoId == (int)EstadoEnum.Aprobado)
+            if (estadoId == (int)EnumEstado.Aprobado)
             {
                 if (request.CancelacionSolicitud is null)
                 {
@@ -310,7 +315,7 @@ namespace Aplication.Services.T22.SolicitudServices
                     solicitud.CancelacionIncumplimientoSolicitud = cancelacion;
 
                     //Asignacion de estado
-                    solicitud.EstadoId = (int)EstadoEnum.EnVerificacion;
+                    solicitud.EstadoId = (int)EnumEstado.EnVerificacion;
 
                     await _solicitudRespository.UpdateAsync(solicitud);
 
@@ -366,7 +371,7 @@ namespace Aplication.Services.T22.SolicitudServices
             }
 
             //Asignacion de estado
-            solicitud.EstadoId = (int)EstadoEnum.EnVerificacion;
+            solicitud.EstadoId = (int)EnumEstado.EnVerificacion;
 
             //Asignacion de auditoria seguimiento
             solicitud.SeguimientoAuditoriaSolicitud = listSeguimientoAuditoria;
@@ -377,12 +382,12 @@ namespace Aplication.Services.T22.SolicitudServices
             return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
 
         }
-        public async Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorSubdirectorDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorDTORequest request)
         {
             Solicitud solicitud = new Solicitud();
 
             //Valida el DTO
-            var result = await _validatorSolicitudRevisionCoordinadorSubdirector.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
+            var result = await _validatorSolicitudRevisionCoordinador.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 
             if (!result.IsValid)
             {
@@ -405,7 +410,7 @@ namespace Aplication.Services.T22.SolicitudServices
             }
 
             //Se valida que el estado de la solicitud sea el correcto para realizar la actualizacion de los campos
-            if (solicitud.EstadoId != (int)EstadoEnum.EnVerificacion && solicitud.EstadoId != (int)EstadoEnum.DevueltaPorSubdirector)
+            if (solicitud.EstadoId != (int)EnumEstado.EnVerificacion && solicitud.EstadoId != (int)EnumEstado.DevueltaPorSubdirector)
             {
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, "La solicitud no se encuentra en el estado correcto, verifique nuevamente.", null);
             }
@@ -460,11 +465,11 @@ namespace Aplication.Services.T22.SolicitudServices
             //Asignacion de estado
             if (request.ResultadoValidacion)
             {
-                solicitud.EstadoId = (int)EstadoEnum.ParaFirma;
+                solicitud.EstadoId = (int)EnumEstado.ParaFirma;
             }
             else
             {
-                solicitud.EstadoId = (int)EstadoEnum.DevueltaPorCoordinador;
+                solicitud.EstadoId = (int)EnumEstado.DevueltaPorCoordinador;
             }
 
             //Asignacion de auditoria seguimiento
@@ -476,11 +481,11 @@ namespace Aplication.Services.T22.SolicitudServices
             return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
 
         }
-        public async Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionCoordinadorSubdirectorDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionSubdirectorDTORequest request)
         {
             Solicitud solicitud = new Solicitud();
 
-            var result = await _validatorSolicitudRevisionCoordinadorSubdirector.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
+            var result = await _validatorSolicitudRevisionSubdirector.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 
             if (!result.IsValid)
             {
@@ -495,7 +500,7 @@ namespace Aplication.Services.T22.SolicitudServices
             }
 
             //Se valida que el estado de la solicitud sea el correcto para realizar la actualizacion de los campos
-            if (solicitud.EstadoId != (int)EstadoEnum.ParaFirma)
+            if (solicitud.EstadoId != (int)EnumEstado.ParaFirma)
             {
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, "La solicitud no se encuentra en el estado correcto, verifique nuevamente.", null);
             }
@@ -550,42 +555,114 @@ namespace Aplication.Services.T22.SolicitudServices
                 await _documentoSolicitudRepository.UpdateAsync(documento);
             }
 
-            //Asignacion de estado
-            if (request.ResultadoValidacion)
+            int TipoResolucion = 0;
+
+            if (solicitud.TipoSolicitudId == (int)EnumTipoSolicitud.Modificacion && solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Aprobación)
             {
-                if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Aprobación)
-                {
-                    solicitud.EstadoId = (int)EstadoEnum.Aprobado;
-                }
-                else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Cancelación)
-                {
-                    solicitud.EstadoId = (int)EstadoEnum.Cancelado;
-                }
-                else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Negación)
-                {
-                    solicitud.EstadoId = (int)EstadoEnum.Negado;
-                }
-                else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Subsanación)
-                {
-                    solicitud.EstadoId = (int)EstadoEnum.EnSubsanacion;
-                }
-                else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.CancelaciónIncumplimiento)
-                {
-                    solicitud.EstadoId = (int)EstadoEnum.CanceladoPorInclumplimiento;
-                }
+                solicitud.EstadoId = (int)EnumEstado.Aprobado;
+                TipoResolucion = (int)EnumTipoResolucion.ResolucionModificacion;
             }
             else
             {
-                solicitud.EstadoId = (int)EstadoEnum.DevueltaPorSubdirector;
+                //Asignacion de estado
+                if (request.ResultadoValidacion)
+                {
+                    if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Aprobación)
+                    {
+                        solicitud.EstadoId = (int)EnumEstado.Aprobado;
+                        TipoResolucion = (int)EnumTipoResolucion.ResolucionAprobacion;
+                    }
+                    else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Cancelación)
+                    {
+                        solicitud.EstadoId = (int)EnumEstado.Cancelado;
+                        TipoResolucion = (int)EnumTipoResolucion.ResolucionCancelacion;
+
+                    }
+                    else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Negación)
+                    {
+                        solicitud.EstadoId = (int)EnumEstado.Negado;
+                        TipoResolucion = (int)EnumTipoResolucion.ResolucionNegacion;
+
+                    }
+                    else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.Subsanación)
+                    {
+                        solicitud.EstadoId = (int)EnumEstado.EnSubsanacion;
+                    }
+                    else if (solicitud.ResultadoValidacionId == (int)EnumResultadoValidacion.CancelaciónIncumplimiento)
+                    {
+                        solicitud.EstadoId = (int)EnumEstado.CanceladoPorInclumplimiento;
+                        TipoResolucion = (int)EnumTipoResolucion.ResolucionCancelacionPorInclumplimiento;
+
+                    }
+                }
+                else
+                {
+                    solicitud.EstadoId = (int)EnumEstado.DevueltaPorSubdirector;
+                }
             }
+
+            
             //Asignacion de auditoria seguimiento
             solicitud.SeguimientoAuditoriaSolicitud = listSeguimientoAuditoria;
 
+            ResolucionSolicitud resolucionSolicitud = new ResolucionSolicitud();
+            List<ResolucionSolicitud> listResolucionSolicitud = new List<ResolucionSolicitud>();
+            DocumentoSolicitud documentoSolicitudResolucion = new DocumentoSolicitud();
 
-            //Falta crear la resolucion, consultar con pablo
+            if (request.ResolucionSolicitud is not null)
+            {
+                if (request.ResolucionSolicitud.DocumentoResolucion is not null)
+                {
+                    bool UsuarioVentanilla = true;
 
+                    documentoSolicitudResolucion.SolicitudId = solicitud.IdSolicitud;
+                    documentoSolicitudResolucion.UsuarioId = (int)request.ResolucionSolicitud.DocumentoResolucion.UsuarioId;
+                    documentoSolicitudResolucion.TipoDocumentoId = request.ResolucionSolicitud.DocumentoResolucion.TipoDocumentoId;
+                    documentoSolicitudResolucion.VcNombreDocumento = request.ResolucionSolicitud.DocumentoResolucion.VcNombreDocumento;
+                    documentoSolicitudResolucion.DtFechaCargue = request.ResolucionSolicitud.DocumentoResolucion.DtFechaCargue;
+                    documentoSolicitudResolucion.VcPath = request.ResolucionSolicitud.DocumentoResolucion.VcPath;
+                    documentoSolicitudResolucion.IntVersion = request.ResolucionSolicitud.DocumentoResolucion.IntVersion;
+                    
+                    //El campo es true, por que el usuario generador del documento, es usuario ventanilla
+                    documentoSolicitudResolucion.BlUsuarioVentanilla = UsuarioVentanilla;
+
+                    //Es valido por defecto, ya que el documento no necesita revisión
+                    documentoSolicitudResolucion.BlIsValid = true;
+
+                }
+                else
+                {
+                    return new ResponseBase<bool>(HttpStatusCode.BadRequest, "La información del documento generado por la solicitud es obligatoria", null);
+                }
+
+                resolucionSolicitud.SolicitudId = solicitud.IdSolicitud;
+                //revisar que tipo de resolucion se va a generar de acuerdo al resultado de validación otorgado
+                resolucionSolicitud.TipoResolucionId = TipoResolucion;
+                resolucionSolicitud.FechaResolucion = request.ResolucionSolicitud.FechaResolucion;
+                //La resolución estara activa por defecto, tras pasar 1 año, ya quedará inactiva
+                resolucionSolicitud.BlActiva = true;
+                //Numero de resolucion
+                resolucionSolicitud.IntNumeroResolucion = await GetNumeroResolucion();
+            }
+
+            //Se almacena la informacion del documento generado por la resolución
+            await _documentoSolicitudRepository.AddAsync(documentoSolicitudResolucion);
+
+            //Se almacena la informacion actualizada de la solicitud
             await _solicitudRespository.UpdateAsync(solicitud);
+
+            //Se realizan cambios sobre todas las acciones
             await _unitOfWork.CommitAsync();
+
+            //Asignacion del id del documento a la resolucion
+            resolucionSolicitud.DocumentoSolicitudId = documentoSolicitudResolucion.IdDocumento;
+
+            //Se almacena la informacion actualizada de la resolucion
+            await _resolucionSolicitudRepository.AddAsync(resolucionSolicitud);
+
+            //Se realizan cambios sobre todas las acciones
+            await _unitOfWork.CommitAsync();
+
 
             return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
 
@@ -664,6 +741,7 @@ namespace Aplication.Services.T22.SolicitudServices
                 {
                     IdObservacion = seguimiento.IdObservacion,
                     UsuarioId = seguimiento.UsuarioId,
+                    VcNombreUsuario = seguimiento.VcNombreUsuario,
                     DtFechaObservacion = seguimiento.DtFechaObservacion.ToString("yyyy-MM-dd"),
                     VcEstado = (await _estadoRepository.GetAsync(p => p.IdEstado == seguimiento.EstadoId)).VcTipoEstado,
                     VcObservacion = seguimiento.VcObservacion
@@ -671,7 +749,7 @@ namespace Aplication.Services.T22.SolicitudServices
             }
             return lista;
         }
-
+        
         private async Task<List<SolicitudBandejaSolicitudesDTOResponse>> MapToBandejaSolicitud(List<Solicitud> data)
         {
             List<SolicitudBandejaSolicitudesDTOResponse> lista = new();
@@ -695,7 +773,27 @@ namespace Aplication.Services.T22.SolicitudServices
 
             return lista;
         }
+        private async Task<long> GetNumeroResolucion()
+        {
+            var year = DateTime.UtcNow.AddHours(-5).Year;
 
+            long numeroResolucion = 0;
+
+            var ultimoNumero = (await _resolucionSolicitudRepository.GetAllAsync(x => x.FechaResolucion.Year == year, 
+                                x => x.OrderByDescending(p => p.IntNumeroResolucion))).FirstOrDefault();
+
+            if (ultimoNumero is not null)
+            {
+                numeroResolucion = ultimoNumero.IntNumeroResolucion + 1;
+            }
+            else
+            {
+                numeroResolucion = 1;
+            }
+
+            return numeroResolucion;
+
+        }
         public Task<ResponseBase<List<SolicitudDTOResponse>>> GetAll()
         {
             throw new NotImplementedException();
