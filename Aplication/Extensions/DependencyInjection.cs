@@ -1,11 +1,13 @@
 ﻿using Aplication.Mapping;
 using Aplication.Services.Parametro;
 using Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices;
+using Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Validation;
 using Aplication.Services.T22.CapacitadorSolicitudServices;
 using Aplication.Services.T22.DocumentoSolicitudServices.Validation;
 using Aplication.Services.T22.SolicitudServices;
 using Aplication.Services.T22.SolicitudServices.Validation;
 using Aplication.Services.T22.TipoCapacitacionServices;
+using Aplication.Services.T22.ResolucionServices;
 using Aplication.Utilities;
 using AutoMapper;
 using Domain.DTOs.Request.T22;
@@ -25,6 +27,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aplication.Services.T22.ReporteServices;
+using Aplication.Services.T22.ReporteServices.Design;
+using Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos;
+using Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaciones;
+using Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCanceladas;
+using Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutorizadosInvima;
+using Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendidosInvima;
+using Aplication.Services.T22.ReporteServices.Validation;
 
 namespace Aplication.Extensions
 {
@@ -45,7 +55,15 @@ namespace Aplication.Extensions
             services.AddScoped<ISolicitudService, SolicitudService>();
             services.AddScoped<ITipoCapacitacionService, TipoCapacitacionService>();
             services.AddScoped<ICapacitacionCapacitadorService, CapacitacionCapacitadorService>();
-            services.AddScoped<ICapacitadorSolicitudService, CapacitadorSolicitudService>();
+			services.AddScoped<ICapacitadorSolicitudService, CapacitadorSolicitudService>();
+			services.AddScoped<IResolucionService, ResolucionService>();
+			services.AddScoped<IReporteServices, ReporteServices>();
+			services.AddScoped<IActosAdministrativosGenerados, ActosAdministrativosGenerados > ();
+			services.AddScoped<ISeguimientoCapacitaciones, SeguimientoCapacitaciones > ();
+			services.AddScoped<IAutorizacionesCanceladas, AutorizacionesCanceladas > ();
+			services.AddScoped<ICapacitadoresAutorizadosInvima, CapacitadoresAutorizadosInvima> ();
+			services.AddScoped<ICapacitadoresSuspendidosInivima, CapacitadoresSuspendidosInvima> ();
+            services.AddScoped(typeof(ReporteDesign));
 
             #endregion
 
@@ -96,6 +114,9 @@ namespace Aplication.Extensions
             services.AddScoped<IValidator<SolicitudRevisionValidadorDTORequest>, SolicitudRevisionValidadorValidator>();
             services.AddScoped<IValidator<SolicitudRevisionCoordinadorDTORequest>, SolicitudRevisionCoordinadorValidator>();
             services.AddScoped<IValidator<SolicitudRevisionSubdirectorDTORequest>, SolicitudRevisionSubdirectorValidator>();
+            services.AddScoped<IValidator<CapacitacionCapacitadorSolicitudDTORequest>, CapacitacionCapacitadorValidator>();
+            services.AddScoped<IValidator<RevisionCapacitacionDTORequest>, CapacitacionCapacitadorRevisionValidator>();
+            services.AddScoped<IValidator<ReportesDTORequest>, ReporteValidator>();
 
             return services;
         }

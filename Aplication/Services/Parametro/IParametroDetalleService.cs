@@ -12,7 +12,7 @@ namespace Aplication.Services.Parametro
 {
     public interface IParametroDetalleService
     {
-        Task<ResponseBase<List<ParametroDetalleDTO>>> GetTipoSolicitud(int Id);
+        Task<ResponseBase<List<ParametroDetalleDTO>>> GetTipoSolicitud(string Id);
         Task<ResponseBase<List<ParametroDetalleDTO>>> listarPorCodigoInterno(string codigoInterno);
         Task<ResponseBase<List<ParametroDetalleDTO>>> listarPorCodigoInternoIdPadre(string codigoInterno, long idPadre);
         Task<ResponseBase<List<ParametroDetalleDTO>>> GetResultadoValidacion(int SolicitudId);

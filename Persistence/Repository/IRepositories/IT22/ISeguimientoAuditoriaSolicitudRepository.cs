@@ -10,5 +10,7 @@ namespace Persistence.Repository.IRepositories.IT22
 {
     public interface ISeguimientoAuditoriaSolicitudRepository : IBaseRepository<int,SeguimientoAuditoriaSolicitud>
     {
+        Task<string> ConcatObservaciones(IEnumerable<SeguimientoAuditoriaSolicitud> lista);
+
     }
 }

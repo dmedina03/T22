@@ -12,8 +12,8 @@ namespace Domain.Models.T22
         public int SolicitudId { get; set; }
         public DateTime DtFechaCancelacion { get; set; }
         public string VcCancelacion { get; set; }
-        public int UsuarioId { get; set; }
-
+        public Guid UsuarioId { get; set; }
+        
         /// <summary>
         /// Nombre del usuario quien realiza la cancelacion
         /// </summary>

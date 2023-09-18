@@ -42,6 +42,16 @@ namespace Persistence.Context.Seed
                     BEstado = true,
                     DtFechaCreacion = DateTime.Now,
                     DtFechaActualizacion = DateTime.Now
+                },
+                new Parametro
+                {
+                    //Reportes
+                    IdParametro = 4,
+                    VcNombre = "Reportes",
+                    VcCodigoInterno = "bReportes",
+                    BEstado = true,
+                    DtFechaCreacion = DateTime.Now,
+                    DtFechaActualizacion = DateTime.Now
                 });
         }
     }

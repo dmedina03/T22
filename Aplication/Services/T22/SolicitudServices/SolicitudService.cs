@@ -137,9 +137,9 @@ namespace Aplication.Services.T22.SolicitudServices
 
         }
 
-        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesByRadicado(int usuarioId, string? radicado)
+        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesByRadicado(string usuarioId, string? radicado)
         {
-            var query = (await _solicitudRespository.GetAllAsync(x => x.UsuarioId == usuarioId));
+            var query = (await _solicitudRespository.GetAllAsync(x => x.UsuarioId.ToString() == usuarioId));
 
             if (query is null)
             {
@@ -171,7 +171,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
         }
 
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
         {
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaValidador {UsuarioAsignadoId}")).ToList();
@@ -201,7 +201,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
         }
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
         {
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaCoordinador {UsuarioAsignadoId}")).ToList();
@@ -216,7 +216,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
         }
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
         {
 
             var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaSubdirector {UsuarioAsignadoId}")).ToList();
@@ -246,7 +246,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             solicitudDTOResponse.IdSolicitud = solicitud.IdSolicitud;
             solicitudDTOResponse.VcRadicado = solicitud.VcRadicado;
-            solicitudDTOResponse.UsuarioAsignadoId = solicitud.UsuarioAsignadoId;
+            solicitudDTOResponse.UsuarioAsignadoId = solicitud.UsuarioAsignadoId.ToString();
             solicitudDTOResponse.VcFechaSolicitud = solicitud.DtFechaSolicitud.ToString("yyyy-MM-dd");
             solicitudDTOResponse.VcEstado = (await _estadoRepository.GetAsync(x => x.IdEstado == solicitud.EstadoId)).VcTipoEstado;
             solicitudDTOResponse.VcTipoTramite = (await _parametroDetalleRepository.GetAsync(x => x.IdParametroDetalle == solicitud.TipoSolicitudId)).VcNombre;
@@ -295,6 +295,11 @@ namespace Aplication.Services.T22.SolicitudServices
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
+            else
+            {
+                solicitud.UsuarioAsignadoId = null;
+            }
+
 
             //Estado actual de la solicitud
             var estadoId = solicitud.EstadoId;
@@ -328,7 +333,7 @@ namespace Aplication.Services.T22.SolicitudServices
             //Se da la validacion con respecto a los capacitadores
             foreach (var cap in request.CapacitadorSolicitud)
             {
-                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud == cap.IdCapacitadorSolicitud && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
+                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud.ToString().ToLower() == cap.IdCapacitadorSolicitud.ToLower() && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
 
                 if (capacitador is null)
                 {
@@ -423,6 +428,11 @@ namespace Aplication.Services.T22.SolicitudServices
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
+            else
+            {
+                solicitud.UsuarioAsignadoId = null;
+            }
+
 
             //Estado actual de la solicitud
             var estadoId = solicitud.EstadoId;
@@ -430,7 +440,7 @@ namespace Aplication.Services.T22.SolicitudServices
             //Se da la validacion con respecto a los capacitadores
             foreach (var cap in request.CapacitadorSolicitud)
             {
-                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud == cap.IdCapacitadorSolicitud && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
+                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud.ToString().ToLower() == cap.IdCapacitadorSolicitud.ToLower() && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
 
                 if (capacitador is null)
                 {
@@ -517,6 +527,10 @@ namespace Aplication.Services.T22.SolicitudServices
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
+            else
+            {
+                solicitud.UsuarioAsignadoId = null;
+            }
 
             //Estado actual de la solicitud
             var estadoId = solicitud.EstadoId;
@@ -524,7 +538,7 @@ namespace Aplication.Services.T22.SolicitudServices
             //asignacion de validacion a los capacitadores de la solicitud
             foreach (var cap in request.CapacitadorSolicitud)
             {
-                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud == cap.IdCapacitadorSolicitud && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
+                var capacitador = solicitud.CapacitadorSolicitud.Where(x => x.IdCapacitadorSolicitud.ToString().ToLower() == cap.IdCapacitadorSolicitud.ToLower() && x.SolicitudId == solicitud.IdSolicitud).FirstOrDefault();
 
                 if (capacitador is null)
                 {
@@ -616,7 +630,7 @@ namespace Aplication.Services.T22.SolicitudServices
                     bool UsuarioVentanilla = true;
 
                     documentoSolicitudResolucion.SolicitudId = solicitud.IdSolicitud;
-                    documentoSolicitudResolucion.UsuarioId = (int)request.ResolucionSolicitud.DocumentoResolucion.UsuarioId;
+                    documentoSolicitudResolucion.UsuarioId = Guid.Parse(request.ResolucionSolicitud.DocumentoResolucion.UsuarioId);
                     documentoSolicitudResolucion.TipoDocumentoId = request.ResolucionSolicitud.DocumentoResolucion.TipoDocumentoId;
                     documentoSolicitudResolucion.VcNombreDocumento = request.ResolucionSolicitud.DocumentoResolucion.VcNombreDocumento;
                     documentoSolicitudResolucion.DtFechaCargue = request.ResolucionSolicitud.DocumentoResolucion.DtFechaCargue;
@@ -668,10 +682,10 @@ namespace Aplication.Services.T22.SolicitudServices
 
         }
 
-        private async Task<List<DocumentosSolicitudDTOResponse>> GetDocumentosSolicitudByCapacitadorSolicitudId(int capacitadorSolicitudId)
+        private async Task<List<DocumentosSolicitudDTOResponse>> GetDocumentosSolicitudByCapacitadorSolicitudId(string capacitadorSolicitudId)
         {
             bool isUsuarioVentanilla = false;
-            var documentos = (await _documentoSolicitudRepository.GetAllAsync(x => x.UsuarioId == capacitadorSolicitudId && x.BlUsuarioVentanilla == isUsuarioVentanilla )).ToList();
+            var documentos = (await _documentoSolicitudRepository.GetAllAsync(x => x.UsuarioId.ToString() == capacitadorSolicitudId.ToString() && x.BlUsuarioVentanilla == isUsuarioVentanilla )).ToList();
             List<DocumentosSolicitudDTOResponse> lista = new();
             foreach (var documento in documentos)
             {
@@ -696,7 +710,7 @@ namespace Aplication.Services.T22.SolicitudServices
             {
                 lista.Add(new CapacitadorSolicitudDTOResponse
                 {
-                    IdCapacitadorSolicitud = capacitador.IdCapacitadorSolicitud,
+                    IdCapacitadorSolicitud = capacitador.IdCapacitadorSolicitud.ToString(),
                     SolicitudId = capacitador.SolicitudId,
                     VcPrimerNombre = capacitador.VcPrimerNombre,
                     VcSegundoNombre = capacitador.VcSegundoNombre,
@@ -708,16 +722,16 @@ namespace Aplication.Services.T22.SolicitudServices
                     vcNumeroTarjetaProfesional = capacitador.vcNumeroTarjetaProfesional,
                     IntTelefono = capacitador.IntTelefono,
                     VcEmail = capacitador.VcEmail,
-                    CapacitadorTipoCapacitacion = await GetCapacitadorTipoCapacitacionByCapacitadorId(capacitador.IdCapacitadorSolicitud),
-                    DocumentosSolicitud = await GetDocumentosSolicitudByCapacitadorSolicitudId(capacitador.IdCapacitadorSolicitud)
+                    CapacitadorTipoCapacitacion = await GetCapacitadorTipoCapacitacionByCapacitadorId(capacitador.IdCapacitadorSolicitud.ToString()),
+                    DocumentosSolicitud = await GetDocumentosSolicitudByCapacitadorSolicitudId(capacitador.IdCapacitadorSolicitud.ToString())
                 });
             }
 
             return lista;
         }
-        private async Task<List<CapacitadorTipoCapacitacionDTOResponse>> GetCapacitadorTipoCapacitacionByCapacitadorId(int capacitadorId)
+        private async Task<List<CapacitadorTipoCapacitacionDTOResponse>> GetCapacitadorTipoCapacitacionByCapacitadorId(string capacitadorId)
         {
-            var collections = await _capacitadorTipoCapacitacionRepository.GetAllAsync(x => x.IdCapacitadorSolicitud == capacitadorId);
+            var collections = await _capacitadorTipoCapacitacionRepository.GetAllAsync(x => x.IdCapacitadorSolicitud == Guid.Parse(capacitadorId));
 
             List<CapacitadorTipoCapacitacionDTOResponse> lista = new();
 
@@ -726,7 +740,7 @@ namespace Aplication.Services.T22.SolicitudServices
                 lista.Add(new CapacitadorTipoCapacitacionDTOResponse
                 {
                     VcTipoCapacitacion = (await _tipoCapacitacionRepository.GetAsync(c => c.IdTipoCapacitacion == item.IdTipoCapacitacion)).VcDescripcion,
-                    IdCapacitadorSolicitud = item.IdCapacitadorSolicitud
+                    IdCapacitadorSolicitud = item.IdCapacitadorSolicitud.ToString()
                 });
             }
             return lista;
@@ -740,7 +754,7 @@ namespace Aplication.Services.T22.SolicitudServices
                 lista.Add(new SeguimientoAuditoriaSolicitudDTOResponse
                 {
                     IdObservacion = seguimiento.IdObservacion,
-                    UsuarioId = seguimiento.UsuarioId,
+                    UsuarioId = seguimiento.UsuarioId.ToString(),
                     VcNombreUsuario = seguimiento.VcNombreUsuario,
                     DtFechaObservacion = seguimiento.DtFechaObservacion.ToString("yyyy-MM-dd"),
                     VcEstado = (await _estadoRepository.GetAsync(p => p.IdEstado == seguimiento.EstadoId)).VcTipoEstado,

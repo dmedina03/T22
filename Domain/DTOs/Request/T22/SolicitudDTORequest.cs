@@ -11,7 +11,7 @@ namespace Domain.DTOs.Request.T22
     public class SolicitudDTORequest
     {
         public int IdSolicitud { get; set; }
-        public int UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
         public long IntNumeroIdentificacionUsuario { get; set; }
         public int TipoSolicitudId { get; set; }

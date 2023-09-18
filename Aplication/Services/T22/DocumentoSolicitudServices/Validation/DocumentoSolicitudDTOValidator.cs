@@ -18,7 +18,7 @@ namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
             {
 
                 RuleForEach(x => x)
-                    .Cascade(CascadeMode.Stop)
+                    .Cascade(CascadeMode.Continue)
                     .ChildRules(property =>
                     {
 
@@ -29,9 +29,7 @@ namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.UsuarioId)
-                            .Equal(0)
-                            .WithMessage("{PropertyName} debe ser 0.")
-                            .NotEmpty().NotNull()
+                            .NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.VcNombreDocumento)
@@ -62,7 +60,7 @@ namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.UsuarioId)
-                            .NotEmpty().NotNull()
+                            .NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.TipoDocumentoId)

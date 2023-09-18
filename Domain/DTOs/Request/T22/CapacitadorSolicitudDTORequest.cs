@@ -10,7 +10,7 @@ namespace Domain.DTOs.Request.T22
 {
     public class CapacitadorSolicitudDTORequest
     {
-        public int IdCapacitadorSolicitud { get; set; }
+        public Guid IdCapacitadorSolicitud { get; set; } = Guid.NewGuid();
         public int? SolicitudId { get; set; } = 0;
         public string VcPrimerNombre { get; set; }
         public string? VcSegundoNombre { get; set; }

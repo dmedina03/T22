@@ -8,7 +8,7 @@ namespace Domain.DTOs.Response.T22
 {
     public class CapacitadorSolicitudDTOResponse
     {
-        public int IdCapacitadorSolicitud { get; set; }
+        public string IdCapacitadorSolicitud { get; set; }
         public int SolicitudId { get; set; }
         public string VcPrimerNombre { get; set; }
         public string VcSegundoNombre { get; set; }

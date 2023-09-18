@@ -9,12 +9,12 @@ namespace Domain.Models.T22
     public class Solicitud
     {
         public int IdSolicitud { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
         public long IntNumeroIdentificacionUsuario { get; set; }
         public int TipoSolicitudId { get; set; }
         public string VcTipoSolicitante { get; set; }
-        public int? UsuarioAsignadoId { get; set; }
+        public Guid? UsuarioAsignadoId { get; set; } = null;
         public DateTime DtFechaSolicitud { get; set; }
         public int EstadoId { get; set; }
         public int? ResultadoValidacionId { get; set; }

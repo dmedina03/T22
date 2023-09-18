@@ -10,5 +10,7 @@ namespace Persistence.Repository.IRepositories.IT22
 {
     public interface ICapacitadorSolicitudRepository : IBaseRepository<int,CapacitadorSolicitud>
     {
+        Task<string> GetNombreCapacitador(string IdCapacitador);
+
     }
 }

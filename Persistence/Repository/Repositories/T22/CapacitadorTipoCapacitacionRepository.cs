@@ -15,5 +15,6 @@ namespace Persistence.Repository.Repositories.T22
         public CapacitadorTipoCapacitacionRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
     }
 }

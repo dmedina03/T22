@@ -35,9 +35,9 @@ namespace Aplication.Services.Parametro
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseBase<List<ParametroDetalleDTO>>> GetTipoSolicitud(int Id)
+        public async Task<ResponseBase<List<ParametroDetalleDTO>>> GetTipoSolicitud(string Id)
         {
-            var query = await _solicitudRepository.GetAsync(x => x.UsuarioId == Id);
+            var query = await _solicitudRepository.GetAsync(x => x.UsuarioId.ToString().ToLower() == Id.ToLower());
 
             var solicitud = (await listarPorCodigoInterno("bTipoSolicitud")).Data;
 

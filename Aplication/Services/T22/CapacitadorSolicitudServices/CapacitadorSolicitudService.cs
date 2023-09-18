@@ -31,7 +31,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices
 
             var data = capacitadores.Select(x => new CapacitadorSolicitudMiniDTOResponse
             {
-                IdCapacitadorSolicitud = x.IdCapacitadorSolicitud,
+                IdCapacitadorSolicitud = x.IdCapacitadorSolicitud.ToString(),
                 VcNombre = $"{x.VcPrimerNombre} {x.VcSegundoNombre} {x.VcPrimerApellido} {x.VcSegundoApellido}"
             }).ToList();
 

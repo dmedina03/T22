@@ -39,7 +39,6 @@ namespace Persistence.Context
         DbSet<ResolucionSolicitud> ResolucionSolicitud { get; set; }
         DbSet<CapacitacionCapacitadorSolicitud> CapacitacionCapacitadorSolicitud { get; set; }
         DbSet<HorariosCapacitacionSolicitud> HorariosCapacitacionSolicitud { get; set; }
-        DbSet<BandejaResgistrarCapacitacionesDTOResponse> Bandeja { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,6 +70,7 @@ namespace Persistence.Context
             new TipoResolucionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
             new ResultadoValidacionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
             new TipoSolicitudSeedConfig(modelBuilder.Entity<ParametroDetalle>());
+            new ReportesSeedConfig(modelBuilder.Entity<ParametroDetalle>());
 
         }
 

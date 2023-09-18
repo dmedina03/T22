@@ -26,18 +26,18 @@ namespace WebApi.Controllers
             => await _solicitudService.CreateAsync(Dto);
 
         [HttpGet("BandejaCiudadano/{usuarioId}")]
-        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesBandejaCiudadano(int usuarioId, string? radicado)
+        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesBandejaCiudadano(string usuarioId, string? radicado)
             => await _solicitudService.GetSolicitudesByRadicado(usuarioId, radicado);
 
         [HttpGet("BandejaValidador")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaValidador(UsuarioAsignadoId);
 
         [HttpGet("BandejaCoordinador")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaCoordinador(UsuarioAsignadoId);
         [HttpGet("BandejaSubdirector")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(int? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaSubdirector(UsuarioAsignadoId);
         [HttpGet("{SolicitudId}")]
         public async Task<ResponseBase<SolicitudDTOResponse>> GetSolicitudById(int SolicitudId)

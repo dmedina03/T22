@@ -18,7 +18,7 @@ namespace Domain.DTOs.Request.T22
         /// <summary>
         /// Usuario quien realiza la observacion
         /// </summary>
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
 
         /// <summary>

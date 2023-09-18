@@ -8,7 +8,7 @@ namespace Domain.DTOs.Request.T22
 {
     public class CapacitadorSolicitudRevisionValidadorDTORequest
     {
-        public int IdCapacitadorSolicitud { get; set; }
+        public string IdCapacitadorSolicitud { get; set; }
         public bool BlIsValid { get; set; }
 
     }

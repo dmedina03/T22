@@ -50,8 +50,6 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacio.");
 
                         RuleFor(p => p.SeguimientoAuditoriaSolicitud.UsuarioId)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
                             .NotEmpty()
                             .NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacio.");
@@ -61,8 +59,6 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
                 {
 
                     RuleFor(x => x.UsuarioAsignadoId)
-                        .NotEqual(0)
-                        .WithMessage("{PropertyName} no puede ser 0.")
                         .NotEmpty()
                         .NotNull()
                         .WithMessage("{PropertyName} no puede ser nulo o vacio.");
@@ -83,8 +79,6 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
                         .WithMessage("{PropertyName} no puede ser nulo o vacio.");
 
                         RuleFor(p => p.ResolucionSolicitud.DocumentoResolucion.UsuarioId)
-                        .NotEqual(0)
-                        .WithMessage("{PropertyName} no puede ser 0.")
                         .NotEmpty()
                         .NotNull()
                         .WithMessage("{PropertyName} no puede ser nulo o vacio.");

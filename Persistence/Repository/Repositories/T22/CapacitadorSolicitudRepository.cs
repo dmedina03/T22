@@ -16,5 +16,15 @@ namespace Persistence.Repository.Repositories.T22
         public CapacitadorSolicitudRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
+
+        public async Task<string> GetNombreCapacitador(string IdCapacitador)
+        {
+            var capacitador = await GetAsync(x => x.IdCapacitadorSolicitud == Guid.Parse(IdCapacitador));
+
+            var nombre = $"{capacitador.VcPrimerNombre} {capacitador.VcSegundoNombre} {capacitador.VcPrimerApellido} {capacitador.VcSegundoApellido}";
+            return nombre;
+        }
+
     }
 }

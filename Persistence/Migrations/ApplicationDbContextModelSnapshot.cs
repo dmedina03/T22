@@ -17,45 +17,10 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.DTOs.Response.T22.BandejaResgistrarCapacitacionesDTOResponse", b =>
-                {
-                    b.Property<bool?>("BEstado")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FechaResolucion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdDocumento")
-                        .HasColumnType("int");
-
-                    b.Property<long>("IdResolucionSolicitud")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("IdSolicitud")
-                        .HasColumnType("int");
-
-                    b.Property<long>("IntNumeroResolucion")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TipoSolicitudId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VcNombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VcPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Bandeja", (string)null);
-                });
 
             modelBuilder.Entity("Domain.Models.Parametro.Parametro", b =>
                 {
@@ -96,8 +61,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 1L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8935),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8921),
+                            DtFechaActualizacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7301),
+                            DtFechaCreacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7292),
                             VcCodigoInterno = "bTipoResolucion",
                             VcNombre = "Tipo resolución"
                         },
@@ -105,8 +70,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 2L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8957),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8946),
+                            DtFechaActualizacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7305),
+                            DtFechaCreacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7304),
                             VcCodigoInterno = "bResultadoValidacion",
                             VcNombre = "Resultado de la validación"
                         },
@@ -114,10 +79,19 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 3L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
-                            DtFechaCreacion = new DateTime(2023, 9, 5, 17, 41, 23, 91, DateTimeKind.Local).AddTicks(8958),
+                            DtFechaActualizacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7307),
+                            DtFechaCreacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7306),
                             VcCodigoInterno = "bTipoSolicitud",
                             VcNombre = "Tipo de solicitud"
+                        },
+                        new
+                        {
+                            IdParametro = 4L,
+                            BEstado = true,
+                            DtFechaActualizacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7308),
+                            DtFechaCreacion = new DateTime(2023, 9, 18, 8, 53, 52, 433, DateTimeKind.Local).AddTicks(7308),
+                            VcCodigoInterno = "bReportes",
+                            VcNombre = "Reportes"
                         });
                 });
 
@@ -347,6 +321,66 @@ namespace Persistence.Migrations
                             TxDescripcion = "",
                             VcCodigoInterno = "",
                             VcNombre = "Cancelación"
+                        },
+                        new
+                        {
+                            IdParametroDetalle = 16L,
+                            BEstado = true,
+                            DCodigoIterno = 0m,
+                            ParametroId = 4L,
+                            RangoDesde = 0,
+                            RangoHasta = 0,
+                            TxDescripcion = "",
+                            VcCodigoInterno = "",
+                            VcNombre = "Actos administrativos generados"
+                        },
+                        new
+                        {
+                            IdParametroDetalle = 17L,
+                            BEstado = true,
+                            DCodigoIterno = 0m,
+                            ParametroId = 4L,
+                            RangoDesde = 0,
+                            RangoHasta = 0,
+                            TxDescripcion = "",
+                            VcCodigoInterno = "",
+                            VcNombre = "Autorizaciones canceladas"
+                        },
+                        new
+                        {
+                            IdParametroDetalle = 18L,
+                            BEstado = true,
+                            DCodigoIterno = 0m,
+                            ParametroId = 4L,
+                            RangoDesde = 0,
+                            RangoHasta = 0,
+                            TxDescripcion = "",
+                            VcCodigoInterno = "",
+                            VcNombre = "Seguimiento capacitaciones"
+                        },
+                        new
+                        {
+                            IdParametroDetalle = 19L,
+                            BEstado = true,
+                            DCodigoIterno = 0m,
+                            ParametroId = 4L,
+                            RangoDesde = 0,
+                            RangoHasta = 0,
+                            TxDescripcion = "",
+                            VcCodigoInterno = "",
+                            VcNombre = "Listado de capacitadores autorizados INVIMA"
+                        },
+                        new
+                        {
+                            IdParametroDetalle = 20L,
+                            BEstado = true,
+                            DCodigoIterno = 0m,
+                            ParametroId = 4L,
+                            RangoDesde = 0,
+                            RangoHasta = 0,
+                            TxDescripcion = "",
+                            VcCodigoInterno = "",
+                            VcNombre = "Listado de capacitadores suspendidos INVIMA"
                         });
                 });
 
@@ -367,8 +401,8 @@ namespace Persistence.Migrations
                     b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VcCancelacion")
                         .IsRequired()
@@ -397,49 +431,26 @@ namespace Persistence.Migrations
                     b.Property<bool?>("BlSeguimiento")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CapacitadorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CardinalidadCompId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CardinalidadPplId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CharLetraComp")
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("CharLetraPpl")
-                        .HasColumnType("nvarchar(1)");
+                    b.Property<Guid>("CapacitadorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CiudadId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComplementoId")
                         .HasColumnType("int");
 
                     b.Property<int>("DepartamentoId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DtFechaCapacitacion")
+                    b.Property<DateTime>("DtFechaCreacionCapacitacion")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IntNumeroAsistentes")
                         .HasColumnType("int");
 
-                    b.Property<int>("IntNumeroComp")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioRevisionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("IntNumeroPpl")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IntPlaca")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsuarioRevisionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VcBis")
+                    b.Property<string>("VcDireccion")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VcInformacionAdicional")
@@ -457,21 +468,18 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ViaPrincipalId")
-                        .HasColumnType("int");
-
                     b.HasKey("IdCapacitacionSolicitud");
+
+                    b.HasIndex("CapacitadorId");
 
                     b.ToTable("CapacitacionCapacitadorSolicitudes", "manipalimentos");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.CapacitadorSolicitud", b =>
                 {
-                    b.Property<int>("IdCapacitadorSolicitud")
+                    b.Property<Guid>("IdCapacitadorSolicitud")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCapacitadorSolicitud"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("BlIsValid")
                         .HasColumnType("bit");
@@ -532,8 +540,8 @@ namespace Persistence.Migrations
                     b.Property<int>("IdTipoCapacitacion")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdCapacitadorSolicitud")
-                        .HasColumnType("int");
+                    b.Property<Guid>("IdCapacitadorSolicitud")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("IdTipoCapacitacion", "IdCapacitadorSolicitud");
 
@@ -568,8 +576,8 @@ namespace Persistence.Migrations
                     b.Property<int>("TipoDocumentoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VcNombreDocumento")
                         .IsRequired()
@@ -763,6 +771,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("IdHonorarios");
 
+                    b.HasIndex("CapacitacionSolicitudId");
+
                     b.ToTable("HorariosCapacitacionSolicitudes", "manipalimentos");
                 });
 
@@ -816,8 +826,8 @@ namespace Persistence.Migrations
                     b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VcNombreUsuario")
                         .IsRequired()
@@ -860,8 +870,8 @@ namespace Persistence.Migrations
                     b.Property<int?>("UsuarioAsignadoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VcNombreUsuario")
                         .IsRequired()
@@ -900,8 +910,8 @@ namespace Persistence.Migrations
                     b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VcNombreUsuario")
                         .IsRequired()
@@ -988,6 +998,17 @@ namespace Persistence.Migrations
                     b.Navigation("Solicitud");
                 });
 
+            modelBuilder.Entity("Domain.Models.T22.CapacitacionCapacitadorSolicitud", b =>
+                {
+                    b.HasOne("Domain.Models.T22.CapacitadorSolicitud", "CapacitadorSolicitud")
+                        .WithMany("CapacitacionCapacitador")
+                        .HasForeignKey("CapacitadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CapacitadorSolicitud");
+                });
+
             modelBuilder.Entity("Domain.Models.T22.CapacitadorSolicitud", b =>
                 {
                     b.HasOne("Domain.Models.T22.Solicitud", "Solicitud")
@@ -1016,6 +1037,17 @@ namespace Persistence.Migrations
                     b.Navigation("CapacitadorSolicitud");
 
                     b.Navigation("TipoCapacitacion");
+                });
+
+            modelBuilder.Entity("Domain.Models.T22.HorariosCapacitacionSolicitud", b =>
+                {
+                    b.HasOne("Domain.Models.T22.CapacitacionCapacitadorSolicitud", "CapacitacionCapacitadorSolcitud")
+                        .WithMany("HorariosCapacitacionSolicitud")
+                        .HasForeignKey("CapacitacionSolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CapacitacionCapacitadorSolcitud");
                 });
 
             modelBuilder.Entity("Domain.Models.T22.ResolucionSolicitud", b =>
@@ -1072,8 +1104,15 @@ namespace Persistence.Migrations
                     b.Navigation("Hijos");
                 });
 
+            modelBuilder.Entity("Domain.Models.T22.CapacitacionCapacitadorSolicitud", b =>
+                {
+                    b.Navigation("HorariosCapacitacionSolicitud");
+                });
+
             modelBuilder.Entity("Domain.Models.T22.CapacitadorSolicitud", b =>
                 {
+                    b.Navigation("CapacitacionCapacitador");
+
                     b.Navigation("CapacitadorTipoCapacitacion");
                 });
 

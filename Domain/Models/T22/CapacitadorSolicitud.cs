@@ -8,7 +8,7 @@ namespace Domain.Models.T22
 {
     public class CapacitadorSolicitud
     {
-        public int IdCapacitadorSolicitud { get; set; }
+        public Guid IdCapacitadorSolicitud { get; set; }
         public int SolicitudId { get; set; }
         public string VcPrimerNombre { get; set; }
         public string VcSegundoNombre { get; set; }
@@ -23,5 +23,6 @@ namespace Domain.Models.T22
         public bool BlIsValid { get; set; }
         public virtual Solicitud Solicitud { get; set; }
         public virtual ICollection<CapacitadorTipoCapacitacion> CapacitadorTipoCapacitacion { get; set; }
+        public virtual ICollection<CapacitacionCapacitadorSolicitud> CapacitacionCapacitador { get; set; }
     }
 }

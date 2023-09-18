@@ -10,7 +10,7 @@ namespace Domain.Models.T22
     {
         public int IdDocumento { get; set; }
         public int SolicitudId { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public int TipoDocumentoId { get; set; }
         public string VcNombreDocumento { get; set; }
         public DateTime DtFechaCargue { get; set; }

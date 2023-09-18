@@ -9,7 +9,7 @@ namespace Dominio.DTOs.Response.ResponseBase
             ResponseTime = DateTime.UtcNow.AddHours(-5);
         }
 
-        public ResponseBase(HttpStatusCode code = HttpStatusCode.OK, string message = null, T data = default, int count = 0)
+        public ResponseBase(HttpStatusCode code = HttpStatusCode.OK, string message = "OK", T data = default, int count = 0)
         {
             ResponseTime = DateTime.UtcNow.AddHours(-5);
             Code = (int)code;
@@ -24,18 +24,6 @@ namespace Dominio.DTOs.Response.ResponseBase
             Message = message;
             Count = 0;
             Errors = errors;
-        }
-
-        public ResponseBase(T data, string message = "Solicitud OK.", int count = 0)
-        {
-            Data = data;
-            Code = (int)HttpStatusCode.OK;
-            Message = message;
-            ResponseTime = DateTime.UtcNow.AddHours(-5);
-            if (data is List<T> && count == 0)
-            {
-                Count = (data as List<T>).Count;
-            }
         }
 
         public ResponseBase(HttpStatusCode code = HttpStatusCode.InternalServerError, string message = "Error en el servidor!")

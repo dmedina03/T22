@@ -1,4 +1,5 @@
 ﻿using Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices;
+using Domain.DTOs.Request.T22;
 using Domain.DTOs.Response.T22;
 using Domain.Models.T22;
 using Dominio.DTOs.Response.ResponseBase;
@@ -23,8 +24,21 @@ namespace WebApi.Controllers
 
         [HttpGet("BandejaRegistrarCapacitacion")]
         public async Task<ActionResult<ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>>> BandejaCapacitaciones()
-        {
-            return await _capacitacionCapacitadorService.GetBandejaRegistrarCapacitaciones();
-        }
+            => await _capacitacionCapacitadorService.GetBandejaRegistrarCapacitaciones();
+        [HttpGet("BandejaSeguimientoCapacitacion")]
+        public async Task<ActionResult<ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>>> BandejaSeguimientoCapacitaciones()
+            => await _capacitacionCapacitadorService.GetBandejaSeguimientoCapacitaciones();
+        [HttpGet("Capacitacion/{IdCapacitacionSolicitud}")]
+        public async Task<ActionResult<ResponseBase<CapacitacionCapacitadorDTOResponse>>> GetById(int IdCapacitacionSolicitud)
+            => await _capacitacionCapacitadorService.GetById(IdCapacitacionSolicitud);
+
+
+        [HttpPost("RegistrarCapacitacion")]
+        public async Task<ActionResult<ResponseBase<bool>>> CrearCapacitacion(CapacitacionCapacitadorSolicitudDTORequest request)
+            => await _capacitacionCapacitadorService.CreateAsync(request);
+        [HttpPost("RevisionCapacitacion")]
+        public async Task<ActionResult<ResponseBase<bool>>> RevisionCapacitacion(RevisionCapacitacionDTORequest request)
+            => await _capacitacionCapacitadorService.CreateRevisionCapacitacion(request);
+
     }
 }

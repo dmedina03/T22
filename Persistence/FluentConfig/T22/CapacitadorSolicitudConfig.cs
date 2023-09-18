@@ -24,7 +24,7 @@ namespace Persistence.FluentConfig.T22
             entity.HasMany(p => p.CapacitadorTipoCapacitacion)
                 .WithOne(p => p.CapacitadorSolicitud)
                 .HasForeignKey(p => p.IdCapacitadorSolicitud);
-                
+                           
 
             entity.Property(p => p.SolicitudId);
             entity.Property(p => p.VcPrimerNombre).IsRequired().HasMaxLength(20);

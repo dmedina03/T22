@@ -24,7 +24,7 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
 
                 RuleFor(x => x.IdSolicitud).Equal(0).WithMessage("El Id de la solicitud debe ser 0.");
 
-                RuleFor(x => x.UsuarioId).NotEqual(0).NotEmpty().WithMessage("El campo {PropertyName} es obligatorio.");
+                RuleFor(x => x.UsuarioId).NotEmpty().WithMessage("El campo {PropertyName} es obligatorio.");
 
                 RuleFor(x => x.TipoSolicitudId).NotEqual(0).NotEmpty().WithMessage("El campo {PropertyName} es obligatorio.");
 
@@ -43,7 +43,7 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
             RuleSet("Any", () =>
             {
 
-                RuleFor(x => x.UsuarioId).NotEqual(0).NotEmpty().WithMessage("El campo UsuarioId es obligatorio.");
+                RuleFor(x => x.UsuarioId).NotEmpty().WithMessage("El campo UsuarioId es obligatorio.");
 
                 RuleFor(x => x.TipoSolicitudId).NotEqual(0).NotEmpty().WithMessage("El campo TipoSolicitudId es obligatorio.");
 

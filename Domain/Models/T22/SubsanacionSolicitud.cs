@@ -12,7 +12,7 @@ namespace Domain.Models.T22
         public int SolicitudId { get; set; }
         public DateTime DtFechaSubsanacion { get; set; }
         public string VcSubsanacion { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que realiza la observacion

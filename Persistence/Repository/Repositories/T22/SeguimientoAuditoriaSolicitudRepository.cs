@@ -1,4 +1,5 @@
 ﻿using Domain.Models.T22;
+using iText.Layout.Element;
 using Persistence.Repository.IRepositories.Generic;
 using Persistence.Repository.IRepositories.IT22;
 using Persistence.Repository.Repositories.BaseRepository;
@@ -15,5 +16,23 @@ namespace Persistence.Repository.Repositories.T22
         public SeguimientoAuditoriaSolicitudRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
+
+        public async Task<string> ConcatObservaciones(IEnumerable<SeguimientoAuditoriaSolicitud> lista)
+        {
+
+            List<string> observaciones = new();
+
+            foreach (var observacion in lista)
+            {
+                observaciones.Add(observacion.VcObservacion);
+            }
+
+            string retorno = string.Join(" ;", observaciones);
+
+            return retorno;
+
+        }
+
     }
 }

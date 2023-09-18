@@ -15,5 +15,10 @@ namespace Persistence.Repository.Repositories.T22
         public EstadoRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+
+        public async Task<string> GetNombre(int IdEstado)
+        {
+            return (await GetAsync(x => x.IdEstado == IdEstado)).VcTipoEstado;
+        }
     }
 }

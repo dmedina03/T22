@@ -26,8 +26,6 @@ namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.UsuarioId)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
                             .NotEmpty().NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 

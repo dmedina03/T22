@@ -9,7 +9,7 @@ namespace Domain.Models.T22
     public class CapacitadorTipoCapacitacion
     {
         public int IdTipoCapacitacion { get; set; }
-        public int IdCapacitadorSolicitud { get; set; }
+        public Guid IdCapacitadorSolicitud { get; set; }
         public virtual TipoCapacitacion TipoCapacitacion { get; set; }
         public virtual CapacitadorSolicitud CapacitadorSolicitud { get; set; }
     }

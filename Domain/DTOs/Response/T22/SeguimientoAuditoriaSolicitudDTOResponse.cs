@@ -12,7 +12,7 @@ namespace Domain.DTOs.Response.T22
         public int IdObservacion { get; set; }
         public string DtFechaObservacion { get; set; }
         public string VcObservacion { get; set; }
-        public int UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
         public string VcEstado { get; set; }
     }

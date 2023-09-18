@@ -19,7 +19,11 @@ namespace Persistence.Context
             CargarConstantes(context);
             CargarDocumentosSolicitud(context);
             CargarCiudadanoFiltroPor(context);
-            CargarFiltroPor(context);
+            CargarFuncionarioFiltroPor(context);
+            CargarFuncionarioSeguimientoCapacitacionFiltroPor(context);
+            CargarCiudadanoSeguimientoCapacitacionFiltroPor(context);
+            CargarDireccionViaPrincipal(context);
+            CargarDireccionCardinalidad(context);
 
             context.Commit();
         }
@@ -515,6 +519,17 @@ namespace Persistence.Context
                 RangoDesde = 0,
                 RangoHasta = 0
             });
+            listaDocumentos.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Revisión capacitación",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
 
             foreach (ParametroDetalle item in listaDocumentos)
             {
@@ -604,11 +619,11 @@ namespace Persistence.Context
             }
 
         }
-        private static void CargarFiltroPor(IUnitOfWork context)
+        private static void CargarFuncionarioFiltroPor(IUnitOfWork context)
         {
             IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
 
-            query = query.Where(prop => prop.VcCodigoInterno == "bFiltrarPor");
+            query = query.Where(prop => prop.VcCodigoInterno == "bFuncionarioFiltrarPor");
 
             Parametro parametroPuente = null;
             Parametro parametro = query.AsNoTracking().FirstOrDefault();
@@ -617,8 +632,8 @@ namespace Persistence.Context
             {
                 var parametroAguardar = new Parametro
                 {
-                    VcNombre = "Filtrar por",
-                    VcCodigoInterno = "bFiltrarPor",
+                    VcNombre = "Funcionario Filtrar por",
+                    VcCodigoInterno = "bFuncionarioFiltrarPor",
                     BEstado = true,
                     DtFechaCreacion = DateTime.Now,
                     DtFechaActualizacion = DateTime.Now
@@ -728,6 +743,386 @@ namespace Persistence.Context
             });
             
             foreach (ParametroDetalle item in listaFiltrarPor)
+            {
+                //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
+                if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))
+                {
+                    context.GetSet<long, ParametroDetalle>().Add(item);
+                }
+            }
+
+        }
+        private static void CargarFuncionarioSeguimientoCapacitacionFiltroPor(IUnitOfWork context)
+        {
+            IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
+
+            query = query.Where(prop => prop.VcCodigoInterno == "bFuncionarioSeguimientoCapacitacionFiltrarPor");
+
+            Parametro parametroPuente = null;
+            Parametro parametro = query.AsNoTracking().FirstOrDefault();
+
+            if (parametro is null)
+            {
+                var parametroAguardar = new Parametro
+                {
+                    VcNombre = "Funciorario Seguimiento Capacitacion Filtrar por",
+                    VcCodigoInterno = "bFuncionarioSeguimientoCapacitacionFiltrarPor",
+                    BEstado = true,
+                    DtFechaCreacion = DateTime.Now,
+                    DtFechaActualizacion = DateTime.Now
+                };
+
+                context.GetSet<long, Parametro>().Add(parametroAguardar);
+                context.Commit();
+
+                parametroPuente = parametroAguardar;
+            }
+            else
+            {
+                parametroPuente = parametro;
+            }
+
+            List<ParametroDetalle> listaFiltrarPor = new List<ParametroDetalle>();
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Número de resolución",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Nombre del ciudadano / entidad",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Identificación",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            
+            foreach (ParametroDetalle item in listaFiltrarPor)
+            {
+                //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
+                if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))
+                {
+                    context.GetSet<long, ParametroDetalle>().Add(item);
+                }
+            }
+
+        }
+        private static void CargarCiudadanoSeguimientoCapacitacionFiltroPor(IUnitOfWork context)
+        {
+            IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
+
+            query = query.Where(prop => prop.VcCodigoInterno == "bCiudadanoSeguimientoCapacitacionFiltrarPor");
+
+            Parametro parametroPuente = null;
+            Parametro parametro = query.AsNoTracking().FirstOrDefault();
+
+            if (parametro is null)
+            {
+                var parametroAguardar = new Parametro
+                {
+                    VcNombre = "Ciudadano Seguimiento Capacitacion Filtrar por",
+                    VcCodigoInterno = "bCiudadanoSeguimientoCapacitacionFiltrarPor",
+                    BEstado = true,
+                    DtFechaCreacion = DateTime.Now,
+                    DtFechaActualizacion = DateTime.Now
+                };
+
+                context.GetSet<long, Parametro>().Add(parametroAguardar);
+                context.Commit();
+
+                parametroPuente = parametroAguardar;
+            }
+            else
+            {
+                parametroPuente = parametro;
+            }
+
+            List<ParametroDetalle> listaFiltrarPor = new List<ParametroDetalle>();
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Número de resolución",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Fecha de resolución",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Tipo de autorización",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaFiltrarPor.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Estado de autorización",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            
+            foreach (ParametroDetalle item in listaFiltrarPor)
+            {
+                //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
+                if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))
+                {
+                    context.GetSet<long, ParametroDetalle>().Add(item);
+                }
+            }
+
+        }
+        private static void CargarDireccionViaPrincipal(IUnitOfWork context)
+        {
+            IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
+
+            query = query.Where(prop => prop.VcCodigoInterno == "bDireccionViaPpl");
+
+            Parametro parametroPuente = null;
+            Parametro parametro = query.AsNoTracking().FirstOrDefault();
+
+            if (parametro is null)
+            {
+                var parametroAguardar = new Parametro
+                {
+                    VcNombre = "Vía",
+                    VcCodigoInterno = "bDireccionViaPpl",
+                    BEstado = true,
+                    DtFechaCreacion = DateTime.Now,
+                    DtFechaActualizacion = DateTime.Now
+                    
+                };
+
+                context.GetSet<long, Parametro>().Add(parametroAguardar);
+                context.Commit();
+
+                parametroPuente = parametroAguardar;
+            }
+            else
+            {
+                parametroPuente = parametro;
+            }
+
+            List<ParametroDetalle> listaViaPpl = new List<ParametroDetalle>();
+
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "CL",
+                TxDescripcion = "Calle",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "DG",
+                TxDescripcion = "Diagonal",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "AC",
+                TxDescripcion = "Avenida Calle",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "KR",
+                TxDescripcion = "Carrera",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "TV",
+                TxDescripcion = "Transversal",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "AK",
+                TxDescripcion = "Avenida Carrera",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaViaPpl.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "AV",
+                TxDescripcion = "Avenida",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            
+            foreach (ParametroDetalle item in listaViaPpl)
+            {
+                //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
+                if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))
+                {
+                    context.GetSet<long, ParametroDetalle>().Add(item);
+                }
+            }
+
+        }
+        private static void CargarDireccionCardinalidad(IUnitOfWork context)
+        {
+            IQueryable<Parametro> query = context.GetSet<long, Parametro>().AsNoTracking();
+
+            query = query.Where(prop => prop.VcCodigoInterno == "bDireccionCardinalidad");
+
+            Parametro parametroPuente = null;
+            Parametro parametro = query.AsNoTracking().FirstOrDefault();
+
+            if (parametro is null)
+            {
+                var parametroAguardar = new Parametro
+                {
+                    VcNombre = "Dirección Cardinalidad",
+                    VcCodigoInterno = "bDireccionCardinalidad",
+                    BEstado = true,
+                    DtFechaCreacion = DateTime.Now,
+                    DtFechaActualizacion = DateTime.Now
+                    
+                };
+
+                context.GetSet<long, Parametro>().Add(parametroAguardar);
+                context.Commit();
+
+                parametroPuente = parametroAguardar;
+            }
+            else
+            {
+                parametroPuente = parametro;
+            }
+
+            List<ParametroDetalle> listaCardinalidad = new List<ParametroDetalle>();
+
+            listaCardinalidad.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Este",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaCardinalidad.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Oeste",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+
+            listaCardinalidad.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Sur",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaCardinalidad.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Norte",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            
+            foreach (ParametroDetalle item in listaCardinalidad)
             {
                 //Se genera la validacion con el ParametroId, para que se puedan insertar Detalles con el mismo nombre 
                 if (!context.GetSet<long, ParametroDetalle>().Any(prop => prop.VcNombre.ToUpper() == item.VcNombre.ToUpper() && prop.ParametroId.Equals(item.ParametroId)))

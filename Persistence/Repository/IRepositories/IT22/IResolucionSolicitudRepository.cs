@@ -10,5 +10,7 @@ namespace Persistence.Repository.IRepositories.IT22
 {
     public interface IResolucionSolicitudRepository : IBaseRepository<int,ResolucionSolicitud>
     {
+        Task UpdateIsValid(int IdResolucionSolicitud);
+
     }
 }

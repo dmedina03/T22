@@ -10,6 +10,6 @@ namespace Domain.DTOs.Request.T22
     public class CapacitadorTipoCapacitacionDTORequest
     {
         public int IdTipoCapacitacion { get; set; }
-        public int IdCapacitadorSolicitud { get; set; }
+        public Guid IdCapacitadorSolicitud { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("TiposSolicitud/{IdUsuario}")]
-        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> GetAllTipoSolicitud(int IdUsuario)
+        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> GetAllTipoSolicitud(string IdUsuario)
             => await _parametroDetalleService.GetTipoSolicitud(IdUsuario);
 
         [HttpGet("ResultadoValidacion/{IdSolicitud}")]

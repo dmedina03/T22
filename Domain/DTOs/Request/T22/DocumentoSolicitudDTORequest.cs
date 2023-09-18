@@ -12,7 +12,7 @@ namespace Domain.DTOs.Request.T22
     {
         public int IdDocumento { get; set; }
         public int? SolicitudId { get; set; } = 0;
-        public int? UsuarioId { get; set; } = 0;
+        public string? UsuarioId { get; set; }
         public int TipoDocumentoId { get; set; }
         public string VcNombreDocumento { get; set; }
         [JsonIgnore]
