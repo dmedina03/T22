@@ -14,6 +14,7 @@ namespace Domain.DTOs.Request.T22
         public string UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
         public long IntNumeroIdentificacionUsuario { get; set; }
+        public string VcDireccionUsuario { get; set; }
         public int TipoSolicitudId { get; set; }
         public string VcTipoSolicitante { get; set; }
         [JsonIgnore]

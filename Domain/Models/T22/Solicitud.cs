@@ -12,6 +12,7 @@ namespace Domain.Models.T22
         public Guid UsuarioId { get; set; }
         public string VcNombreUsuario { get; set; }
         public long IntNumeroIdentificacionUsuario { get; set; }
+        public string VcDireccionUsuario { get; set; } = string.Empty;
         public int TipoSolicitudId { get; set; }
         public string VcTipoSolicitante { get; set; }
         public Guid? UsuarioAsignadoId { get; set; } = null;

@@ -66,7 +66,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
                             NumeroIdentificacionCapacitador = cap.IntNumeroIdentificacion,
                             TituloProfesionalCapacitador = cap.VcTituloProfesional,
                             NumeroMatriculaProfesional = cap.vcNumeroTarjetaProfesional,
-                            DireccionNotificacion = "",
+                            DireccionNotificacion = res.Solicitud.VcDireccionUsuario,
                             TelofonoCapacitador = cap.IntTelefono,
                             ManipuladorCarnes = await _reporteDesign.ExistTipoCapacitacionCarnes(cap) == true ? existTipoCapacitacion : "",
                             ManipuladorLeche = await _reporteDesign.ExistTipoCapacitacionLeche(cap) == true ? existTipoCapacitacion : "",

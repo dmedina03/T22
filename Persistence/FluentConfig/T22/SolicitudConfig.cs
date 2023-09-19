@@ -39,6 +39,7 @@ namespace Persistence.FluentConfig.T22
             entity.Property(p => p.UsuarioId).IsRequired();
             entity.Property(p => p.VcNombreUsuario).IsRequired();
             entity.Property(p => p.IntNumeroIdentificacionUsuario).IsRequired();
+            entity.Property(p => p.VcDireccionUsuario).IsRequired();
             entity.Property(p => p.DtFechaSolicitud).IsRequired();
             entity.Property(p => p.EstadoId).IsRequired();
             entity.Property(p => p.VcRadicado).HasMaxLength(50);

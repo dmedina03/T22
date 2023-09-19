@@ -70,7 +70,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
                             NombreCapacitador = await _capacitadorRepository.GetNombreCapacitador(cap.IdCapacitadorSolicitud.ToString()),
                             NumeroIdentificacionCapacitador = cap.IntNumeroIdentificacion,
                             NumeroMatriculaProfesional = cap.vcNumeroTarjetaProfesional,
-                            DireccionNotificacion = "", //Preguntar de donde saco esta direccion
+                            DireccionNotificacion = res.Solicitud.VcDireccionUsuario,
                             TipoAutorizacion = await _reporteDesign.GetTipoCapacitacionesByCapcitador(cap.IdCapacitadorSolicitud.ToString())
 
                         });

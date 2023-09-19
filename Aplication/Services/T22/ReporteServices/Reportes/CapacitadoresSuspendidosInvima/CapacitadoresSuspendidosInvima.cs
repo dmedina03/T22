@@ -71,7 +71,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
                             NumeroIdentificacionCapacitador  = cap.IntNumeroIdentificacion,
                             TituloProfesional = cap.VcTituloProfesional,
                             NumeroMatriculaProfesional = cap.vcNumeroTarjetaProfesional,
-                            DireccionNotificacion = "",
+                            DireccionNotificacion = res.Solicitud.VcDireccionUsuario,
                             Telefono = cap.IntTelefono,
                             ManipuladorCarnes = await _reporteDesign.ExistTipoCapacitacionCarnes(cap) == true ? existTipoCapacitacion : "",
                             ManipuladorLeche = await _reporteDesign.ExistTipoCapacitacionLeche(cap) == true ? existTipoCapacitacion : "",
