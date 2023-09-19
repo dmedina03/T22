@@ -529,13 +529,6 @@ namespace Persistence.Migrations
                 column: "SolicitudId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Solicitudes_EstadoId",
-                schema: "manipalimentos",
-                table: "Solicitudes",
-                column: "EstadoId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SubsanacionSolicitudes_SolicitudId",
                 schema: "manipalimentos",
                 table: "SubsanacionSolicitudes",

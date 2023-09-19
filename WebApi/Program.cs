@@ -17,16 +17,16 @@ var keyvaultclient = builder.Configuration.GetSection("environmentVariables:Clie
 var DirectoryId = builder.Configuration.GetSection("environmentVariables:DirectoryId").Value!.ToString();
 
 
-////conexion ventanilla vt
-//builder.Configuration.AddAzureKeyVault(
-//new Uri(keyvaulturl),
-//new ClientSecretCredential(DirectoryId, keyvaultid, keyvaultclient));
+//conexion ventanilla vt
+builder.Configuration.AddAzureKeyVault(
+new Uri(keyvaulturl),
+new ClientSecretCredential(DirectoryId, keyvaultid, keyvaultclient));
 
 // captura de cadena de conexion
 var mysql = builder.Configuration.GetSection(KeyVault.SQLDBManipAli).Value;
 
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(mysql));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(mysql));
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {
@@ -36,10 +36,10 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CONNECTION_STRING"));
-});
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("CONNECTION_STRING"));
+//});
 
 //Inyeccion de dependencias
 builder.Services.AddInterfacesInjection();
