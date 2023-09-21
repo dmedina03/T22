@@ -12,6 +12,6 @@ namespace Domain.Models.T22
         public string VcTipoEstado { get; set; }
         public string? VcDescripcion { get; set; }
         public bool BlIsEnable { get; set; }
-        public Solicitud Solicitud { get; set; }
+        public virtual Solicitud Solicitud { get; set; }
     }
 }

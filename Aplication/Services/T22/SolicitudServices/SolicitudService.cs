@@ -246,6 +246,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             solicitudDTOResponse.IdSolicitud = solicitud.IdSolicitud;
             solicitudDTOResponse.VcRadicado = solicitud.VcRadicado;
+            solicitudDTOResponse.UsuarioId = solicitud.UsuarioId.ToString();
             solicitudDTOResponse.UsuarioAsignadoId = solicitud.UsuarioAsignadoId.ToString();
             solicitudDTOResponse.VcFechaSolicitud = solicitud.DtFechaSolicitud.ToString("yyyy-MM-dd");
             solicitudDTOResponse.VcEstado = (await _estadoRepository.GetAsync(x => x.IdEstado == solicitud.EstadoId)).VcTipoEstado;

@@ -8,10 +8,10 @@ namespace Aplication.Utilities.Enum
 {
     enum EnumTipoSolicitud
     {
-        PrimeraVez = 11,
-        Renovacion = 12,
-        Modificacion = 13,
-        RecursoReposicion = 14,
-        Cancelacion = 15,
+        PrimeraVez = 12,
+        Renovacion = 13,
+        Modificacion = 14,
+        RecursoReposicion = 15,
+        Cancelacion = 16,
     }
 }

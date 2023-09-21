@@ -37,7 +37,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
 
 
                         property.RuleFor(x => x.DocumentoSolicitud)
-                            .SetValidator(x => new DocumentoSolicitudDTOValidator(), "Create");
+                            .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Create");
                     });
             });
 
@@ -96,7 +96,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.DocumentoSolicitud)
-                            .SetValidator(x => new DocumentoSolicitudDTOValidator(), "Any");
+                            .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Any");
 
                     });
 

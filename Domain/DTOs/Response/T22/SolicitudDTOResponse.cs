@@ -14,6 +14,7 @@ namespace Domain.DTOs.Response.T22
         public string VcEstado { get; set; }
         public string VcFechaSolicitud { get; set; }
         public string VcTipoTramite { get; set; }
+        public string UsuarioId { get; set; }
         public string? UsuarioAsignadoId { get; set; }
         public List<CapacitadorSolicitudDTOResponse> CapacitadoresSolicitud { get; set; }
         public List<SeguimientoAuditoriaSolicitudDTOResponse>? SeguimientoAuditoriaSolicitud { get; set; }

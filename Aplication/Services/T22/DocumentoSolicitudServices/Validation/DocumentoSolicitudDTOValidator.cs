@@ -9,87 +9,37 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
 {
-    public class DocumentoSolicitudDTOValidator : AbstractValidator<IEnumerable<DocumentoSolicitudDTORequest>>
+    public class DocumentoSolicitudDTOValidator : AbstractValidator<DocumentoSolicitudDTORequest>
     {
         public DocumentoSolicitudDTOValidator()
         {
 
-            RuleSet("Create", () =>
+            RuleSet("Any", () =>
             {
-
-                RuleForEach(x => x)
-                    .Cascade(CascadeMode.Continue)
-                    .ChildRules(property =>
-                    {
-
-                        property.RuleFor(x => x.SolicitudId)
+                RuleFor(x => x.SolicitudId)
                             .Equal(0)
                             .WithMessage("{PropertyName} debe ser 0.")
                             .NotEmpty().NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                        property.RuleFor(x => x.UsuarioId)
-                            .NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
+                RuleFor(x => x.UsuarioId)
+                    .NotNull()
+                    .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                        property.RuleFor(x => x.VcNombreDocumento)
-                            .MaximumLength(150)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
+                RuleFor(x => x.VcNombreDocumento)
+                    .MaximumLength(150)
+                    .NotEmpty().NotNull()
+                    .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                        property.RuleFor(x => x.TipoDocumentoId)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
+                RuleFor(x => x.TipoDocumentoId)
+                    .NotEqual(0)
+                    .WithMessage("{PropertyName} no puede ser 0.")
+                    .NotEmpty().NotNull()
+                    .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                        property.RuleFor(x => x.VcPath)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-                    });
-            });
-
-            RuleSet("Any", () =>
-            {
-                RuleForEach(x => x)
-                    .Cascade(CascadeMode.Stop)
-                    .ChildRules(property =>
-                    {
-                        property.RuleFor(x => x.SolicitudId)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.UsuarioId)
-                            .NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.TipoDocumentoId)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.VcNombreDocumento)
-                            .MaximumLength(150)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.DtFechaCargue)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.VcPath)
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                        property.RuleFor(x => x.IntVersion)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
-                            .NotEmpty().NotNull()
-                            .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
-                    });
-
+                RuleFor(x => x.VcPath)
+                    .NotEmpty().NotNull()
+                    .WithMessage("{PropertyName} no puede ser nulo o vacío.");
             });
 
         }

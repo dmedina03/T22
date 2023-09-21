@@ -12,6 +12,7 @@ namespace Aplication.Utilities.Enum
         Cancelación = 7,
         Negación = 8,
         Subsanación = 9,
-        CancelaciónIncumplimiento = 10
+        CancelaciónIncumplimiento = 10,
+        Recurso = 11,
     }
 }

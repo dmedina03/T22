@@ -36,7 +36,7 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Valid
                 {
 
                     RuleFor(x => x.Documentos)
-                       .SetValidator(x => new DocumentoSolicitudDTOValidator(), "Create");
+                       .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Create");
 
                 }).Otherwise(() =>
                 {

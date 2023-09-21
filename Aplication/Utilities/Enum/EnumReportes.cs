@@ -8,10 +8,10 @@ namespace Aplication.Utilities.Enum
 {
     enum EnumReportes
     {
-        ActosAdministrativos = 16,
-        AutorizacionesCanceladas = 17,
-        SeguimientoCapacitaciones = 18,
-        ListadoCapacitadoresAutorizadosINVIMA  = 19,
-        ListadoCapacitadoresSuspendidosINVIMA  = 20
+        ActosAdministrativos = 17,
+        AutorizacionesCanceladas = 18,
+        SeguimientoCapacitaciones = 19,
+        ListadoCapacitadoresAutorizadosINVIMA  = 20,
+        ListadoCapacitadoresSuspendidosINVIMA  = 21
     }
 }

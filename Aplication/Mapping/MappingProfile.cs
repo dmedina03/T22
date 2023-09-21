@@ -29,8 +29,8 @@ namespace Aplication.Mapping
             CreateMap<CapacitadorSolicitud, CapacitadorSolicitudDTORequest>().ReverseMap()
                 .ForMember(x => x.IntTelefono, src => src.MapFrom(p => p.IntTelefono));
 
-            CreateMap<CapacitadorTipoCapacitacion, CapacitadorTipoCapacitacionDTORequest>().ReverseMap()
-                .ForMember(x => x.IdCapacitadorSolicitud, src => src.MapFrom(p => p.IdCapacitadorSolicitud));
+            CreateMap<CapacitadorTipoCapacitacion, CapacitadorTipoCapacitacionDTORequest>().ReverseMap();
+                //.ForMember(x => x.IdCapacitadorSolicitud, src => src.MapFrom(p => p.IdCapacitadorSolicitud));
 
             CreateMap<TipoCapacitacion, TipoCapacitacionDTOResponse>().ReverseMap();
             CreateMap<SeguimientoAuditoriaSolicitud, SeguimientoAuditoriaSolicitudDTORequest>().ReverseMap();

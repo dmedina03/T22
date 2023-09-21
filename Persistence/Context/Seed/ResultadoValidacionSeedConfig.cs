@@ -85,6 +85,18 @@ namespace Persistence.Context.Seed
                     BEstado = true,
                     RangoDesde = 0,
                     RangoHasta = 0
+                },
+                new ParametroDetalle
+                {
+                    IdParametroDetalle = 11,
+                    ParametroId = 2,
+                    VcNombre = "Recurso",
+                    TxDescripcion = "Recurso",
+                    VcCodigoInterno = "",
+                    DCodigoIterno = 0,
+                    BEstado = true,
+                    RangoDesde = 0,
+                    RangoHasta = 0
                 }
                 );
         }

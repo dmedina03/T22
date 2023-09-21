@@ -21,7 +21,6 @@ var DirectoryId = builder.Configuration.GetSection("environmentVariables:Directo
 builder.Configuration.AddAzureKeyVault(
 new Uri(keyvaulturl),
 new ClientSecretCredential(DirectoryId, keyvaultid, keyvaultclient));
-
 // captura de cadena de conexion
 var mysql = builder.Configuration.GetSection(KeyVault.SQLDBManipAli).Value;
 

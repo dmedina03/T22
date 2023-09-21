@@ -35,6 +35,8 @@ using Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCanceladas;
 using Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutorizadosInvima;
 using Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendidosInvima;
 using Aplication.Services.T22.ReporteServices.Validation;
+using Aplication.Services.T22.RecursoSolicitudServices;
+using Aplication.Services.T22.RecursoSolicitudServices.Validation;
 
 namespace Aplication.Extensions
 {
@@ -63,6 +65,7 @@ namespace Aplication.Extensions
 			services.AddScoped<IAutorizacionesCanceladas, AutorizacionesCanceladas > ();
 			services.AddScoped<ICapacitadoresAutorizadosInvima, CapacitadoresAutorizadosInvima> ();
 			services.AddScoped<ICapacitadoresSuspendidosInivima, CapacitadoresSuspendidosInvima> ();
+			services.AddScoped<IRecursoSolicitudService, RecursoSolicitudService> ();
             services.AddScoped(typeof(ReporteDesign));
 
             #endregion
@@ -111,11 +114,14 @@ namespace Aplication.Extensions
 
             services.AddScoped<IValidator<SolicitudDTORequest>, SolicitudValidator>();
             services.AddScoped<IValidator<IEnumerable<DocumentoSolicitud>>, DocumentoSolicitudValidator>();
+            services.AddScoped<IValidator<DocumentoSolicitudDTORequest>, DocumentoSolicitudDTOValidator>();
             services.AddScoped<IValidator<SolicitudRevisionValidadorDTORequest>, SolicitudRevisionValidadorValidator>();
             services.AddScoped<IValidator<SolicitudRevisionCoordinadorDTORequest>, SolicitudRevisionCoordinadorValidator>();
             services.AddScoped<IValidator<SolicitudRevisionSubdirectorDTORequest>, SolicitudRevisionSubdirectorValidator>();
             services.AddScoped<IValidator<CapacitacionCapacitadorSolicitudDTORequest>, CapacitacionCapacitadorValidator>();
             services.AddScoped<IValidator<RevisionCapacitacionDTORequest>, CapacitacionCapacitadorRevisionValidator>();
+            services.AddScoped<IValidator<RevisionRecursoSolicitudDTORequest>, RevisionRecursoSolicitudDTOValidator>();
+            services.AddScoped<IValidator<VerificacionAprobacionRecursoSolicitudDTORequest>, VerificacionAprobacionRecursoSolicitudDTOValidator>();
             services.AddScoped<IValidator<ReportesDTORequest>, ReporteValidator>();
 
             return services;

@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Domain.DTOs.Request.T22
 {
     public class CapacitadorSolicitudDTORequest
     {
-        public Guid IdCapacitadorSolicitud { get; set; } = Guid.NewGuid();
+        public Guid IdCapacitadorSolicitud { get; private set; }
         public int? SolicitudId { get; set; } = 0;
         public string VcPrimerNombre { get; set; }
         public string? VcSegundoNombre { get; set; }
@@ -27,6 +28,10 @@ namespace Domain.DTOs.Request.T22
         public IEnumerable<CapacitadorTipoCapacitacionDTORequest> CapacitadorTipoCapacitacion{ get; set; } = new List<CapacitadorTipoCapacitacionDTORequest>();
         public IEnumerable<DocumentoSolicitudDTORequest> DocumentoSolicitud { get; set; } = new List<DocumentoSolicitudDTORequest>();
 
+        public CapacitadorSolicitudDTORequest()
+        {
+            IdCapacitadorSolicitud = Guid.NewGuid();
+        }
 
     }
 }

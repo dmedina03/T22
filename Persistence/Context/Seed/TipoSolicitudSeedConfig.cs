@@ -15,7 +15,7 @@ namespace Persistence.Context.Seed
             entity.HasData(
                 new ParametroDetalle
                 {
-                    IdParametroDetalle = 11,
+                    IdParametroDetalle = 12,
                     ParametroId = 3,
                     VcNombre = "Primera vez",
                     TxDescripcion = "",
@@ -27,7 +27,7 @@ namespace Persistence.Context.Seed
                 },
                 new ParametroDetalle
                 {
-                    IdParametroDetalle = 12,
+                    IdParametroDetalle = 13,
                     ParametroId = 3,
                     VcNombre = "Renovación",
                     TxDescripcion = "",
@@ -39,7 +39,7 @@ namespace Persistence.Context.Seed
                 },
                 new ParametroDetalle
                 {
-                    IdParametroDetalle = 13,
+                    IdParametroDetalle = 14,
                     ParametroId = 3,
                     VcNombre = "Modificación",
                     TxDescripcion = "",
@@ -51,7 +51,7 @@ namespace Persistence.Context.Seed
                 },
                new ParametroDetalle
                {
-                   IdParametroDetalle = 14,
+                   IdParametroDetalle = 15,
                    ParametroId = 3,
                    VcNombre = "Recurso de reposición",
                     TxDescripcion = "",
@@ -63,7 +63,7 @@ namespace Persistence.Context.Seed
                 },
                 new ParametroDetalle
                 {
-                    IdParametroDetalle = 15,
+                    IdParametroDetalle = 16,
                     ParametroId = 3,
                     VcNombre = "Cancelación",
                     TxDescripcion = "",

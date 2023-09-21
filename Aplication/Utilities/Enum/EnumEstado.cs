@@ -18,6 +18,7 @@ namespace Aplication.Utilities.Enum
         EnSubsanacion = 8,
         Cancelado = 9,
         Negado = 10,
-        CanceladoPorInclumplimiento = 11
+        CanceladoPorInclumplimiento = 11,
+        RecursoRespondido = 12
     }
 }

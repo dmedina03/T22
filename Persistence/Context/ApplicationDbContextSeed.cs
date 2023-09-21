@@ -14,7 +14,6 @@ namespace Persistence.Context
     {
         public static void EnsureSeed(this IUnitOfWork context)
         {
-            CargarTipoSolicitud(context);
             CargarTipoIdentificacion(context);
             CargarConstantes(context);
             CargarDocumentosSolicitud(context);
@@ -523,6 +522,28 @@ namespace Persistence.Context
             {
                 ParametroId = parametroPuente.IdParametro,
                 VcNombre = "Revisión capacitación",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaDocumentos.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Recurso",
+                TxDescripcion = "",
+                VcCodigoInterno = "",
+                DCodigoIterno = 0,
+                BEstado = true,
+                RangoDesde = 0,
+                RangoHasta = 0
+            });
+            listaDocumentos.Add(new ParametroDetalle
+            {
+                ParametroId = parametroPuente.IdParametro,
+                VcNombre = "Respuesta Recurso",
                 TxDescripcion = "",
                 VcCodigoInterno = "",
                 DCodigoIterno = 0,

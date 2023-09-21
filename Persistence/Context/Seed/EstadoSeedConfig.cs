@@ -101,6 +101,14 @@ namespace Persistence.Context.Seed
                     VcTipoEstado = "Cancelado por incumplimiento",
                     VcDescripcion = "",
                     BlIsEnable = true
+                },
+                new Estado
+                {
+                    IdEstado = 12,
+                    
+                    VcTipoEstado = "Recurso respondido",
+                    VcDescripcion = "",
+                    BlIsEnable = true
                 });
             
         }
