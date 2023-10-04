@@ -11,7 +11,7 @@ namespace Domain.DTOs.Request.T22
     public class CapacitacionCapacitadorSolicitudDTORequest
     {
         public int IdCapacitacionSolicitud { get; set; }
-        public int CapacitadorId { get; set; }
+        public string CapacitadorId { get; set; }
         public string VcPublicoObjetivo { get; set; }
         public int IntNumeroAsistentes { get; set; }
         public string VcTemaCapacitacion { get; set; }

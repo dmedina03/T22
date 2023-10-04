@@ -51,6 +51,9 @@ namespace WebApi.Controllers
         [HttpPost("RevisionSubdirector")]
         public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionSubdirectorDTORequest Dto)
             => await _solicitudService.CreateRevisionSubdirector(Dto);
+        [HttpPut("ActualizacionDocumentos/{IdSolicitud}")]
+        public async Task<ResponseBase<bool>> ActualizacionDocumentos(int IdSolicitud, List<DocumentoSolicitudDTORequest> Documentos)
+            => await _solicitudService.UpdateDocumentosSolicitud(IdSolicitud, Documentos);
 
     }
 }

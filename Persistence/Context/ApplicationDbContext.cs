@@ -64,13 +64,11 @@ namespace Persistence.Context
             //Seeds
             new TipoCapacitacionSeedConfig(modelBuilder.Entity<TipoCapacitacion>());
             new EstadoSeedConfig(modelBuilder.Entity<Estado>());
-
-            new ParametroSeedConfig(modelBuilder.Entity<Parametro>());
-
-            new TipoResolucionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            new ResultadoValidacionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            new TipoSolicitudSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            new ReportesSeedConfig(modelBuilder.Entity<ParametroDetalle>());
+            //new ParametroSeedConfig(modelBuilder.Entity<Parametro>());
+            //new TipoResolucionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
+            //new ResultadoValidacionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
+            //new TipoSolicitudSeedConfig(modelBuilder.Entity<ParametroDetalle>());
+            //new ReportesSeedConfig(modelBuilder.Entity<ParametroDetalle>());
 
         }
 

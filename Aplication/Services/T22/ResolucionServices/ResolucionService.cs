@@ -5,11 +5,21 @@ using iText.Kernel.Pdf;
 using iText.Kernel.Events;
 using iText.Html2pdf;
 using Aplication.Utilities;
+using Domain.Models.T22;
+using Persistence.Repository.IRepositories.IT22;
 
 namespace Aplication.Services.T22.ResolucionServices
 {
     public class ResolucionService : IResolucionService
     {
+
+        private readonly IFormatoPlantillaRepository _formatoPlantillaRepository;
+
+        public ResolucionService(IFormatoPlantillaRepository formatoPlantillaRepository)
+        {
+            _formatoPlantillaRepository = formatoPlantillaRepository;
+        }
+
         public async Task<ResponseBase<string>> GetResolucion(PdfDTORequest requestPDFDTO)
         {
 
@@ -66,6 +76,18 @@ namespace Aplication.Services.T22.ResolucionServices
                 }
                 return new ResponseBase<string>(code: HttpStatusCode.InternalServerError, message: ExcepcionMessage);
             }
+        }
+
+        async Task<ResponseBase<FormatoPlantilla>> IResolucionService.GetFormato(int idFormato)
+        {
+            var result =  ( await _formatoPlantillaRepository.GetAsync(fp => fp.IdFormato == idFormato));
+
+            if (result is null)
+            {
+                return new ResponseBase<FormatoPlantilla>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", null, 0);
+            }
+
+            return new ResponseBase<FormatoPlantilla>(HttpStatusCode.OK, "La solicitud respondio OK", result, 1);
         }
     }
 }

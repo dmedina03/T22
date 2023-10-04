@@ -2,6 +2,7 @@
 using Domain.DTOs.Request.T22;
 using Dominio.DTOs.Response.ResponseBase;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Models.T22;
 
 namespace WebApi.Controllers
 {
@@ -17,10 +18,16 @@ namespace WebApi.Controllers
             _resolucionService = resolucionService;
         }
 
-        [HttpPost("/obtenerResolucion")]
-        public async Task<ActionResult<ResponseBase<string>>> BandejaCapacitaciones(PdfDTORequest pdfDTORequest)
+        [HttpPost("obtenerResolucion")]
+        public async Task<ActionResult<ResponseBase<string>>> obtenerResolucion(PdfDTORequest pdfDTORequest)
         {
             return await _resolucionService.GetResolucion(pdfDTORequest);
+        }
+
+        [HttpGet("obtenerPlantilla/{idPlantilla}")]
+        public async Task<ActionResult<ResponseBase<FormatoPlantilla>>> obtenerPlantilla(int idPlantilla)
+        {
+            return await _resolucionService.GetFormato(idPlantilla);
         }
     }
 }

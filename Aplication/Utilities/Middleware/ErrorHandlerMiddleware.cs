@@ -28,12 +28,11 @@ namespace Aplication.Utilities.Middleware
             }
             catch (Exception error)
             {
-
                 var response = context.Response;
                 response.ContentType = "application/json";
                 var responseModel = new ResponseBase<string>()
                 {
-                    Code = response.StatusCode 
+                    Message = error.Message
                 };
 
                 switch (error)

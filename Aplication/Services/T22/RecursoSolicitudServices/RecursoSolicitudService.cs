@@ -53,7 +53,7 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
         public async Task<ResponseBase<bool>> CreateAsync(DocumentoSolicitudDTORequest request)
         {
 
-            var result = await _validatorDocumento.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
+            var result = await _validatorDocumento.ValidateAsync(request, opt => opt.IncludeRuleSets("Recurso"));
 
             if (!result.IsValid)
             {
@@ -62,29 +62,28 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 
             var solicitud = await _solicitudRepository.GetAsync(x => x.IdSolicitud == request.SolicitudId);
 
-            if (solicitud.EstadoId != (int)EnumEstado.Cancelado || solicitud.EstadoId != (int)EnumEstado.CanceladoPorInclumplimiento || solicitud.EstadoId != (int)EnumEstado.Negado )
+            if (solicitud.EstadoId == (int)EnumEstado.Cancelado || solicitud.EstadoId == (int)EnumEstado.CanceladoPorInclumplimiento || solicitud.EstadoId == (int)EnumEstado.Negado )
             {
-                return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
+                //Se mapea el documento recurso que adjunta el ciudadano
+                var documento = _mapper.Map<DocumentoSolicitud>(request);
+                documento.SolicitudId = solicitud.IdSolicitud;
+                documento.BlUsuarioVentanilla = true;
+                documento.BlIsValid = true;
+
+                //Se actualiza el resultado de la validacion a rescurso
+                solicitud.ResultadoValidacionId = (int)EnumResultadoValidacion.Recurso;
+                //se actualiza el estado de la solicitud
+                solicitud.EstadoId = (int)EnumEstado.EnRevision;
+
+                await _documentoSolicitudRepository.AddAsync(documento);
+
+                await _solicitudRepository.UpdateAsync(solicitud);
+
+                await _unitOfWork.CommitAsync();
+                return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
             }
 
-            //Se mapea el documento recurso que adjunta el ciudadano
-            var documento = _mapper.Map<DocumentoSolicitud>(request);
-            documento.SolicitudId = solicitud.IdSolicitud;
-            documento.BlUsuarioVentanilla = true;
-            documento.BlIsValid = true;
-            
-            //Se actualiza el resultado de la validacion a rescurso
-            solicitud.ResultadoValidacionId = (int)EnumResultadoValidacion.Recurso;
-            //se actualiza el estado de la solicitud
-            solicitud.EstadoId = (int)EnumEstado.EnRevision;
-
-            await _documentoSolicitudRepository.AddAsync(documento);
-
-            await _solicitudRepository.UpdateAsync(solicitud);
-
-            await _unitOfWork.CommitAsync();
-
-            return new ResponseBase<bool>(HttpStatusCode.Created,"OK",true, 1);
+            return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
         }
 
         public async Task<ResponseBase<bool>> CreateRevisionRecursoValidador(RevisionRecursoSolicitudDTORequest request)
@@ -95,35 +94,40 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
             {
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "Ocurrio un error de validacion, verifique nuevamente.", result.ToDictionary());
             }
-
+            
             var solicitud = await _solicitudRepository.GetAsync(x => x.IdSolicitud == request.SolicitudId);
 
-            //Se mapea el documento respuesta a recurso cargado por el validador
-            var documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
-            documento.SolicitudId = solicitud.IdSolicitud;
-            documento.BlUsuarioVentanilla = true;
-            documento.BlIsValid = true;
-
-            SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
-
-            if (request.SeguimientoAuditoriaSolicitud is not null)
+            if (solicitud.EstadoId == (int)EnumEstado.EnRevision || solicitud.EstadoId == (int)EnumEstado.DevueltaPorCoordinador)
             {
-                seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
-                seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
-                seguimientoAuditoria.EstadoId = solicitud.EstadoId;
-                await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
+                //Se mapea el documento respuesta a recurso cargado por el validador
+                var documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
+                documento.SolicitudId = solicitud.IdSolicitud;
+                documento.BlUsuarioVentanilla = true;
+                documento.BlIsValid = true;
+
+                SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
+
+                if (request.SeguimientoAuditoriaSolicitud is not null)
+                {
+                    seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
+                    seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
+                    seguimientoAuditoria.EstadoId = solicitud.EstadoId;
+                    await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
+                }
+
+                //Se asigna el nuevo estado de la solicitud
+                solicitud.EstadoId = (int)EnumEstado.EnVerificacion;
+
+                await _solicitudRepository.UpdateAsync(solicitud);
+
+                await _documentoSolicitudRepository.AddAsync(documento);
+
+                await _unitOfWork.CommitAsync();
+
+                return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
             }
 
-            //Se asigna el nuevo estado de la solicitud
-            solicitud.EstadoId = (int)EnumEstado.EnVerificacion;
-
-            await _solicitudRepository.UpdateAsync(solicitud);
-
-            await _documentoSolicitudRepository.AddAsync(documento);
-
-            await _unitOfWork.CommitAsync();
-
-            return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
+            return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
 
         }
 
@@ -138,50 +142,55 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 
             var solicitud = await _solicitudRepository.GetAsync(x => x.IdSolicitud == request.SolicitudId);
 
-            DocumentoSolicitud documento = new DocumentoSolicitud();
-
-            //Se valida si se aprueba el resultado de la validacion
-            if (request.ResultadoValidacion is true)
+            if (solicitud.EstadoId == (int)EnumEstado.EnVerificacion || solicitud.EstadoId == (int)EnumEstado.DevueltaPorSubdirector)
             {
-                //Se determina el nuevo estado de la solicitud
-                solicitud.EstadoId = (int)EnumEstado.ParaFirma;
+                DocumentoSolicitud documento = new DocumentoSolicitud();
+
+                //Se valida si se aprueba el resultado de la validacion
+                if (request.ResultadoValidacion is true)
+                {
+                    //Se determina el nuevo estado de la solicitud
+                    solicitud.EstadoId = (int)EnumEstado.ParaFirma;
+                }
+                else
+                {
+                    //Se determina el estado de la solicitud
+                    solicitud.EstadoId = (int)EnumEstado.DevueltaPorCoordinador;
+                }
+
+                //Si la respuesta de recurso no es nula, quiere decir que el coordinador carga un nuevo recurso
+                if (request.RespuestaRecurso is not null)
+                {
+                    //asi que se elimina el recurso que cargo el validador
+                    await _documentoSolicitudRepository.DeleteAsync(request.DocumentoRespuestaRecursoId);
+
+                    documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
+                    documento.SolicitudId = solicitud.IdSolicitud;
+                    documento.BlUsuarioVentanilla = true;
+                    documento.BlIsValid = true;
+
+                    await _documentoSolicitudRepository.AddAsync(documento);
+                }
+
+
+                SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
+
+                if (request.SeguimientoAuditoriaSolicitud is not null)
+                {
+                    seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
+                    seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
+                    seguimientoAuditoria.EstadoId = solicitud.EstadoId;
+                    await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
+                }
+
+                await _solicitudRepository.UpdateAsync(solicitud);
+
+                await _unitOfWork.CommitAsync();
+
+                return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
             }
-            else
-            {
-                //Se determina el estado de la solicitud
-                solicitud.EstadoId = (int)EnumEstado.DevueltaPorCoordinador;
-            }
 
-            //Si la respuesta de recurso no es nula, quiere decir que el coordinador carga un nuevo recurso
-            if (request.RespuestaRecurso is not null)
-            {
-                //asi que se elimina el recurso que cargo el validador
-                await _documentoSolicitudRepository.DeleteAsync(request.DocumentoRespuestaRecursoId);
-
-                documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
-                documento.SolicitudId = solicitud.IdSolicitud;
-                documento.BlUsuarioVentanilla = true;
-                documento.BlIsValid = true;
-
-                await _documentoSolicitudRepository.AddAsync(documento);
-            }
-
-
-            SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
-
-            if (request.SeguimientoAuditoriaSolicitud is not null)
-            {
-                seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
-                seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
-                seguimientoAuditoria.EstadoId = solicitud.EstadoId;
-                await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
-            }
-
-            await _solicitudRepository.UpdateAsync(solicitud);
-
-            await _unitOfWork.CommitAsync();
-
-            return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
+            return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
 
         }
 
@@ -196,54 +205,57 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 
             var solicitud = await _solicitudRepository.GetAsync(x => x.IdSolicitud == request.SolicitudId);
 
-            DocumentoSolicitud documento = new DocumentoSolicitud();
-
-            //Se valida si se aprueba el resultado de la validacion
-            if (request.ResultadoValidacion is true)
+            if (solicitud.EstadoId == (int)EnumEstado.ParaFirma)
             {
-                //Se determina el nuevo estado de la solicitud
-                solicitud.EstadoId = (int)EnumEstado.RecursoRespondido;
+                DocumentoSolicitud documento = new DocumentoSolicitud();
+
+                //Se valida si se aprueba el resultado de la validacion
+                if (request.ResultadoValidacion is true)
+                {
+                    //Se determina el nuevo estado de la solicitud
+                    solicitud.EstadoId = (int)EnumEstado.RecursoRespondido;
+                }
+                else
+                {
+                    //Se determina el estado de la solicitud
+                    solicitud.EstadoId = (int)EnumEstado.DevueltaPorSubdirector;
+                }
+
+                //Si la respuesta de recurso no es nula, quiere decir que el subdirector carga un nuevo recurso
+                if (request.RespuestaRecurso is not null)
+                {
+                    //asi que se elimina el recurso que cargo el coordinador
+                    await _documentoSolicitudRepository.DeleteAsync(request.DocumentoRespuestaRecursoId);
+
+                    documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
+                    documento.SolicitudId = solicitud.IdSolicitud;
+                    documento.BlUsuarioVentanilla = true;
+                    documento.BlIsValid = true;
+
+                    await _documentoSolicitudRepository.AddAsync(documento);
+                }
+
+
+                SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
+
+                if (request.SeguimientoAuditoriaSolicitud is not null)
+                {
+                    seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
+                    seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
+                    seguimientoAuditoria.EstadoId = solicitud.EstadoId;
+                    await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
+                }
+
+                await _solicitudRepository.UpdateAsync(solicitud);
+
+                await _unitOfWork.CommitAsync();
+
+                return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
+
             }
-            else
-            {
-                //Se determina el estado de la solicitud
-                solicitud.EstadoId = (int)EnumEstado.DevueltaPorSubdirector;
-            }
-
-            //Si la respuesta de recurso no es nula, quiere decir que el subdirector carga un nuevo recurso
-            if (request.RespuestaRecurso is not null)
-            {
-                //asi que se elimina el recurso que cargo el coordinador
-                await _documentoSolicitudRepository.DeleteAsync(request.DocumentoRespuestaRecursoId);
-
-                documento = _mapper.Map<DocumentoSolicitud>(request.RespuestaRecurso);
-                documento.SolicitudId = solicitud.IdSolicitud;
-                documento.BlUsuarioVentanilla = true;
-                documento.BlIsValid = true;
-
-                await _documentoSolicitudRepository.AddAsync(documento);
-            }
-
-
-            SeguimientoAuditoriaSolicitud seguimientoAuditoria = new SeguimientoAuditoriaSolicitud();
-
-            if (request.SeguimientoAuditoriaSolicitud is not null)
-            {
-                seguimientoAuditoria = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
-                seguimientoAuditoria.SolicitudId = solicitud.IdSolicitud;
-                seguimientoAuditoria.EstadoId = solicitud.EstadoId;
-                await _seguimientoAuditoriaSolicitudRepository.AddAsync(seguimientoAuditoria);
-            }
-
-            await _solicitudRepository.UpdateAsync(solicitud);
-
-            await _unitOfWork.CommitAsync();
-
-            return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
+            return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
 
         }
-
-
 
     }
 }

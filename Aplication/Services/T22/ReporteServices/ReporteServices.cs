@@ -53,22 +53,42 @@ namespace Aplication.Services.T22.ReporteServices
 
         public async Task<XLWorkbook> GetReporteSeguimientoCapacitacionesService(ReportesDTORequest request)
         {
+            var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
+            if (!result.IsValid)
+            {
+                return null;
+            }
             return await _seguimientoCapacitaciones.GetReporteActosAdministrativosGenerados(request);
         }
 
         public async Task<XLWorkbook> GetReporteAutorizacionesCanceladasService(ReportesDTORequest request)
         {
+            var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
+            if (!result.IsValid)
+            {
+                return null;
+            }
             return await _autorizacionesCanceladas.GetReporteAutorizacionesCanceladas(request);
 
         }
         public async Task<XLWorkbook> GetReporteCapacitadoresAutorizadosService(ReportesDTORequest request)
         {
+            var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
+            if (!result.IsValid)
+            {
+                return null;
+            }
             return await _capacitadoresAutorizados.GetReporteCapacitadoresAutorizados(request);
 
         }
 
         public async Task<XLWorkbook> GetReporteCapacitadoresSuspendidosService(ReportesDTORequest request)
         {
+            var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
+            if (!result.IsValid)
+            {
+                return null;
+            }
             return await _capacitadoresSuspendidos.GetReporteCapacitadoresSuspendidos(request);
         }
     }

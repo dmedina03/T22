@@ -21,7 +21,10 @@ namespace Aplication.Services.T22.RecursoSolicitudServices.Validation
                 .NotEmpty()
                 .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDTOValidator(), "Any");
+                When(P => P.RespuestaRecurso is not null, () =>
+                {
+                    RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDTOValidator(), "Any");
+                });
 
                 When(x => x.SeguimientoAuditoriaSolicitud is not null, () =>
                 {

@@ -16,9 +16,6 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Valid
             RuleSet("Any", () =>
             {
                 RuleFor(p => p.CapacitadorId)
-                .NotEqual(0)
-                .WithMessage("{PropertyName} no puede ser 0.")
-                .NotEmpty()
                 .NotNull()
                 .WithMessage("{PropertyName} no puede ser vacio o nulo.");
 

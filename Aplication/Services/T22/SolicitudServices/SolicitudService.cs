@@ -1,4 +1,5 @@
-﻿using Aplication.Services.T22.DocumentoSolicitudServices.Validation;
+﻿using Aplication.Services.Parametro;
+using Aplication.Services.T22.DocumentoSolicitudServices.Validation;
 using Aplication.Utilities.Enum;
 using AutoMapper;
 using Domain.DTOs.Request.T22;
@@ -14,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence.Repository.IRepositories.Generic;
 using Persistence.Repository.IRepositories.IParametroRepository;
 using Persistence.Repository.IRepositories.IT22;
+using Persistence.Repository.Repositories.ParametroRepository;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,6 +36,7 @@ namespace Aplication.Services.T22.SolicitudServices
         private readonly IEstadoRepository _estadoRepository;
         private readonly IDocumentoSolicitudRepository _documentoSolicitudRepository;
         private readonly IParametroDetalleRepository _parametroDetalleRepository;
+        private readonly IParametroDetalleService _parametroService;
         private readonly ITipoCapacitacionRepository _tipoCapacitacionRepository;
         private readonly ICapacitadorTipoCapacitacionRepository _capacitadorTipoCapacitacionRepository;
         private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaSolicitudRepository;
@@ -41,6 +44,7 @@ namespace Aplication.Services.T22.SolicitudServices
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
         private readonly IValidator<SolicitudDTORequest> _validatorSolicitud;
         private readonly IValidator<IEnumerable<DocumentoSolicitud>> _validatorDocumento;
+        private readonly IValidator<IEnumerable<DocumentoSolicitudDTORequest>> _validatorIenumerableDocumento;
         private readonly IValidator<SolicitudRevisionValidadorDTORequest> _validatorSolicitudRevisionValidador;
         private readonly IValidator<SolicitudRevisionCoordinadorDTORequest> _validatorSolicitudRevisionCoordinador;
         private readonly IValidator<SolicitudRevisionSubdirectorDTORequest> _validatorSolicitudRevisionSubdirector;
@@ -54,7 +58,8 @@ namespace Aplication.Services.T22.SolicitudServices
             ITipoCapacitacionRepository tipoCapacitacionRepository, ICapacitadorTipoCapacitacionRepository capacitadorTipoCapacitacionRepository,
             ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitud, ISubsanacionSolicitudRepository subsanacionSolicitudRepository,
             IValidator<SolicitudRevisionValidadorDTORequest> validatorSolicitudRevisionValidador, IValidator<SolicitudRevisionCoordinadorDTORequest> validatorSolicitudRevisionCoordinadorSubdirector, 
-            IResolucionSolicitudRepository resolucionSolicitudRepository, IValidator<SolicitudRevisionSubdirectorDTORequest> validatorSolicitudRevisionSubdirector)
+            IResolucionSolicitudRepository resolucionSolicitudRepository, IValidator<SolicitudRevisionSubdirectorDTORequest> validatorSolicitudRevisionSubdirector,
+            IParametroDetalleService parametroService, IValidator<IEnumerable<DocumentoSolicitudDTORequest>> validatorIenumerableDocumento)
         {
             _solicitudRespository = solicitudRespository;
             _validatorSolicitud = validatorSolicitud;
@@ -73,6 +78,8 @@ namespace Aplication.Services.T22.SolicitudServices
             _validatorSolicitudRevisionCoordinador = validatorSolicitudRevisionCoordinadorSubdirector;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
             _validatorSolicitudRevisionSubdirector = validatorSolicitudRevisionSubdirector;
+            _parametroService = parametroService;
+            _validatorIenumerableDocumento = validatorIenumerableDocumento;
         }
         public async Task<ResponseBase<bool>> CreateAsync(SolicitudDTORequest request)
         {
@@ -255,6 +262,7 @@ namespace Aplication.Services.T22.SolicitudServices
             solicitudDTOResponse.CapacitadoresSolicitud = await GetCapacitadorSolicitudByCollection(solicitud.CapacitadorSolicitud);
 
             solicitudDTOResponse.SeguimientoAuditoriaSolicitud = await GetSeguimientoAuditoriaByCollection(solicitud.SeguimientoAuditoriaSolicitud);
+            solicitudDTOResponse.DocumentosRecursoReposicion = await GetDocumentoRecursosSolicitud(solicitud.IdSolicitud);
 
             return new ResponseBase<SolicitudDTOResponse>(HttpStatusCode.OK,"OK",solicitudDTOResponse,1);
         }
@@ -788,6 +796,37 @@ namespace Aplication.Services.T22.SolicitudServices
 
             return lista;
         }
+
+        private async Task<List<DocumentosSolicitudDTOResponse>> GetDocumentoRecursosSolicitud(int solicitudId)
+        {
+            string codigoInterno = "bDocumentosSolicitud";
+            string nombre = "Recurso";
+            var resultQueryParamento = (await _parametroService.listarPorCodigoInterno(codigoInterno)).Data;
+
+            List<DocumentosSolicitudDTOResponse> resultado = new();
+
+            foreach (var item in resultQueryParamento)
+            {
+                if (item.VcNombre.Contains(nombre))
+                {
+                    var documentosSolicitud = await _documentoSolicitudRepository.GetAsync(x => x.SolicitudId == solicitudId && x.TipoDocumentoId == item.IdParametroDetalle);
+                    if (documentosSolicitud is not null)
+                    {
+                        resultado.Add(new DocumentosSolicitudDTOResponse
+                        {
+                            IdDocumento = documentosSolicitud.IdDocumento,
+                            VcTipoDocumento = (await _parametroDetalleRepository.GetAsync(p => p.IdParametroDetalle == documentosSolicitud.TipoDocumentoId)).VcNombre,
+                            VcPath = documentosSolicitud.VcPath,
+                            BlIsValid = documentosSolicitud.BlIsValid
+                        });
+                    }
+                    
+                }
+            }
+
+            return resultado;
+
+        }
         private async Task<long> GetNumeroResolucion()
         {
             var year = DateTime.UtcNow.AddHours(-5).Year;
@@ -812,6 +851,35 @@ namespace Aplication.Services.T22.SolicitudServices
         public Task<ResponseBase<List<SolicitudDTOResponse>>> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ResponseBase<bool>> UpdateDocumentosSolicitud(int idSolicitud, List<DocumentoSolicitudDTORequest> request)
+        {
+            var result = await _validatorIenumerableDocumento.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
+
+            if (!result.IsValid)
+            {
+                return new ResponseBase<bool>(HttpStatusCode.BadRequest, "Errores de validación !", result.ToDictionary());
+            }
+
+            var entities = _mapper.Map<List<DocumentoSolicitud>>(request);
+
+            foreach (var entity in entities)
+            {
+                var doc = await _documentoSolicitudRepository.GetAsync(x => x.IdDocumento == entity.IdDocumento);
+                entity.SolicitudId = idSolicitud;
+                entity.IntVersion = doc.IntVersion + 1;
+                entity.BlIsValid = doc.BlIsValid;
+                entity.BlUsuarioVentanilla = doc.BlUsuarioVentanilla;
+            }
+
+
+            await _documentoSolicitudRepository.UpdateRangeAsync(entities);
+
+            await _unitOfWork.CommitAsync();
+
+            return new ResponseBase<bool>(HttpStatusCode.OK,"OK",true,entities.Count);
+
         }
     }
 }

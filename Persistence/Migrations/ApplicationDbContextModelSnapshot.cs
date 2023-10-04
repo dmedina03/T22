@@ -61,8 +61,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 1L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1931),
-                            DtFechaCreacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1905),
+                            DtFechaActualizacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4755),
+                            DtFechaCreacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4731),
                             VcCodigoInterno = "bTipoResolucion",
                             VcNombre = "Tipo resolución"
                         },
@@ -70,8 +70,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 2L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1943),
-                            DtFechaCreacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1942),
+                            DtFechaActualizacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4761),
+                            DtFechaCreacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4761),
                             VcCodigoInterno = "bResultadoValidacion",
                             VcNombre = "Resultado de la validación"
                         },
@@ -79,8 +79,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 3L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1945),
-                            DtFechaCreacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1944),
+                            DtFechaActualizacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4763),
+                            DtFechaCreacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4763),
                             VcCodigoInterno = "bTipoSolicitud",
                             VcNombre = "Tipo de solicitud"
                         },
@@ -88,8 +88,8 @@ namespace Persistence.Migrations
                         {
                             IdParametro = 4L,
                             BEstado = true,
-                            DtFechaActualizacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1946),
-                            DtFechaCreacion = new DateTime(2023, 9, 20, 10, 40, 33, 825, DateTimeKind.Local).AddTicks(1946),
+                            DtFechaActualizacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4765),
+                            DtFechaCreacion = new DateTime(2023, 9, 21, 11, 31, 13, 106, DateTimeKind.Local).AddTicks(4764),
                             VcCodigoInterno = "bReportes",
                             VcNombre = "Reportes"
                         });

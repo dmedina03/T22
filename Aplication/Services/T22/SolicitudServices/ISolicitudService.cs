@@ -43,6 +43,7 @@ namespace Aplication.Services.T22.SolicitudServices
         Task<ResponseBase<bool>> CreateRevisionValidador(SolicitudRevisionValidadorDTORequest request);
         Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorDTORequest request);
         Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionSubdirectorDTORequest request);
+        Task<ResponseBase<bool>> UpdateDocumentosSolicitud(int idSolicitud, List<DocumentoSolicitudDTORequest> request);
 
     }
 }
