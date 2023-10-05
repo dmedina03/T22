@@ -10,9 +10,9 @@ namespace Domain.DTOs.Request.T22
     public class ReportesDTORequest
     {
 
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         public string FechaDesde { get; set; }
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         public string FechaHasta { get; set; }
 
     }

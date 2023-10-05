@@ -16,14 +16,11 @@ namespace Aplication.Services.T22.ReporteServices.Validation
             RuleSet("Any", () =>
             {
 
-                RuleFor(x => Convert.ToDateTime(x.FechaDesde))
-                    .GreaterThan(x => Convert.ToDateTime(x.FechaHasta))
-                    .WithMessage("La Fecha inicial no puede ser mayor a la fecha final");
-                    
                 RuleFor(x => Convert.ToDateTime(x.FechaHasta))
                     .GreaterThan(x => Convert.ToDateTime(x.FechaDesde))
-                    .WithMessage("La Fecha final no puede ser menor a la fecha inicial");
+                    .WithMessage("La Fecha inicial no puede ser mayor a la fecha final");
                     
+                  
 
             });
             
