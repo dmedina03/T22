@@ -20,18 +20,19 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 {
     public class RecursoSolicitudService : IRecursoSolicitudService
     {
+#pragma warning disable
         private readonly IDocumentoSolicitudRepository _documentoSolicitudRepository;
         private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaSolicitudRepository;
         private readonly ISolicitudRespository _solicitudRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<DocumentoSolicitudDTORequest> _validatorDocumento;
-        private readonly IValidator<RevisionRecursoSolicitudDTORequest> _validatorRevisionRecursoSolicitud;
-        private readonly IValidator<VerificacionAprobacionRecursoSolicitudDTORequest> _validatorVerificacionAprobacionRecursoSolicitud;
+        private readonly IValidator<DocumentoSolicitudDtoRequest> _validatorDocumento;
+        private readonly IValidator<RevisionRecursoSolicitudDtoRequest> _validatorRevisionRecursoSolicitud;
+        private readonly IValidator<VerificacionAprobacionRecursoSolicitudDtoRequest> _validatorVerificacionAprobacionRecursoSolicitud;
         private readonly IUnitOfWork _unitOfWork;
         public RecursoSolicitudService(IDocumentoSolicitudRepository documentoSolicitudRepository, IMapper mapper,
-            IValidator<DocumentoSolicitudDTORequest> validatorDocumento, IValidator<RevisionRecursoSolicitudDTORequest> validatorRevisionRecursoSolicitud,
+            IValidator<DocumentoSolicitudDtoRequest> validatorDocumento, IValidator<RevisionRecursoSolicitudDtoRequest> validatorRevisionRecursoSolicitud,
             IUnitOfWork unitOfWork, ISolicitudRespository solicitudRepository, ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitudRepository, 
-            IValidator<VerificacionAprobacionRecursoSolicitudDTORequest> validatorVerificacionAprobacionRecursoSolicitud)
+            IValidator<VerificacionAprobacionRecursoSolicitudDtoRequest> validatorVerificacionAprobacionRecursoSolicitud)
         {
             _documentoSolicitudRepository = documentoSolicitudRepository;
             _solicitudRepository = solicitudRepository;
@@ -43,14 +44,14 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
             _validatorVerificacionAprobacionRecursoSolicitud = validatorVerificacionAprobacionRecursoSolicitud;
         }
 
-        //public async Task<ResponseBase<SolicitudDTOResponse>>
+        //public async Task<ResponseBase<SolicitudDtoResponse>>
 
         /// <summary>
         /// Creación de la generación del recurso
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ResponseBase<bool>> CreateAsync(DocumentoSolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateAsync(DocumentoSolicitudDtoRequest request)
         {
 
             var result = await _validatorDocumento.ValidateAsync(request, opt => opt.IncludeRuleSets("Recurso"));
@@ -86,7 +87,7 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
             return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "No es posible generar recurso a la solicitud, ya que su estado no lo permite.", result.ToDictionary());
         }
 
-        public async Task<ResponseBase<bool>> CreateRevisionRecursoValidador(RevisionRecursoSolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionRecursoValidador(RevisionRecursoSolicitudDtoRequest request)
         {
             var result = await _validatorRevisionRecursoSolicitud.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 
@@ -131,7 +132,7 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 
         }
 
-        public async Task<ResponseBase<bool>> CreateVerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateVerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDtoRequest request)
         {
             var result = await _validatorVerificacionAprobacionRecursoSolicitud.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 
@@ -194,7 +195,7 @@ namespace Aplication.Services.T22.RecursoSolicitudServices
 
         }
 
-        public async Task<ResponseBase<bool>> CreateAprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateAprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDtoRequest request)
         {
             var result = await _validatorVerificacionAprobacionRecursoSolicitud.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.SolicitudServices.Validation
 {
-    public class SolicitudRevisionCoordinadorValidator : AbstractValidator<SolicitudRevisionCoordinadorDTORequest>
+    public class SolicitudRevisionCoordinadorValidator : AbstractValidator<SolicitudRevisionCoordinadorDtoRequest>
     {
         public SolicitudRevisionCoordinadorValidator()
         {
@@ -43,6 +43,7 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
 
                     When(x => x.SeguimientoAuditoriaSolicitud is not null, () =>
                     {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                         RuleFor(p => p.SeguimientoAuditoriaSolicitud.VcObservacion)
                             .NotEmpty()
                             .NotNull()

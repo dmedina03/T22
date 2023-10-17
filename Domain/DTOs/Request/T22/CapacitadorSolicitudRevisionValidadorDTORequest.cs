@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class CapacitadorSolicitudRevisionValidadorDTORequest
+    public class CapacitadorSolicitudRevisionValidadorDtoRequest
     {
-        public string IdCapacitadorSolicitud { get; set; }
+        public string IdCapacitadorSolicitud { get; set; } = string.Empty;
         public bool BlIsValid { get; set; }
 
     }

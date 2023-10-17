@@ -10,7 +10,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
 {
     public interface ICapacitadoresSuspendidosInivima
     {
-        Task<XLWorkbook> GetReporteCapacitadoresSuspendidos(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteCapacitadoresSuspendidos(ReportesDtoRequest request);
 
     }
 }

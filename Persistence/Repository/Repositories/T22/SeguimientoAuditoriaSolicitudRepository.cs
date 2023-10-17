@@ -18,7 +18,7 @@ namespace Persistence.Repository.Repositories.T22
         }
 
 
-        public async Task<string> ConcatObservaciones(IEnumerable<SeguimientoAuditoriaSolicitud> lista)
+        public string ConcatObservaciones(IEnumerable<SeguimientoAuditoriaSolicitud> lista)
         {
 
             List<string> observaciones = new();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.ReporteServices.Validation
 {
-    public class ReporteValidator : AbstractValidator<ReportesDTORequest>
+    public class ReporteValidator : AbstractValidator<ReportesDtoRequest>
     {
         public ReporteValidator()
         {

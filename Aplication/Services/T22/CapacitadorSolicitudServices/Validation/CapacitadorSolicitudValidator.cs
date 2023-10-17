@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
 {
-    public class CapacitadorSolicitudValidator : AbstractValidator<IEnumerable<CapacitadorSolicitudDTORequest>>
+    public class CapacitadorSolicitudValidator : AbstractValidator<IEnumerable<CapacitadorSolicitudDtoRequest>>
     {
         public CapacitadorSolicitudValidator()
         {
@@ -37,7 +37,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
 
 
                         property.RuleFor(x => x.DocumentoSolicitud)
-                            .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Create");
+                            .SetValidator(x => new DocumentoSolicitudEnumerableDtoValidator(), "Create");
                     });
             });
 
@@ -83,7 +83,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
                             .NotEmpty().NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
-                        property.RuleFor(x => x.vcNumeroTarjetaProfesional)
+                        property.RuleFor(x => x.VcNumeroTarjetaProfesional)
                             .NotEmpty().NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
@@ -96,7 +96,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacío.");
 
                         property.RuleFor(x => x.DocumentoSolicitud)
-                            .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Any");
+                            .SetValidator(x => new DocumentoSolicitudEnumerableDtoValidator(), "Any");
 
                     });
 

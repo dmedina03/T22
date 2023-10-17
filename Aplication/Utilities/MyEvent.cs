@@ -13,6 +13,7 @@ namespace Aplication.Utilities
 {
     public class MyEvent : IEventHandler
     {
+#pragma warning disable
         private readonly byte[] headerImage;
         private readonly byte[] footerImage;
 
@@ -37,6 +38,7 @@ namespace Aplication.Utilities
             ImageData footer = ImageDataFactory.Create(footerImage);
 
             pdfCanvas.AddImage(footer, 0, 0, 600, true);
+#pragma warning disable // El tipo o el miembro están obsoletos
             pdfCanvas.AddImage(header, 65, 750, 160, true);
 
             int pageNum = docEvent.GetDocument().GetPageNumber(page);

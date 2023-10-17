@@ -10,7 +10,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
 {
     public interface IActosAdministrativosGenerados
     {
-        Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDtoRequest request);
 
     }
 }

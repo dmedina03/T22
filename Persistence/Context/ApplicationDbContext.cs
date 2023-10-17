@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs.Response.T22;
+using Domain.Models;
 using Domain.Models.Parametro;
 using Domain.Models.T22;
 using Microsoft.EntityFrameworkCore;
@@ -22,28 +23,29 @@ namespace Persistence.Context
             
         }
 
-        //DbSet de las entidades
-        DbSet<Parametro> Parametro { get; set; }
-        DbSet<ParametroDetalle> ParametroDetalle { get; set; }
-        DbSet<Solicitud> Solicitud { get; set; }
-        DbSet<TipoCapacitacion> TipoCapacitacion { get; set; }
-        DbSet<SeguimientoAuditoriaSolicitud> SeguimientoAuditoriaSolicitud { get; set; }
-        DbSet<Estado> Estado { get; set; }
-        DbSet<DocumentoSolicitud> DocumentoSolicitud { get; set; }
-        DbSet<CapacitadorTipoCapacitacion> CapacitadorTipoCapacitacion { get; set; }
-        DbSet<CapacitadorSolicitud> CapacitadorSolicitud { get; set; }
-        DbSet<CancelacionSolicitud> CancelacionSolicitud { get; set; }
-        DbSet<SubsanacionSolicitud> SubsanacionSolicitud { get; set; }
-        DbSet<Firma> Firma { get; set; }
-        DbSet<FormatoPlantilla> FormatoPlantilla { get; set; }
-        DbSet<ResolucionSolicitud> ResolucionSolicitud { get; set; }
-        DbSet<CapacitacionCapacitadorSolicitud> CapacitacionCapacitadorSolicitud { get; set; }
-        DbSet<HorariosCapacitacionSolicitud> HorariosCapacitacionSolicitud { get; set; }
+        public DbSet<Parametro> Parametro { get; set; }
+        public DbSet<ParametroDetalle> ParametroDetalle { get; set; }
+        public DbSet<Solicitud> Solicitud { get; set; }
+        public DbSet<TipoCapacitacion> TipoCapacitacion { get; set; }
+        public DbSet<SeguimientoAuditoriaSolicitud> SeguimientoAuditoriaSolicitud { get; set; }
+        public DbSet<Estado> Estado { get; set; }
+        public DbSet<DocumentoSolicitud> DocumentoSolicitud { get; set; }
+        public DbSet<CapacitadorTipoCapacitacion> CapacitadorTipoCapacitacion { get; set; }
+        public DbSet<CapacitadorSolicitud> CapacitadorSolicitud { get; set; }
+        public DbSet<CancelacionSolicitud> CancelacionSolicitud { get; set; }
+        public DbSet<SubsanacionSolicitud> SubsanacionSolicitud { get; set; }
+        public DbSet<Firma> Firma { get; set; }
+        public DbSet<FormatoPlantilla> FormatoPlantilla { get; set; }
+        public DbSet<ResolucionSolicitud> ResolucionSolicitud { get; set; }
+        public DbSet<CapacitacionCapacitadorSolicitud> CapacitacionCapacitadorSolicitud { get; set; }
+        public DbSet<HorariosCapacitacionSolicitud> HorariosCapacitacionSolicitud { get; set; }
+        public DbSet<SpBandejaFuncionarioDto> SpBandejaFuncionarioDto { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             //entidades config
+#pragma warning disable // Do not ignore method results
             new ParametroConfig(modelBuilder.Entity<Parametro>());
             new ParametroDetalleConfig(modelBuilder.Entity<ParametroDetalle>());
             new SolicitudConfig(modelBuilder.Entity<Solicitud>());
@@ -64,11 +66,6 @@ namespace Persistence.Context
             //Seeds
             new TipoCapacitacionSeedConfig(modelBuilder.Entity<TipoCapacitacion>());
             new EstadoSeedConfig(modelBuilder.Entity<Estado>());
-            //new ParametroSeedConfig(modelBuilder.Entity<Parametro>());
-            //new TipoResolucionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            //new ResultadoValidacionSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            //new TipoSolicitudSeedConfig(modelBuilder.Entity<ParametroDetalle>());
-            //new ReportesSeedConfig(modelBuilder.Entity<ParametroDetalle>());
 
         }
 

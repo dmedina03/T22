@@ -11,11 +11,11 @@ namespace Aplication.Services.T22.ReporteServices
 {
     public interface IReporteServices
     {
-        Task<XLWorkbook> GetReporteActosAdministrativosGeneradosService(ReportesDTORequest request);
-        Task<XLWorkbook> GetReporteSeguimientoCapacitacionesService(ReportesDTORequest request);
-        Task<XLWorkbook> GetReporteAutorizacionesCanceladasService(ReportesDTORequest request);
-        Task<XLWorkbook> GetReporteCapacitadoresAutorizadosService(ReportesDTORequest request);
-        Task<XLWorkbook> GetReporteCapacitadoresSuspendidosService(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteActosAdministrativosGeneradosService(ReportesDtoRequest request);
+        Task<XLWorkbook> GetReporteSeguimientoCapacitacionesService(ReportesDtoRequest request);
+        Task<XLWorkbook> GetReporteAutorizacionesCanceladasService(ReportesDtoRequest request);
+        Task<XLWorkbook> GetReporteCapacitadoresAutorizadosService(ReportesDtoRequest request);
+        Task<XLWorkbook> GetReporteCapacitadoresSuspendidosService(ReportesDtoRequest request);
 
     }
 }

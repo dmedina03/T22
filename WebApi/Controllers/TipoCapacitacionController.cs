@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseBase<List<TipoCapacitacionDTOResponse>>>> GetAll()
+        public async Task<ActionResult<ResponseBase<List<TipoCapacitacionDtoResponse>>>> GetAll()
             => await _tipoCapacitacionService.GetAll();
     }
 }

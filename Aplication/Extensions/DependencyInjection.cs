@@ -113,18 +113,18 @@ namespace Aplication.Extensions
         public static IServiceCollection AddServicesValidation(this IServiceCollection services)
         {
 
-            services.AddScoped<IValidator<SolicitudDTORequest>, SolicitudValidator>();
+            services.AddScoped<IValidator<SolicitudDtoRequest>, SolicitudValidator>();
             services.AddScoped<IValidator<IEnumerable<DocumentoSolicitud>>, DocumentoSolicitudValidator>();
-            services.AddScoped<IValidator<IEnumerable<DocumentoSolicitudDTORequest>>, DocumentoSolicitudEnumerableDTOValidator>();
-            services.AddScoped<IValidator<DocumentoSolicitudDTORequest>, DocumentoSolicitudDTOValidator>();
-            services.AddScoped<IValidator<SolicitudRevisionValidadorDTORequest>, SolicitudRevisionValidadorValidator>();
-            services.AddScoped<IValidator<SolicitudRevisionCoordinadorDTORequest>, SolicitudRevisionCoordinadorValidator>();
-            services.AddScoped<IValidator<SolicitudRevisionSubdirectorDTORequest>, SolicitudRevisionSubdirectorValidator>();
-            services.AddScoped<IValidator<CapacitacionCapacitadorSolicitudDTORequest>, CapacitacionCapacitadorValidator>();
-            services.AddScoped<IValidator<RevisionCapacitacionDTORequest>, CapacitacionCapacitadorRevisionValidator>();
-            services.AddScoped<IValidator<RevisionRecursoSolicitudDTORequest>, RevisionRecursoSolicitudDTOValidator>();
-            services.AddScoped<IValidator<VerificacionAprobacionRecursoSolicitudDTORequest>, VerificacionAprobacionRecursoSolicitudDTOValidator>();
-            services.AddScoped<IValidator<ReportesDTORequest>, ReporteValidator>();
+            services.AddScoped<IValidator<IEnumerable<DocumentoSolicitudDtoRequest>>, DocumentoSolicitudEnumerableDtoValidator>();
+            services.AddScoped<IValidator<DocumentoSolicitudDtoRequest>, DocumentoSolicitudDtoValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionValidadorDtoRequest>, SolicitudRevisionValidadorValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionCoordinadorDtoRequest>, SolicitudRevisionCoordinadorValidator>();
+            services.AddScoped<IValidator<SolicitudRevisionSubdirectorDtoRequest>, SolicitudRevisionSubdirectorValidator>();
+            services.AddScoped<IValidator<CapacitacionCapacitadorSolicitudDtoRequest>, CapacitacionCapacitadorValidator>();
+            services.AddScoped<IValidator<RevisionCapacitacionDtoRequest>, CapacitacionCapacitadorRevisionValidator>();
+            services.AddScoped<IValidator<RevisionRecursoSolicitudDtoRequest>, RevisionRecursoSolicitudDtoValidator>();
+            services.AddScoped<IValidator<VerificacionAprobacionRecursoSolicitudDtoRequest>, VerificacionAprobacionRecursoSolicitudDtoValidator>();
+            services.AddScoped<IValidator<ReportesDtoRequest>, ReporteValidator>();
 
             return services;
         }

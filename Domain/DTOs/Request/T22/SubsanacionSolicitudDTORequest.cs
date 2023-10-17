@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class SubsanacionSolicitudDTORequest
+    public class SubsanacionSolicitudDtoRequest
     {
         public int IdSubsanacion { get; set; }
         [JsonIgnore]
         public int SolicitudId { get; set; }
         [JsonIgnore]
         public DateTime DtFechaSubsanacion { get; set; } = DateTime.UtcNow.AddHours(-5);
-        public string VcSubsanacion { get; set; }
+        public string VcSubsanacion { get; set; } = string.Empty;
         /// <summary>
         /// Usuario quien realiza la subsanacion
         /// </summary>
-        public int UsuarioId { get; set; }
-        public string VcNombreUsuario { get; set; }
+        public string UsuarioId { get; set; } = string.Empty;
+        public string VcNombreUsuario { get; set; } = string.Empty;
 
         /// <summary>
         /// Estado en el cual se encuentra la solicitud cuando generan la subsanacion

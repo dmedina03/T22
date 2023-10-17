@@ -17,29 +17,38 @@ namespace Aplication.Mapping
         public MappingProfile()
         {
 
-            CreateMap<ParametroDetalle, ParametroDetalleDTO>().ReverseMap();
+            CreateMap<ParametroDetalle, ParametroDetalleDto>().ReverseMap();
 
-            CreateMap<Solicitud, SolicitudDTORequest>().ReverseMap();
+            CreateMap<Solicitud, SolicitudDtoRequest>().ReverseMap();
 
-            CreateMap<Solicitud, SolicitudBandejaSolicitudesDTOResponse>().ReverseMap();
+            CreateMap<Solicitud, SolicitudBandejaSolicitudesDtoResponse>().ReverseMap();
 
-            CreateMap<DocumentoSolicitud, DocumentoSolicitudDTORequest>().ReverseMap()
+            CreateMap<DocumentoSolicitud, DocumentoSolicitudDtoRequest>().ReverseMap()
                 .ForMember(x => x.UsuarioId, src => src.MapFrom(p => p.UsuarioId));
 
-            CreateMap<CapacitadorSolicitud, CapacitadorSolicitudDTORequest>().ReverseMap()
+            CreateMap<CapacitadorSolicitud, CapacitadorSolicitudDtoRequest>().ReverseMap()
                 .ForMember(x => x.IntTelefono, src => src.MapFrom(p => p.IntTelefono));
 
-            CreateMap<CapacitadorTipoCapacitacion, CapacitadorTipoCapacitacionDTORequest>().ReverseMap();
-                //.ForMember(x => x.IdCapacitadorSolicitud, src => src.MapFrom(p => p.IdCapacitadorSolicitud));
+            CreateMap<CapacitadorTipoCapacitacion, CapacitadorTipoCapacitacionDtoRequest>().ReverseMap();
 
-            CreateMap<TipoCapacitacion, TipoCapacitacionDTOResponse>().ReverseMap();
-            CreateMap<SeguimientoAuditoriaSolicitud, SeguimientoAuditoriaSolicitudDTORequest>().ReverseMap();
-            CreateMap<SubsanacionSolicitud, SubsanacionSolicitudDTORequest>().ReverseMap();
-            CreateMap<CancelacionSolicitud, CancelacionIncumplimientoSolicitudDTORequest>().ReverseMap();
-            CreateMap<ResolucionSolicitud, ResolucionSolicitudDTORequest>().ReverseMap();
+            CreateMap<SpBandejaFuncionarioDto, SolicitudBandejaSolicitudesDtoResponse>().ReverseMap()
+                .ForMember(x => x.IdSolicitud, src => src.MapFrom(p => p.IdSolicitud))
+                .ForMember(x => x.VcRadicado, src => src.MapFrom(p => p.VcRadicado))
+                .ForMember(x => x.VcNombreUsuario, src => src.MapFrom(p => p.VcNombreUsuario))
+                .ForMember(x => x.IntNumeroIdentificacionUsuario, src => src.MapFrom(p => p.IntNumeroIdentificacionUsuario))
+                .ForMember(x => x.VcNombre, src => src.MapFrom(p => p.VcTipoSolicitud))
+                .ForMember(x => x.VcTipoSolicitante, src => src.MapFrom(p => p.VcTipoSolicitante))
+                .ForMember(x => x.DtFechaSolicitud, src => src.MapFrom(p => p.DtFechaSolicitud))
+                .ForMember(x => x.VcTipoEstado, src => src.MapFrom(p => p.VcTipoEstado));
 
-            CreateMap<CapacitacionCapacitadorSolicitud, CapacitacionCapacitadorSolicitudDTORequest>().ReverseMap();
-            CreateMap<HorariosCapacitacionSolicitud, HorariosCapacitacionSolicitudDTORequest>().ReverseMap();
+            CreateMap<TipoCapacitacion, TipoCapacitacionDtoResponse>().ReverseMap();
+            CreateMap<SeguimientoAuditoriaSolicitud, SeguimientoAuditoriaSolicitudDtoRequest>().ReverseMap();
+            CreateMap<SubsanacionSolicitud, SubsanacionSolicitudDtoRequest>().ReverseMap();
+            CreateMap<CancelacionSolicitud, CancelacionIncumplimientoSolicitudDtoRequest>().ReverseMap();
+            CreateMap<ResolucionSolicitud, ResolucionSolicitudDtoRequest>().ReverseMap();
+
+            CreateMap<CapacitacionCapacitadorSolicitud, CapacitacionCapacitadorSolicitudDtoRequest>().ReverseMap();
+            CreateMap<HorariosCapacitacionSolicitud, HorariosCapacitacionSolicitudDtoRequest>().ReverseMap();
 
         }
     }

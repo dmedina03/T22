@@ -10,7 +10,7 @@ namespace Domain.Models.T22
     {
         public int IdFirma { get; set; }
         public int UsuarioId { get; set; }
-        public string VcFirma { get; set; }
-        public string VcDescripcion { get; set; }
+        public string VcFirma { get; set; } = string.Empty;
+        public string VcDescripcion { get; set; } = string.Empty;
     }
 }

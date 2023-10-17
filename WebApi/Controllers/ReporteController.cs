@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         [HttpGet("ActosAdministrativosGenerados/{fechaDesde}/{fechaHasta}")]
         public async Task<IActionResult> GetReporteActosAdministrativos([DataType(DataType.Date)]string fechaDesde, [DataType(DataType.Date)] string fechaHasta)
         {
-            ReportesDTORequest request = new ReportesDTORequest();  
+            ReportesDtoRequest request = new ReportesDtoRequest();  
             try
             {
                 request.FechaDesde = fechaDesde;
@@ -43,7 +43,6 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
 
-                //_logger.LogError(ex.Message);
                 return BadRequest(ex);
             }
         }
@@ -51,7 +50,7 @@ namespace WebApi.Controllers
         [HttpGet("SeguimientoCapacitaciones/{fechaDesde}/{fechaHasta}")]
         public async Task<IActionResult> GetReporteSeguimientoCapacitaciones([DataType(DataType.Date)]string fechaDesde, [DataType(DataType.Date)] string fechaHasta)
         {
-            ReportesDTORequest request = new ReportesDTORequest();  
+            ReportesDtoRequest request = new ReportesDtoRequest();  
             try
             {
                 request.FechaDesde = fechaDesde;
@@ -72,7 +71,6 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
 
-                //_logger.LogError(ex.Message);
                 return BadRequest(ex);
             }
         }
@@ -80,7 +78,7 @@ namespace WebApi.Controllers
         [HttpGet("AutorizacionesCanceladas/{fechaDesde}/{fechaHasta}")]
         public async Task<IActionResult> GetReporteAutorizacionesCanceladas([DataType(DataType.Date)]string fechaDesde, [DataType(DataType.Date)] string fechaHasta)
         {
-            ReportesDTORequest request = new ReportesDTORequest();  
+            ReportesDtoRequest request = new ReportesDtoRequest();  
             try
             {
                 request.FechaDesde = fechaDesde;
@@ -101,14 +99,13 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
 
-                //_logger.LogError(ex.Message);
                 return BadRequest(ex);
             }
         }
         [HttpGet("CapacitadoresAutorizados/{fechaDesde}/{fechaHasta}")]
         public async Task<IActionResult> GetReporteCapacitadoresAutorizados([DataType(DataType.Date)]string fechaDesde, [DataType(DataType.Date)] string fechaHasta)
         {
-            ReportesDTORequest request = new ReportesDTORequest();  
+            ReportesDtoRequest request = new ReportesDtoRequest();  
             try
             {
                 request.FechaDesde = fechaDesde;
@@ -130,19 +127,18 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
 
-                //_logger.LogError(ex.Message);
                 return BadRequest(ex);
             }
         }
         [HttpGet("CapacitadoresSuspendidos/{fechaDesde}/{fechaHasta}")]
         public async Task<IActionResult> GetReporteCapacitadoresSuspendidos([DataType(DataType.Date)]string fechaDesde, [DataType(DataType.Date)] string fechaHasta)
         {
-            ReportesDTORequest request = new ReportesDTORequest();
+            ReportesDtoRequest request = new ReportesDtoRequest();
             try
             {
                 request.FechaDesde = fechaDesde;
                 request.FechaHasta = fechaHasta;
-                var wb = await _reporteServices.GetReporteCapacitadoresAutorizadosService(request);
+                var wb = await _reporteServices.GetReporteCapacitadoresSuspendidosService(request);
                 if (wb is not null)
                 {
                     using (var stream = new MemoryStream())
@@ -159,7 +155,6 @@ namespace WebApi.Controllers
             catch (Exception ex)
             {
 
-                //_logger.LogError(ex.Message);
                 return BadRequest(ex);
             }
         }

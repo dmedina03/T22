@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.Parametro
 {
-    public class ParametroDetalleDTO
+    public class ParametroDetalleDto
     {
         public long IdParametroDetalle { get; set; }
         public string VcNombre { get; set; } = string.Empty;

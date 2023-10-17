@@ -8,14 +8,17 @@ namespace Domain.Models.T22
 {
     public class Solicitud
     {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
         public int IdSolicitud { get; set; }
         public Guid UsuarioId { get; set; }
-        public string VcNombreUsuario { get; set; }
+        public string VcNombreUsuario { get; set; } = string.Empty;
         public long IntNumeroIdentificacionUsuario { get; set; }
         public string VcDireccionUsuario { get; set; } = string.Empty;
         public int TipoSolicitudId { get; set; }
-        public string VcTipoSolicitante { get; set; }
-        public Guid? UsuarioAsignadoId { get; set; } = null;
+        public string VcTipoSolicitante { get; set; } = string.Empty;
+        public Guid? UsuarioAsignadoValidadorId  { get; set; } = null;
+        public Guid? UsuarioAsignadoCoordinadorId { get; set; } = null;
+        public Guid? UsuarioAsignadoSubdirectorId { get; set; } = null;
         public DateTime DtFechaSolicitud { get; set; }
         public int EstadoId { get; set; }
         public int? ResultadoValidacionId { get; set; }

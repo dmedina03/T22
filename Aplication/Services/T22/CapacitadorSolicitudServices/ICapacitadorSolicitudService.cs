@@ -10,7 +10,7 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices
 {
     public interface ICapacitadorSolicitudService
     {
-        Task<ResponseBase<List<CapacitadorSolicitudMiniDTOResponse>>> GetListadoCapacitadores(int IdSolicitud);
+        Task<ResponseBase<List<CapacitadorSolicitudMiniDtoResponse>>> GetListadoCapacitadores(int IdSolicitud);
 
     }
 }

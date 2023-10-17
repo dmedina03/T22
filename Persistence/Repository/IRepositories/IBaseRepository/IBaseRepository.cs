@@ -12,6 +12,7 @@ namespace Persistence.Repository.IRepositories.IBaseRepository
         where TId : struct 
         where TEntity : class 
     {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
         /// <summary>
         /// Método asincrono para crear un nuevo objeto
         /// </summary>

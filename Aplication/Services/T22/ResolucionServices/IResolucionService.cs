@@ -6,7 +6,7 @@ namespace Aplication.Services.T22.ResolucionServices
 {
     public interface IResolucionService
     {
-        Task<ResponseBase<string>> GetResolucion(PdfDTORequest requestPDFDTO);
+        Task<ResponseBase<string>> GetResolucion(PdfDtoRequest requestPDFDTO);
 
         Task<ResponseBase<FormatoPlantilla>> GetFormato(int idFormato);
     }

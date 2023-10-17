@@ -9,6 +9,7 @@ namespace Aplication.Utilities.Middleware.CustomException
 {
     public class ApiException: Exception
     {
+#pragma warning disable
         public ApiException() : base() { }
 
         public ApiException(string message) : base(message)

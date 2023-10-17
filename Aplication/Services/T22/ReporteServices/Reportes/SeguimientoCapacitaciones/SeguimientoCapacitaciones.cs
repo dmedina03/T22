@@ -27,7 +27,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
             _capacitadorRepository = capacitadorRepository;
         }
 
-        public async Task<List<ReporteSeguimientoCapacitacionDTO>> GetInfoSeguimientoCapacitaciones(ReportesDTORequest request)
+        public async Task<List<ReporteSeguimientoCapacitacionDto>> GetInfoSeguimientoCapacitaciones(ReportesDtoRequest request)
         {
             DateTime fechaDesde = Convert.ToDateTime(request.FechaDesde);
             DateTime fechaHasta = Convert.ToDateTime(request.FechaHasta);
@@ -37,18 +37,18 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
 
             data = data.OrderByDescending(x => x.DtFechaCreacionCapacitacion).ToList();
 
-            List<ReporteSeguimientoCapacitacionDTO> list = new();
+            List<ReporteSeguimientoCapacitacionDto> list = new();
 
             foreach (var item in data)
             {
 
                 var resolucion = (await _resolucionSolicitudRepository.GetAllAsync(x => x.SolicitudId == item.CapacitadorSolicitud.SolicitudId, x => x.OrderByDescending(x => x.FechaResolucion))).FirstOrDefault();
 
-                list.Add(new ReporteSeguimientoCapacitacionDTO
+                list.Add(new ReporteSeguimientoCapacitacionDto
                 {
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                     FechaAutorizacionResolucion = resolucion.FechaResolucion.ToString("dd/MM/yyyy"),
-                    NumeroActoAdministrativoResolucion = resolucion.IntNumeroResolucion.ToString("00000"),
+                    NumeroActoAdministrativoResolucion = resolucion.VcNumeroResolucion,
                     NombreSolicitante = item.CapacitadorSolicitud.Solicitud.VcNombreUsuario,
                     NombreCapacitador = await _capacitadorRepository.GetNombreCapacitador(item.CapacitadorSolicitud.IdCapacitadorSolicitud.ToString()),
                     NumeroIdentificacionCapacitador = item.CapacitadorSolicitud.IntNumeroIdentificacion,
@@ -63,7 +63,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
             return list;
         }
 
-        public async Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDtoRequest request)
         {
 
             XLWorkbook lWorkbook = new();
@@ -91,7 +91,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
         }
 
 
-        private async void SetTittle(IXLWorksheet ws)
+        private void SetTittle(IXLWorksheet ws)
         {
             var rowOne = ws.Row(1);
 
@@ -113,7 +113,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
         /// Método para dar anchura a las celdas
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnWidth(IXLWorksheet ws)
+        private void SetColumnWidth(IXLWorksheet ws)
         {
             ws.Column(1).Width = 20;
             ws.Column(2).Width = 20;
@@ -133,7 +133,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
         /// Metodo para dar nombre a las columnas de excel
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnNames(IXLRow ws)
+        private void SetColumnNames(IXLRow ws)
         {
 
             ws.Cells("1:10").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
@@ -154,7 +154,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
         /// </summary>
         /// <param name="row"></param>
         /// <param name="dto"></param>
-        private void SetRowData(IXLRow row, ReporteSeguimientoCapacitacionDTO dto)
+        private void SetRowData(IXLRow row, ReporteSeguimientoCapacitacionDto dto)
         {
             row.Style.Font.Bold = false;
 

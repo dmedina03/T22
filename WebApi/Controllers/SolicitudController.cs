@@ -22,38 +22,38 @@ namespace WebApi.Controllers
 
 
         [HttpPost("CrearSolicitud")]
-        public async Task<ResponseBase<bool>> CrearSolicitud(SolicitudDTORequest Dto)
+        public async Task<ResponseBase<bool>> CrearSolicitud(SolicitudDtoRequest Dto)
             => await _solicitudService.CreateAsync(Dto);
 
         [HttpGet("BandejaCiudadano/{usuarioId}")]
-        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesBandejaCiudadano(string usuarioId, string? radicado)
+        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDtoResponse>>> GetSolicitudesBandejaCiudadano(string usuarioId, string? radicado)
             => await _solicitudService.GetSolicitudesByRadicado(usuarioId, radicado);
 
         [HttpGet("BandejaValidador")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaValidador(UsuarioAsignadoId);
 
         [HttpGet("BandejaCoordinador")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaCoordinador(UsuarioAsignadoId);
         [HttpGet("BandejaSubdirector")]
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
             => await _solicitudService.GetSolicitudesBandejaSubdirector(UsuarioAsignadoId);
         [HttpGet("{SolicitudId}")]
-        public async Task<ResponseBase<SolicitudDTOResponse>> GetSolicitudById(int SolicitudId)
+        public async Task<ResponseBase<SolicitudDtoResponse>> GetSolicitudById(int SolicitudId)
             => await _solicitudService.GetById(SolicitudId);
         [HttpPost("RevisionValidador")]
-        public async Task<ResponseBase<bool>> RevisionValidador(SolicitudRevisionValidadorDTORequest Dto)
+        public async Task<ResponseBase<bool>> RevisionValidador(SolicitudRevisionValidadorDtoRequest Dto)
             => await _solicitudService.CreateRevisionValidador(Dto);
         [HttpPost("RevisionCoodinador")]
-        public async Task<ResponseBase<bool>> RevisionCoordinador(SolicitudRevisionCoordinadorDTORequest Dto)
+        public async Task<ResponseBase<bool>> RevisionCoordinador(SolicitudRevisionCoordinadorDtoRequest Dto)
             => await _solicitudService.CreateRevisionCoordinador(Dto);
         [HttpPost("RevisionSubdirector")]
-        public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionSubdirectorDTORequest Dto)
+        public async Task<ResponseBase<bool>> RevisionSubdirector(SolicitudRevisionSubdirectorDtoRequest Dto)
             => await _solicitudService.CreateRevisionSubdirector(Dto);
         [HttpPut("ActualizacionDocumentos/{IdSolicitud}")]
-        public async Task<ResponseBase<bool>> ActualizacionDocumentos(int IdSolicitud, List<DocumentoSolicitudDTORequest> Documentos)
+        public async Task<ResponseBase<bool>> ActualizacionDocumentos(int IdSolicitud, List<DocumentoSolicitudDtoRequest> Documentos)
             => await _solicitudService.UpdateDocumentosSolicitud(IdSolicitud, Documentos);
-
+        
     }
 }

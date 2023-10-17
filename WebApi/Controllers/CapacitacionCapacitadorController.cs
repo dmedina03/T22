@@ -23,21 +23,21 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("BandejaRegistrarCapacitacion")]
-        public async Task<ActionResult<ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>>> BandejaCapacitaciones()
+        public async Task<ActionResult<ResponseBase<List<BandejaResgistrarCapacitacionesDtoResponse>>>> BandejaCapacitaciones()
             => await _capacitacionCapacitadorService.GetBandejaRegistrarCapacitaciones();
         [HttpGet("BandejaSeguimientoCapacitacion")]
-        public async Task<ActionResult<ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>>> BandejaSeguimientoCapacitaciones()
+        public async Task<ActionResult<ResponseBase<List<BandejaSeguimientoCapacitacionDtoResponse>>>> BandejaSeguimientoCapacitaciones()
             => await _capacitacionCapacitadorService.GetBandejaSeguimientoCapacitaciones();
         [HttpGet("Capacitacion/{IdCapacitacionSolicitud}")]
-        public async Task<ActionResult<ResponseBase<CapacitacionCapacitadorDTOResponse>>> GetById(int IdCapacitacionSolicitud)
+        public async Task<ActionResult<ResponseBase<CapacitacionCapacitadorDtoResponse>>> GetById(int IdCapacitacionSolicitud)
             => await _capacitacionCapacitadorService.GetById(IdCapacitacionSolicitud);
 
 
         [HttpPost("RegistrarCapacitacion")]
-        public async Task<ActionResult<ResponseBase<bool>>> CrearCapacitacion(CapacitacionCapacitadorSolicitudDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> CrearCapacitacion(CapacitacionCapacitadorSolicitudDtoRequest request)
             => await _capacitacionCapacitadorService.CreateAsync(request);
         [HttpPost("RevisionCapacitacion")]
-        public async Task<ActionResult<ResponseBase<bool>>> RevisionCapacitacion(RevisionCapacitacionDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> RevisionCapacitacion(RevisionCapacitacionDtoRequest request)
             => await _capacitacionCapacitadorService.CreateRevisionCapacitacion(request);
 
     }

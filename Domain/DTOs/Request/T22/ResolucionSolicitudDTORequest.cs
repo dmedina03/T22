@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class ResolucionSolicitudDTORequest
+    public class ResolucionSolicitudDtoRequest
     {
         public int IdResolucionSolicitud { get; set; }
         [JsonIgnore]
@@ -18,6 +18,6 @@ namespace Domain.DTOs.Request.T22
         public long IntNumeroResolucion { get; set; }
         [JsonIgnore]
         public bool BlActiva { get; set; }
-        public DocumentoSolicitudDTORequest DocumentoResolucion { get; set; }
+        public DocumentoSolicitudDtoRequest DocumentoResolucion { get; set; } = new();
     }
 }

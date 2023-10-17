@@ -23,32 +23,32 @@ namespace Aplication.Services.T22.TipoCapacitacionServices
             _mapper = mapper;
         }
 
-        public async Task<ResponseBase<List<TipoCapacitacionDTOResponse>>> GetAll()
+        public async Task<ResponseBase<List<TipoCapacitacionDtoResponse>>> GetAll()
         {
             bool isEnable = true;
             var data = (await _tipoCapacitacinoRepository.GetAllAsync(x => x.BlIsEnable == isEnable)).ToList();
             
-            var lista = _mapper.Map<List<TipoCapacitacionDTOResponse>>(data);
+            var lista = _mapper.Map<List<TipoCapacitacionDtoResponse>>(data);
 
-            if (lista == null || lista.Count() == 0)
+            if (lista == null || lista.Count == 0)
             {
-                return new ResponseBase<List<TipoCapacitacionDTOResponse>>(HttpStatusCode.OK,"El servicio respondio OK, pero sin datos.",lista,lista.Count());
+                return new ResponseBase<List<TipoCapacitacionDtoResponse>>(HttpStatusCode.OK,"El servicio respondio OK, pero sin datos.",lista,0);
             }
-            return new ResponseBase<List<TipoCapacitacionDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+            return new ResponseBase<List<TipoCapacitacionDtoResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count);
         }
 
-        public async Task<ResponseBase<TipoCapacitacionDTOResponse>> GetById(int Id)
+        public async Task<ResponseBase<TipoCapacitacionDtoResponse>> GetById(int Id)
         {
             bool isEnable = true;
             var data = await _tipoCapacitacinoRepository.GetAsync(x => x.IdTipoCapacitacion == Id && x.BlIsEnable == isEnable);
 
-            var entity = _mapper.Map<TipoCapacitacionDTOResponse>(data);
+            var entity = _mapper.Map<TipoCapacitacionDtoResponse>(data);
 
             if (entity == null)
             {
-                return new ResponseBase<TipoCapacitacionDTOResponse>(HttpStatusCode.OK, "No existe un Tipo capacitación con ese Id", entity, 1);
+                return new ResponseBase<TipoCapacitacionDtoResponse>(HttpStatusCode.OK, "No existe un Tipo capacitación con ese Id", entity, 1);
             }
-            return new ResponseBase<TipoCapacitacionDTOResponse>(HttpStatusCode.OK, "OK", entity, 1);
+            return new ResponseBase<TipoCapacitacionDtoResponse>(HttpStatusCode.OK, "OK", entity, 1);
         }
     }
 }

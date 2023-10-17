@@ -35,7 +35,9 @@ namespace Persistence.FluentConfig.T22
                 
             entity.Property(p => p.VcTipoSolicitante).IsRequired();
             entity.Property(p => p.TipoSolicitudId).IsRequired();
-            entity.Property(p => p.UsuarioAsignadoId);
+            entity.Property(p => p.UsuarioAsignadoValidadorId);
+            entity.Property(p => p.UsuarioAsignadoCoordinadorId);
+            entity.Property(p => p.UsuarioAsignadoSubdirectorId);
             entity.Property(p => p.UsuarioId).IsRequired();
             entity.Property(p => p.VcNombreUsuario).IsRequired();
             entity.Property(p => p.IntNumeroIdentificacionUsuario).IsRequired();

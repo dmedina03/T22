@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.T22
 {
-    public class CapacitadorTipoCapacitacionDTOResponse
+    public class CapacitadorTipoCapacitacionDtoResponse
     {
-        public string VcTipoCapacitacion { get; set; }
-        public string IdCapacitadorSolicitud { get; set; }
+        public string VcTipoCapacitacion { get; set; } = string.Empty;
+        public string IdCapacitadorSolicitud { get; set; } = string.Empty;
     }
 }

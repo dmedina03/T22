@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class CapacitadoresSuspendidosInvimaDTO
+    public class CapacitadoresSuspendidosInvimaDto
     {
 
-        public string EntidadTerritorial { get; set; }
-        public string FechaResolucionCancelacion { get; set; }
-        public string NumeroActoAdministrativoResolucion { get; set; }
-        public string NombreSolicitante { get; set; }
-        public string TipoIdentificacionSolicitante { get; set; }
-        public string Motivo { get; set; }
-        public string NombreCapacitador { get; set; }
-        public long NumeroIdentificacionCapacitador { get; set; }
-        public string TituloProfesional { get; set; }
-        public string NumeroMatriculaProfesional { get; set; }
-        public string DireccionNotificacion { get; set; }
+        public string EntidadTerritorial { get; set; } = string.Empty;
+        public string FechaResolucionCancelacion { get; set; } = string.Empty;
+        public string NumeroActoAdministrativoResolucion { get; set; } = string.Empty;
+        public string NombreSolicitante { get; set; } = string.Empty;
+        public string TipoIdentificacionSolicitante { get; set; } = string.Empty;
+        public string Motivo { get; set; } = string.Empty;
+        public string NombreCapacitador { get; set; } = string.Empty;
+        public long NumeroIdentificacionCapacitador { get; set; } = 0;
+        public string TituloProfesional { get; set; } = string.Empty;
+        public string NumeroMatriculaProfesional { get; set; } = string.Empty;
+        public string DireccionNotificacion { get; set; } = string.Empty;
         public long Telefono { get; set; }
-        public string ManipuladorCarnes { get; set; }
-        public string ManipuladorLeche { get; set; }
-        public string ManipuladorAlimentos { get; set; }
+        public string ManipuladorCarnes { get; set; } = string.Empty;
+        public string ManipuladorLeche { get; set; } = string.Empty;
+        public string ManipuladorAlimentos { get; set; } = string.Empty;
 
 
     }

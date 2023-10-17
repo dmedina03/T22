@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class RevisionCapacitacionDTORequest
+    public class RevisionCapacitacionDtoRequest
     {
         public int CapacitacionId { get; set; }
         public bool BlSeguimiento { get; set; }
         /// <summary>
         /// Usuario quien realizo el seguimiento de la capacitación
         /// </summary>
-        public string UsuarioSeguimientoId { get; set; }
-        public List<DocumentoSolicitudDTORequest> Documentos { get; set; } = new();
+        public string UsuarioSeguimientoId { get; set; } = string.Empty;
+        public List<DocumentoSolicitudDtoRequest> Documentos { get; set; } = new();
     }
 }

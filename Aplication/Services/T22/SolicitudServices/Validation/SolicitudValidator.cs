@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.SolicitudServices.Validation
 {
-    public class SolicitudValidator : AbstractValidator<SolicitudDTORequest>
+    public class SolicitudValidator : AbstractValidator<SolicitudDtoRequest>
     {
         private readonly ISolicitudRespository _solicitudRespository;
 

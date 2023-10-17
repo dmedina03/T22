@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Validation
 {
-    public class CapacitacionCapacitadorValidator : AbstractValidator<CapacitacionCapacitadorSolicitudDTORequest>
+    public class CapacitacionCapacitadorValidator : AbstractValidator<CapacitacionCapacitadorSolicitudDtoRequest>
     {
         public CapacitacionCapacitadorValidator()
         {
@@ -93,13 +93,5 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Valid
 
         }
 
-        private bool NotContainRestrictedCharacters(string campo)
-        {
-            // Define los caracteres que no deben estar presentes en el campo.
-            char[] caracteresRestringidos = { 'O', 'E', 'S', 'Ñ' };
-
-            // Verifica si alguno de los caracteres restringidos está presente en el campo.
-            return !campo.Any(c => caracteresRestringidos.Contains(c));
-        }
     }
 }

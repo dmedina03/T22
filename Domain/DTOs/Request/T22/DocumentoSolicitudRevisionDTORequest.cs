@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class DocumentoSolicitudRevisionDTORequest
+    public class DocumentoSolicitudRevisionDtoRequest
     {
         public int IdDocumento { get; set; }
         public bool BlIsValid { get; set; }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.TipoCapacitacionServices
 {
-    public interface ITipoCapacitacionService : IGetService<TipoCapacitacionDTOResponse>
+    public interface ITipoCapacitacionService : IGetService<TipoCapacitacionDtoResponse>
     {
     }
 }

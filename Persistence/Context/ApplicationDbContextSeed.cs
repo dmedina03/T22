@@ -14,6 +14,8 @@ namespace Persistence.Context
     {
         public static void EnsureSeed(this IUnitOfWork context)
         {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
+
             CargarTipoResolucion(context);
             CargarResultadoValidacion(context);
             CargarTipoSolicitud(context);

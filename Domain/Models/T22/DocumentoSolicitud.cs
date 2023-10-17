@@ -12,9 +12,9 @@ namespace Domain.Models.T22
         public int SolicitudId { get; set; }
         public Guid UsuarioId { get; set; }
         public int TipoDocumentoId { get; set; }
-        public string VcNombreDocumento { get; set; }
+        public string VcNombreDocumento { get; set; } = string.Empty;
         public DateTime DtFechaCargue { get; set; }
-        public string VcPath { get; set; }
+        public string VcPath { get; set; } = string.Empty;
         public int IntVersion { get; set; }
         public bool? BlUsuarioVentanilla { get; set; }
         public bool? BlIsValid { get; set; }

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.RecursoSolicitudServices.Validation
 {
-    public class VerificacionAprobacionRecursoSolicitudDTOValidator : AbstractValidator<VerificacionAprobacionRecursoSolicitudDTORequest>
+    public class VerificacionAprobacionRecursoSolicitudDtoValidator : AbstractValidator<VerificacionAprobacionRecursoSolicitudDtoRequest>
     {
-        public VerificacionAprobacionRecursoSolicitudDTOValidator()
+        public VerificacionAprobacionRecursoSolicitudDtoValidator()
         {
 
             RuleSet("Any", () =>
@@ -20,10 +20,10 @@ namespace Aplication.Services.T22.RecursoSolicitudServices.Validation
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} no puede ser nulo o vacío.");
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                 When(P => P.RespuestaRecurso is not null, () =>
                 {
-                    RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDTOValidator(), "Any");
+                    RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDtoValidator(), "Any");
                 });
 
                 When(x => x.SeguimientoAuditoriaSolicitud is not null, () =>

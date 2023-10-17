@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.RecursoSolicitudServices
 {
-    public interface IRecursoSolicitudService : ICreateService<DocumentoSolicitudDTORequest>
+    public interface IRecursoSolicitudService : ICreateService<DocumentoSolicitudDtoRequest>
     {
-        Task<ResponseBase<bool>> CreateRevisionRecursoValidador(RevisionRecursoSolicitudDTORequest request);
-        Task<ResponseBase<bool>> CreateVerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDTORequest request);
-        Task<ResponseBase<bool>> CreateAprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDTORequest request);
+        Task<ResponseBase<bool>> CreateRevisionRecursoValidador(RevisionRecursoSolicitudDtoRequest request);
+        Task<ResponseBase<bool>> CreateVerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDtoRequest request);
+        Task<ResponseBase<bool>> CreateAprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDtoRequest request);
     }
 }

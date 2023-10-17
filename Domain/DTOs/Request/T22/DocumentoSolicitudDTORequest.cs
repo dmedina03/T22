@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class DocumentoSolicitudDTORequest
+    public class DocumentoSolicitudDtoRequest
     {
         public int IdDocumento { get; set; }
         public int? SolicitudId { get; set; } = 0;
         public string? UsuarioId { get; set; }
         public int TipoDocumentoId { get; set; }
-        public string VcNombreDocumento { get; set; }
+        public string VcNombreDocumento { get; set; } = string.Empty;
         [JsonIgnore]
         public DateTime DtFechaCargue { get; set; } = DateTime.UtcNow.AddHours(-5);
-        public string VcPath { get; set; }
+        public string VcPath { get; set; } = string.Empty;
         [JsonIgnore]
         public int IntVersion { get; set; } = 1;
         [JsonIgnore]

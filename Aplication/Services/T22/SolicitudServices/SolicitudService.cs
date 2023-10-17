@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.DTOs.Request.T22;
 using Domain.DTOs.Response.Parametro;
 using Domain.DTOs.Response.T22;
+using Domain.Models;
 using Domain.Models.Parametro;
 using Domain.Models.T22;
 using Dominio.DTOs.Response.ResponseBase;
@@ -12,6 +13,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.IdentityModel.Tokens;
+using Persistence.Context;
 using Persistence.Repository.IRepositories.Generic;
 using Persistence.Repository.IRepositories.IParametroRepository;
 using Persistence.Repository.IRepositories.IT22;
@@ -22,6 +24,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -31,57 +34,53 @@ namespace Aplication.Services.T22.SolicitudServices
 {
     public class SolicitudService : ISolicitudService
     {
+#pragma warning disable
         private readonly ISolicitudRespository _solicitudRespository;
-        private readonly ICapacitadorSolicitudRepository _capacitadorSolicitudRespository;
         private readonly IEstadoRepository _estadoRepository;
         private readonly IDocumentoSolicitudRepository _documentoSolicitudRepository;
         private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly IParametroDetalleService _parametroService;
         private readonly ITipoCapacitacionRepository _tipoCapacitacionRepository;
         private readonly ICapacitadorTipoCapacitacionRepository _capacitadorTipoCapacitacionRepository;
-        private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaSolicitudRepository;
-        private readonly ISubsanacionSolicitudRepository _subsanacionSolicitudRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
-        private readonly IValidator<SolicitudDTORequest> _validatorSolicitud;
+        private readonly IValidator<SolicitudDtoRequest> _validatorSolicitud;
         private readonly IValidator<IEnumerable<DocumentoSolicitud>> _validatorDocumento;
-        private readonly IValidator<IEnumerable<DocumentoSolicitudDTORequest>> _validatorIenumerableDocumento;
-        private readonly IValidator<SolicitudRevisionValidadorDTORequest> _validatorSolicitudRevisionValidador;
-        private readonly IValidator<SolicitudRevisionCoordinadorDTORequest> _validatorSolicitudRevisionCoordinador;
-        private readonly IValidator<SolicitudRevisionSubdirectorDTORequest> _validatorSolicitudRevisionSubdirector;
+        private readonly IValidator<IEnumerable<DocumentoSolicitudDtoRequest>> _validatorIenumerableDocumento;
+        private readonly IValidator<SolicitudRevisionValidadorDtoRequest> _validatorSolicitudRevisionValidador;
+        private readonly IValidator<SolicitudRevisionCoordinadorDtoRequest> _validatorSolicitudRevisionCoordinador;
+        private readonly IValidator<SolicitudRevisionSubdirectorDtoRequest> _validatorSolicitudRevisionSubdirector;
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
 
-        public SolicitudService(ISolicitudRespository solicitudRespository, IValidator<SolicitudDTORequest> validatorSolicitud, IMapper mapper,
-            IUnitOfWork unitOfWork, ICapacitadorSolicitudRepository capacitadorSolicitudRespository, IDocumentoSolicitudRepository documentoSolicitudRepository,
+        public SolicitudService(ISolicitudRespository solicitudRespository, IValidator<SolicitudDtoRequest> validatorSolicitud, IMapper mapper,
+            IUnitOfWork unitOfWork, IDocumentoSolicitudRepository documentoSolicitudRepository,
             IValidator<IEnumerable<DocumentoSolicitud>> validatorDocumento, IEstadoRepository estadoRepository, IParametroDetalleRepository parametroDetalleRepository,
             ITipoCapacitacionRepository tipoCapacitacionRepository, ICapacitadorTipoCapacitacionRepository capacitadorTipoCapacitacionRepository,
-            ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitud, ISubsanacionSolicitudRepository subsanacionSolicitudRepository,
-            IValidator<SolicitudRevisionValidadorDTORequest> validatorSolicitudRevisionValidador, IValidator<SolicitudRevisionCoordinadorDTORequest> validatorSolicitudRevisionCoordinadorSubdirector, 
-            IResolucionSolicitudRepository resolucionSolicitudRepository, IValidator<SolicitudRevisionSubdirectorDTORequest> validatorSolicitudRevisionSubdirector,
-            IParametroDetalleService parametroService, IValidator<IEnumerable<DocumentoSolicitudDTORequest>> validatorIenumerableDocumento)
+            IValidator<SolicitudRevisionValidadorDtoRequest> validatorSolicitudRevisionValidador, IValidator<SolicitudRevisionCoordinadorDtoRequest> validatorSolicitudRevisionCoordinadorSubdirector, 
+            IResolucionSolicitudRepository resolucionSolicitudRepository, IValidator<SolicitudRevisionSubdirectorDtoRequest> validatorSolicitudRevisionSubdirector,
+            IParametroDetalleService parametroService, IValidator<IEnumerable<DocumentoSolicitudDtoRequest>> validatorIenumerableDocumento, ApplicationDbContext context)
         {
             _solicitudRespository = solicitudRespository;
             _validatorSolicitud = validatorSolicitud;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _capacitadorSolicitudRespository = capacitadorSolicitudRespository;
             _documentoSolicitudRepository = documentoSolicitudRepository;
             _validatorDocumento = validatorDocumento;
             _estadoRepository = estadoRepository;
             _parametroDetalleRepository = parametroDetalleRepository;
             _tipoCapacitacionRepository = tipoCapacitacionRepository;
             _capacitadorTipoCapacitacionRepository = capacitadorTipoCapacitacionRepository;
-            _subsanacionSolicitudRepository = subsanacionSolicitudRepository;
-            _seguimientoAuditoriaSolicitudRepository = seguimientoAuditoriaSolicitud;
             _validatorSolicitudRevisionValidador = validatorSolicitudRevisionValidador;
             _validatorSolicitudRevisionCoordinador = validatorSolicitudRevisionCoordinadorSubdirector;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
             _validatorSolicitudRevisionSubdirector = validatorSolicitudRevisionSubdirector;
             _parametroService = parametroService;
             _validatorIenumerableDocumento = validatorIenumerableDocumento;
+            _context = context;
         }
-        public async Task<ResponseBase<bool>> CreateAsync(SolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateAsync(SolicitudDtoRequest request)
         {
             var result = await _validatorSolicitud.ValidateAsync(request, opt => opt.IncludeRuleSets("Create"));
             if (!result.IsValid)
@@ -93,7 +92,7 @@ namespace Aplication.Services.T22.SolicitudServices
 
             await _solicitudRespository.AddAsync(entitySolicitud);
 
-            if (entitySolicitud.CapacitadorSolicitud.Count() != request.CapacitadorSolicitud.Count())
+            if (entitySolicitud.CapacitadorSolicitud.Count != request.CapacitadorSolicitud.Count())
             {
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, message: "Ocurrio un error con la cantidad de capacitadores, verifique nuevamente", false);
             }
@@ -144,13 +143,13 @@ namespace Aplication.Services.T22.SolicitudServices
 
         }
 
-        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>> GetSolicitudesByRadicado(string usuarioId, string? radicado)
+        public async Task<ResponseBase<List<SolicitudBandejaCiudadanoDtoResponse>>> GetSolicitudesByRadicado(string usuarioId, string? radicado)
         {
             var query = (await _solicitudRespository.GetAllAsync(x => x.UsuarioId.ToString() == usuarioId));
 
             if (query is null)
             {
-                return new ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>(HttpStatusCode.NoContent,"La solicitud respondio bien, pero sin datos",null);
+                return new ResponseBase<List<SolicitudBandejaCiudadanoDtoResponse>>(HttpStatusCode.NoContent,"La solicitud respondio bien, pero sin datos",null);
             }
 
             if (radicado != null)
@@ -158,13 +157,14 @@ namespace Aplication.Services.T22.SolicitudServices
                 query = query.Where(x => x.VcRadicado == radicado).ToList();
             }
 
-            List<SolicitudBandejaCiudadanoDTOResponse> lista = new();
+            List<SolicitudBandejaCiudadanoDtoResponse> lista = new();
 
             foreach (var item in query)
             {
 
-                lista.Add(new SolicitudBandejaCiudadanoDTOResponse
+                lista.Add(new SolicitudBandejaCiudadanoDtoResponse
                 {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                     IdSolcitud = item.IdSolicitud,
                     VcRadicado = item.VcRadicado,
                     VcEstado = (await _estadoRepository.GetAsync(x => x.IdEstado == item.EstadoId)).VcTipoEstado,
@@ -174,100 +174,97 @@ namespace Aplication.Services.T22.SolicitudServices
 
             }
 
-            return new ResponseBase<List<SolicitudBandejaCiudadanoDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+            return new ResponseBase<List<SolicitudBandejaCiudadanoDtoResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count);
 
         }
 
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaValidador(string? UsuarioAsignadoId)
         {
 
-            var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaValidador {UsuarioAsignadoId}")).ToList();
+            var spNuevo = (_unitOfWork.GetSet<int, SpBandejaFuncionarioDto>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaValidador {UsuarioAsignadoId}")).ToList();
 
-            if (data is null || data.Count == 0)
+            if (spNuevo is null || spNuevo.Count == 0)
             {
-                return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
+                return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
 
-            List<SolicitudBandejaSolicitudesDTOResponse> lista = new();
-
-            foreach (var item in data)
-            {
-                lista.Add(new SolicitudBandejaSolicitudesDTOResponse
-                {
-                    IdSolicitud = item.IdSolicitud,
-                    VcRadicado = item.VcRadicado,
-                    VcNombreUsuario = item.VcNombreUsuario,
-                    IntNumeroIdentificacionUsuario = item.IntNumeroIdentificacionUsuario,
-                    VcTipoSolicitud = (await _parametroDetalleRepository.GetAsync(x => x.IdParametroDetalle == item.TipoSolicitudId)).VcNombre,
-                    VcTipoSolicitante = item.VcTipoSolicitante,
-                    DtFechaSolicitud = item.DtFechaSolicitud.ToString("dd/MM/yyyy"),
-                    VcTipoEstado = (await _estadoRepository.GetAsync(x => x.IdEstado == item.EstadoId)).VcTipoEstado,
-
-                });
-            }
-
-            return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+            return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.OK, "OK", spNuevo, spNuevo.Count);
         }
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaCoordinador(string? UsuarioAsignadoId)
         {
 
-            var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaCoordinador {UsuarioAsignadoId}")).ToList();
+            var spNuevo = (_unitOfWork.GetSet<int, SpBandejaFuncionarioDto>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaCoordinador {UsuarioAsignadoId}")).ToList();
 
-            if (data is null || data.Count == 0)
+            if (spNuevo is null || spNuevo.Count == 0)
             {
-                return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
+                return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
 
-            //Falta poner el nombre de resultado de validación
-            var lista = await MapToBandejaSolicitud(data);
+            foreach (var item in spNuevo)
+            {
+                var solicitudResuladoValidacion = (await _solicitudRespository.GetAsync(x => x.IdSolicitud == item.IdSolicitud)).ResultadoValidacionId;
 
-            return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+                item.VcTipoEstado = $"{item.VcTipoEstado}" +
+                                    $" - {(await _parametroDetalleRepository.GetAsync(x => x.IdParametroDetalle == solicitudResuladoValidacion)).TxDescripcion}";
+                
+            }
+
+            return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.OK, "OK", spNuevo, spNuevo.Count);
         }
-        public async Task<ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
+        public async Task<ResponseBase<List<SpBandejaFuncionarioDto>>> GetSolicitudesBandejaSubdirector(string? UsuarioAsignadoId)
         {
+            var spNuevo = (_unitOfWork.GetSet<int, SpBandejaFuncionarioDto>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaSubdirector {UsuarioAsignadoId}")).ToList();
 
-            var data = (_unitOfWork.GetSet<int, Solicitud>().FromSqlInterpolated($"EXEC manipalimentos.ObtenerSolicitudesBandejaSubdirector {UsuarioAsignadoId}")).ToList();
-
-            if (data is null || data.Count == 0)
+            if (spNuevo is null || spNuevo.Count == 0)
             {
-                return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
+                return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.NoContent, "La solicitud respondio bien, pero sin datos", null);
             }
 
-            //Falta poner el nombre de resultado de validación
-            var lista = await MapToBandejaSolicitud(data);
+            foreach (var item in spNuevo)
+            {
+                var solicitudResuladoValidacion = (await _solicitudRespository.GetAsync(x => x.IdSolicitud == item.IdSolicitud)).ResultadoValidacionId;
 
-            return new ResponseBase<List<SolicitudBandejaSolicitudesDTOResponse>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+                item.VcTipoEstado = $"{item.VcTipoEstado}" +
+                                    $" - {(await _parametroDetalleRepository.GetAsync(x => x.IdParametroDetalle == solicitudResuladoValidacion)).TxDescripcion}";
+
+            }
+
+            return new ResponseBase<List<SpBandejaFuncionarioDto>>(HttpStatusCode.OK, "OK", spNuevo, spNuevo.Count);
         }
 
-        public async Task<ResponseBase<SolicitudDTOResponse>> GetById(int SolicitudId)
+        public async Task<ResponseBase<SolicitudDtoResponse>> GetById(int Id)
         {
-            var solicitud = await _solicitudRespository.GetAsync(x => x.IdSolicitud == SolicitudId, null, null, "CapacitadorSolicitud,SeguimientoAuditoriaSolicitud");
+            var solicitud = await _solicitudRespository.GetAsync(x => x.IdSolicitud == Id, null, null, "CapacitadorSolicitud,SeguimientoAuditoriaSolicitud,ResolucionSolicitud");
             
             if (solicitud is null)
             {
-                return new ResponseBase<SolicitudDTOResponse>(HttpStatusCode.NoContent, "La solicitud respondio Ok pero sin datos", null, 0);
+                return new ResponseBase<SolicitudDtoResponse>(HttpStatusCode.NoContent, "La solicitud respondio Ok pero sin datos", null, 0);
 
             }
 
-            SolicitudDTOResponse solicitudDTOResponse = new SolicitudDTOResponse();
+            SolicitudDtoResponse solicitudDTOResponse = new SolicitudDtoResponse();
 
             solicitudDTOResponse.IdSolicitud = solicitud.IdSolicitud;
             solicitudDTOResponse.VcRadicado = solicitud.VcRadicado;
             solicitudDTOResponse.UsuarioId = solicitud.UsuarioId.ToString();
-            solicitudDTOResponse.UsuarioAsignadoId = solicitud.UsuarioAsignadoId.ToString();
+            solicitudDTOResponse.UsuarioAsignadoValidadorId = solicitud.UsuarioAsignadoValidadorId.ToString();
+            solicitudDTOResponse.UsuarioAsignadoCoordinadorId = solicitud.UsuarioAsignadoCoordinadorId.ToString();
+            solicitudDTOResponse.UsuarioAsignadoSubdirectorId = solicitud.UsuarioAsignadoSubdirectorId.ToString();
             solicitudDTOResponse.VcFechaSolicitud = solicitud.DtFechaSolicitud.ToString("yyyy-MM-dd");
             solicitudDTOResponse.VcEstado = (await _estadoRepository.GetAsync(x => x.IdEstado == solicitud.EstadoId)).VcTipoEstado;
             solicitudDTOResponse.VcTipoTramite = (await _parametroDetalleRepository.GetAsync(x => x.IdParametroDetalle == solicitud.TipoSolicitudId)).VcNombre;
 
             solicitudDTOResponse.CapacitadoresSolicitud = await GetCapacitadorSolicitudByCollection(solicitud.CapacitadorSolicitud);
 
+            solicitudDTOResponse.ResolucionSolicitudes = await GetResolucionSolicitudesByCollection(solicitud.ResolucionSolicitud);
+
             solicitudDTOResponse.SeguimientoAuditoriaSolicitud = await GetSeguimientoAuditoriaByCollection(solicitud.SeguimientoAuditoriaSolicitud);
             solicitudDTOResponse.DocumentosRecursoReposicion = await GetDocumentoRecursosSolicitud(solicitud.IdSolicitud);
 
-            return new ResponseBase<SolicitudDTOResponse>(HttpStatusCode.OK,"OK",solicitudDTOResponse,1);
+            return new ResponseBase<SolicitudDtoResponse>(HttpStatusCode.OK,"OK",solicitudDTOResponse,1);
         }
 
-        public async Task<ResponseBase<bool>> CreateRevisionValidador(SolicitudRevisionValidadorDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionValidador(SolicitudRevisionValidadorDtoRequest request)
         {
             Solicitud solicitud = new Solicitud();
             //Valida el DTO
@@ -297,22 +294,38 @@ namespace Aplication.Services.T22.SolicitudServices
                 return new ResponseBase<bool>(HttpStatusCode.BadRequest, "La solicitud no se encuentra en el estado correcto, verifique nuevamente.", null);
             }
 
-            if (request.UsuarioAsignadoId is not null)
+            if (request.Asignado)
             {
-                solicitud.UsuarioAsignadoId = request.UsuarioAsignadoId;
+                solicitud.UsuarioAsignadoValidadorId = request.UsuarioAsignadoId;
                 await _solicitudRespository.UpdateAsync(solicitud);
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
             else
             {
-                solicitud.UsuarioAsignadoId = null;
+                solicitud.UsuarioAsignadoValidadorId = request.UsuarioAsignadoId;
             }
 
 
             //Estado actual de la solicitud
             var estadoId = solicitud.EstadoId;
             solicitud.ResultadoValidacionId = request.ResultadoValidacionId;
+
+
+            List<SeguimientoAuditoriaSolicitud> listSeguimientoAuditoria = new List<SeguimientoAuditoriaSolicitud>();
+
+            if (request.SeguimientoAuditoriaSolicitud is not null)
+            {
+                request.SeguimientoAuditoriaSolicitud.EstadoId = estadoId;
+                SeguimientoAuditoriaSolicitud seguimientoAuditoriaSolicitud = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
+                seguimientoAuditoriaSolicitud.SolicitudId = solicitud.IdSolicitud;
+
+                //Asignacion de seguimiento y auditoria a la solicitud
+                listSeguimientoAuditoria.Add(seguimientoAuditoriaSolicitud);
+
+                //Asignacion de auditoria seguimiento
+                solicitud.SeguimientoAuditoriaSolicitud = listSeguimientoAuditoria;
+            }
 
             if (estadoId == (int)EnumEstado.Aprobado)
             {
@@ -353,17 +366,6 @@ namespace Aplication.Services.T22.SolicitudServices
 
             }
 
-            List<SeguimientoAuditoriaSolicitud> listSeguimientoAuditoria = new List<SeguimientoAuditoriaSolicitud>();
-
-            if (request.SeguimientoAuditoriaSolicitud is not null)
-            {
-                request.SeguimientoAuditoriaSolicitud.EstadoId = estadoId;
-                SeguimientoAuditoriaSolicitud seguimientoAuditoriaSolicitud = _mapper.Map<SeguimientoAuditoriaSolicitud>(request.SeguimientoAuditoriaSolicitud);
-                seguimientoAuditoriaSolicitud.SolicitudId = solicitud.IdSolicitud;
-
-                //Asignacion de seguimiento y auditoria a la solicitud
-                listSeguimientoAuditoria.Add(seguimientoAuditoriaSolicitud);
-            }
 
             if (request.SubsanacionSolicitud is not null)
             {
@@ -387,8 +389,6 @@ namespace Aplication.Services.T22.SolicitudServices
             //Asignacion de estado
             solicitud.EstadoId = (int)EnumEstado.EnVerificacion;
 
-            //Asignacion de auditoria seguimiento
-            solicitud.SeguimientoAuditoriaSolicitud = listSeguimientoAuditoria;
 
             await _solicitudRespository.UpdateAsync(solicitud);
             await _unitOfWork.CommitAsync();
@@ -396,7 +396,7 @@ namespace Aplication.Services.T22.SolicitudServices
             return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
 
         }
-        public async Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionCoordinador(SolicitudRevisionCoordinadorDtoRequest request)
         {
             Solicitud solicitud = new Solicitud();
 
@@ -430,16 +430,16 @@ namespace Aplication.Services.T22.SolicitudServices
             }
 
             //Si el usuario asignado no es nulo, se asigna al usuario correspondiente y se envia así la solicitud, aun en esta En Verficacion
-            if (request.UsuarioAsignadoId is not null)
+            if (request.Asignado)
             {
-                solicitud.UsuarioAsignadoId = request.UsuarioAsignadoId;
+                solicitud.UsuarioAsignadoCoordinadorId = request.UsuarioAsignadoId;
                 await _solicitudRespository.UpdateAsync(solicitud);
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
             else
             {
-                solicitud.UsuarioAsignadoId = null;
+                solicitud.UsuarioAsignadoCoordinadorId = request.UsuarioAsignadoId;
             }
 
 
@@ -500,7 +500,7 @@ namespace Aplication.Services.T22.SolicitudServices
             return new ResponseBase<bool>(HttpStatusCode.Created, "OK", true, 1);
 
         }
-        public async Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionSubdirectorDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionSubdirector(SolicitudRevisionSubdirectorDtoRequest request)
         {
             Solicitud solicitud = new Solicitud();
 
@@ -529,16 +529,16 @@ namespace Aplication.Services.T22.SolicitudServices
                 return new ResponseBase<bool>(HttpStatusCode.NoContent, "No existe una Solicitud relacionada a ese Id", true, 0);
             }
 
-            if (request.UsuarioAsignadoId is not null)
+            if (request.Asignado)
             {
-                solicitud.UsuarioAsignadoId = request.UsuarioAsignadoId;
+                solicitud.UsuarioAsignadoSubdirectorId = request.UsuarioAsignadoId;
                 await _solicitudRespository.UpdateAsync(solicitud);
                 await _unitOfWork.CommitAsync();
                 return new ResponseBase<bool>(HttpStatusCode.OK, "Se ha asignado un nuevo usuario a la solicitud", true, 0);
             }
             else
             {
-                solicitud.UsuarioAsignadoId = null;
+                solicitud.UsuarioAsignadoSubdirectorId = request.UsuarioAsignadoId;
             }
 
             //Estado actual de la solicitud
@@ -665,7 +665,7 @@ namespace Aplication.Services.T22.SolicitudServices
                 //La resolución estara activa por defecto, tras pasar 1 año, ya quedará inactiva
                 resolucionSolicitud.BlActiva = true;
                 //Numero de resolucion
-                resolucionSolicitud.IntNumeroResolucion = await GetNumeroResolucion();
+                resolucionSolicitud.VcNumeroResolucion = await GetNumeroResolucion();
             }
 
             //Se almacena la informacion del documento generado por la resolución
@@ -691,14 +691,14 @@ namespace Aplication.Services.T22.SolicitudServices
 
         }
 
-        private async Task<List<DocumentosSolicitudDTOResponse>> GetDocumentosSolicitudByCapacitadorSolicitudId(string capacitadorSolicitudId)
+        private async Task<List<DocumentosSolicitudDtoResponse>> GetDocumentosSolicitudByCapacitadorSolicitudId(string capacitadorSolicitudId)
         {
             bool isUsuarioVentanilla = false;
             var documentos = (await _documentoSolicitudRepository.GetAllAsync(x => x.UsuarioId.ToString() == capacitadorSolicitudId.ToString() && x.BlUsuarioVentanilla == isUsuarioVentanilla )).ToList();
-            List<DocumentosSolicitudDTOResponse> lista = new();
+            List<DocumentosSolicitudDtoResponse> lista = new();
             foreach (var documento in documentos)
             {
-                lista.Add(new DocumentosSolicitudDTOResponse
+                lista.Add(new DocumentosSolicitudDtoResponse
                 {
 
                     IdDocumento = documento.IdDocumento,
@@ -710,14 +710,36 @@ namespace Aplication.Services.T22.SolicitudServices
             return lista;
         }
 
-        private async Task<List<CapacitadorSolicitudDTOResponse>> GetCapacitadorSolicitudByCollection(ICollection<CapacitadorSolicitud> capacitadores)
+        private async Task<List<ResolucionSolicitudesDTOResponse>> GetResolucionSolicitudesByCollection(ICollection<ResolucionSolicitud> resoluciones)
         {
 
-            List<CapacitadorSolicitudDTOResponse> lista = new();
+            List<ResolucionSolicitudesDTOResponse> lista = new();
+
+            foreach (var resolucion in resoluciones)
+            {
+                lista.Add(new ResolucionSolicitudesDTOResponse
+                {
+
+                    IdResolucionSolicitud = resolucion.IdResolucionSolicitud,
+                    SolicitudId = resolucion.SolicitudId,
+                    DocumentoSolicitudId = resolucion.DocumentoSolicitudId,
+                    TipoResolucionId = resolucion.TipoResolucionId,
+                    FechaResolucion = resolucion.FechaResolucion,
+                    VcNumeroResolucion = resolucion.VcNumeroResolucion,
+                    BlActiva = resolucion.BlActiva
+                });
+            }
+
+            return lista;
+        }
+        private async Task<List<CapacitadorSolicitudDtoResponse>> GetCapacitadorSolicitudByCollection(ICollection<CapacitadorSolicitud> capacitadores)
+        {
+
+            List<CapacitadorSolicitudDtoResponse> lista = new();
 
             foreach (var capacitador in capacitadores)
             {
-                lista.Add(new CapacitadorSolicitudDTOResponse
+                lista.Add(new CapacitadorSolicitudDtoResponse
                 {
                     IdCapacitadorSolicitud = capacitador.IdCapacitadorSolicitud.ToString(),
                     SolicitudId = capacitador.SolicitudId,
@@ -728,7 +750,7 @@ namespace Aplication.Services.T22.SolicitudServices
                     VcTipoIdentificacion = (await _parametroDetalleRepository.GetAsync(p => p.IdParametroDetalle == capacitador.TipoIdentificacionId)).VcNombre,
                     IntNumeroIdentificacion = capacitador.IntNumeroIdentificacion,
                     VcTituloProfesional = capacitador.VcTituloProfesional,
-                    vcNumeroTarjetaProfesional = capacitador.vcNumeroTarjetaProfesional,
+                    VcNumeroTarjetaProfesional = capacitador.vcNumeroTarjetaProfesional,
                     IntTelefono = capacitador.IntTelefono,
                     VcEmail = capacitador.VcEmail,
                     CapacitadorTipoCapacitacion = await GetCapacitadorTipoCapacitacionByCapacitadorId(capacitador.IdCapacitadorSolicitud.ToString()),
@@ -738,15 +760,15 @@ namespace Aplication.Services.T22.SolicitudServices
 
             return lista;
         }
-        private async Task<List<CapacitadorTipoCapacitacionDTOResponse>> GetCapacitadorTipoCapacitacionByCapacitadorId(string capacitadorId)
+        private async Task<List<CapacitadorTipoCapacitacionDtoResponse>> GetCapacitadorTipoCapacitacionByCapacitadorId(string capacitadorId)
         {
             var collections = await _capacitadorTipoCapacitacionRepository.GetAllAsync(x => x.IdCapacitadorSolicitud == Guid.Parse(capacitadorId));
 
-            List<CapacitadorTipoCapacitacionDTOResponse> lista = new();
+            List<CapacitadorTipoCapacitacionDtoResponse> lista = new();
 
             foreach (var item in collections)
             {
-                lista.Add(new CapacitadorTipoCapacitacionDTOResponse
+                lista.Add(new CapacitadorTipoCapacitacionDtoResponse
                 {
                     VcTipoCapacitacion = (await _tipoCapacitacionRepository.GetAsync(c => c.IdTipoCapacitacion == item.IdTipoCapacitacion)).VcDescripcion,
                     IdCapacitadorSolicitud = item.IdCapacitadorSolicitud.ToString()
@@ -755,12 +777,12 @@ namespace Aplication.Services.T22.SolicitudServices
             return lista;
         }
 
-        private async Task<List<SeguimientoAuditoriaSolicitudDTOResponse>> GetSeguimientoAuditoriaByCollection(ICollection<SeguimientoAuditoriaSolicitud> seguimientoAuditorias)
+        private async Task<List<SeguimientoAuditoriaSolicitudDtoResponse>> GetSeguimientoAuditoriaByCollection(ICollection<SeguimientoAuditoriaSolicitud> seguimientoAuditorias)
         {
-            List<SeguimientoAuditoriaSolicitudDTOResponse> lista = new();
+            List<SeguimientoAuditoriaSolicitudDtoResponse> lista = new();
             foreach (var seguimiento in seguimientoAuditorias)
             {
-                lista.Add(new SeguimientoAuditoriaSolicitudDTOResponse
+                lista.Add(new SeguimientoAuditoriaSolicitudDtoResponse
                 {
                     IdObservacion = seguimiento.IdObservacion,
                     UsuarioId = seguimiento.UsuarioId.ToString(),
@@ -773,13 +795,13 @@ namespace Aplication.Services.T22.SolicitudServices
             return lista;
         }
         
-        private async Task<List<SolicitudBandejaSolicitudesDTOResponse>> MapToBandejaSolicitud(List<Solicitud> data)
+        private async Task<List<SolicitudBandejaSolicitudesDtoResponse>> MapToBandejaSolicitud(List<Solicitud> data)
         {
-            List<SolicitudBandejaSolicitudesDTOResponse> lista = new();
+            List<SolicitudBandejaSolicitudesDtoResponse> lista = new();
 
             foreach (var item in data)
             {
-                lista.Add(new SolicitudBandejaSolicitudesDTOResponse
+                lista.Add(new SolicitudBandejaSolicitudesDtoResponse
                 {
                     IdSolicitud = item.IdSolicitud,
                     VcRadicado = item.VcRadicado,
@@ -797,63 +819,66 @@ namespace Aplication.Services.T22.SolicitudServices
             return lista;
         }
 
-        private async Task<List<DocumentosSolicitudDTOResponse>> GetDocumentoRecursosSolicitud(int solicitudId)
+        private async Task<List<DocumentosSolicitudDtoResponse>> GetDocumentoRecursosSolicitud(int solicitudId)
         {
             string codigoInterno = "bDocumentosSolicitud";
             string nombre = "Recurso";
             var resultQueryParamento = (await _parametroService.listarPorCodigoInterno(codigoInterno)).Data;
 
-            List<DocumentosSolicitudDTOResponse> resultado = new();
+            List<DocumentosSolicitudDtoResponse> resultado = new();
 
-            foreach (var item in resultQueryParamento)
+            if (resultQueryParamento != null)
             {
-                if (item.VcNombre.Contains(nombre))
+                foreach (var item in resultQueryParamento)
                 {
-                    var documentosSolicitud = await _documentoSolicitudRepository.GetAsync(x => x.SolicitudId == solicitudId && x.TipoDocumentoId == item.IdParametroDetalle);
-                    if (documentosSolicitud is not null)
+                    if (item.VcNombre.Contains(nombre))
                     {
-                        resultado.Add(new DocumentosSolicitudDTOResponse
+                        var documentosSolicitud = await _documentoSolicitudRepository.GetAsync(x => x.SolicitudId == solicitudId && x.TipoDocumentoId == item.IdParametroDetalle);
+                        if (documentosSolicitud is not null)
                         {
-                            IdDocumento = documentosSolicitud.IdDocumento,
-                            VcTipoDocumento = (await _parametroDetalleRepository.GetAsync(p => p.IdParametroDetalle == documentosSolicitud.TipoDocumentoId)).VcNombre,
-                            VcPath = documentosSolicitud.VcPath,
-                            BlIsValid = documentosSolicitud.BlIsValid
-                        });
+                            resultado.Add(new DocumentosSolicitudDtoResponse
+                            {
+                                IdDocumento = documentosSolicitud.IdDocumento,
+                                VcTipoDocumento = (await _parametroDetalleRepository.GetAsync(p => p.IdParametroDetalle == documentosSolicitud.TipoDocumentoId)).VcNombre,
+                                VcPath = documentosSolicitud.VcPath,
+                                BlIsValid = documentosSolicitud.BlIsValid
+                            });
+                        }
+
                     }
-                    
                 }
             }
-
+            
             return resultado;
 
         }
-        private async Task<long> GetNumeroResolucion()
+        private async Task<string> GetNumeroResolucion()
         {
             var year = DateTime.UtcNow.AddHours(-5).Year;
 
             long numeroResolucion = 0;
 
             var ultimoNumero = (await _resolucionSolicitudRepository.GetAllAsync(x => x.FechaResolucion.Year == year, 
-                                x => x.OrderByDescending(p => p.IntNumeroResolucion))).FirstOrDefault();
+                                x => x.OrderByDescending(p => p.VcNumeroResolucion))).FirstOrDefault();
 
             if (ultimoNumero is not null)
             {
-                numeroResolucion = ultimoNumero.IntNumeroResolucion + 1;
+                numeroResolucion = Convert.ToInt32(ultimoNumero.VcNumeroResolucion) + 1;
             }
             else
             {
                 numeroResolucion = 1;
             }
 
-            return numeroResolucion;
+            return numeroResolucion.ToString("00000");
 
         }
-        public Task<ResponseBase<List<SolicitudDTOResponse>>> GetAll()
+        public Task<ResponseBase<List<SolicitudDtoResponse>>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseBase<bool>> UpdateDocumentosSolicitud(int idSolicitud, List<DocumentoSolicitudDTORequest> request)
+        public async Task<ResponseBase<bool>> UpdateDocumentosSolicitud(int idSolicitud, List<DocumentoSolicitudDtoRequest> request)
         {
             var result = await _validatorIenumerableDocumento.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 

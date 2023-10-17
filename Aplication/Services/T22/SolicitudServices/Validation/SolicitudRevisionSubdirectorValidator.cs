@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Aplication.Services.T22.SolicitudServices.Validation
 {
-    public class SolicitudRevisionSubdirectorValidator : AbstractValidator<SolicitudRevisionSubdirectorDTORequest>
+    public class SolicitudRevisionSubdirectorValidator : AbstractValidator<SolicitudRevisionSubdirectorDtoRequest>
     {
         public SolicitudRevisionSubdirectorValidator()
         {
@@ -44,6 +44,7 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
 
                     When(x => x.SeguimientoAuditoriaSolicitud is not null, () =>
                     {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                         RuleFor(p => p.SeguimientoAuditoriaSolicitud.VcObservacion)
                             .NotEmpty()
                             .NotNull()

@@ -8,14 +8,8 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class CapacitadorTipoCapacitacionDTORequest
+    public class CapacitadorTipoCapacitacionDtoRequest
     {
         public int IdTipoCapacitacion { get; set; }
-        //[JsonIgnore]
-        //public Guid IdCapacitadorSolicitud { get; set; }
-        //public CapacitadorTipoCapacitacionDTORequest()
-        //{
-        //    IdCapacitadorSolicitud = new CapacitadorSolicitudDTORequest().IdCapacitadorSolicitud;
-        //}
     }
 }

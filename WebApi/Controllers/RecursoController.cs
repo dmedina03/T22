@@ -18,19 +18,19 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("GenerarRecurso")]
-        public async Task<ActionResult<ResponseBase<bool>>> GenerarRecurso(DocumentoSolicitudDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> GenerarRecurso(DocumentoSolicitudDtoRequest request)
             => await _recursoService.CreateAsync(request);
 
         [HttpPost("RevisionValidadorRecurso")]
-        public async Task<ActionResult<ResponseBase<bool>>> RevisionRecursoValidador(RevisionRecursoSolicitudDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> RevisionRecursoValidador(RevisionRecursoSolicitudDtoRequest request)
             => await _recursoService.CreateRevisionRecursoValidador(request);
         
         [HttpPost("RevisionCoordinadorRecurso")]
-        public async Task<ActionResult<ResponseBase<bool>>> VerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> VerificacionRecursoCoordinador(VerificacionAprobacionRecursoSolicitudDtoRequest request)
             => await _recursoService.CreateVerificacionRecursoCoordinador(request);
 
         [HttpPost("RevisionSubdirectorRecurso")]
-        public async Task<ActionResult<ResponseBase<bool>>> AprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDTORequest request)
+        public async Task<ActionResult<ResponseBase<bool>>> AprobacionRecursoSubdirector(VerificacionAprobacionRecursoSolicitudDtoRequest request)
             => await _recursoService.CreateAprobacionRecursoSubdirector(request);
     }
 }

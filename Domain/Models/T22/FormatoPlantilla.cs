@@ -9,8 +9,8 @@ namespace Domain.Models.T22
     public class FormatoPlantilla
     {
         public int IdFormato { get; set; }
-        public string VcNombre { get; set; }
-        public string VcDescripcion { get; set; }
-        public string VcPlantilla { get; set; }
+        public string VcNombre { get; set; } = string.Empty;
+        public string VcDescripcion { get; set; } = string.Empty;
+        public string VcPlantilla { get; set; } = string.Empty;
     }
 }

@@ -18,34 +18,30 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
     public class AutorizacionesCanceladas : IAutorizacionesCanceladas
     {
 
-        private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly ICapacitadorSolicitudRepository _capacitadorRepository;
-        private readonly ISolicitudRespository _solicitudRepository;
         private readonly ReporteDesign _reporteDesign;
         private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
-        public AutorizacionesCanceladas(IParametroDetalleRepository parametroDetalleRepository,ICapacitadorSolicitudRepository capacitadorSolicitud, 
-            ReporteDesign reporteDesign, ISolicitudRespository solicitudRepository, ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaRepository,
+        public AutorizacionesCanceladas(ICapacitadorSolicitudRepository capacitadorSolicitud, 
+            ReporteDesign reporteDesign, ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaRepository,
             IResolucionSolicitudRepository resolucionSolicitudRepository)
         {
-            _parametroDetalleRepository = parametroDetalleRepository;
             _capacitadorRepository = capacitadorSolicitud;
             _reporteDesign = reporteDesign;
-            _solicitudRepository = solicitudRepository;
             _seguimientoAuditoriaRepository = seguimientoAuditoriaRepository;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
         }
 
 
-        public async Task<List<AutorizacionesCanceladasDTO>> GetInfoAutorizacionesCanceladas(ReportesDTORequest request)
+        public async Task<List<AutorizacionesCanceladasDto>> GetInfoAutorizacionesCanceladas(ReportesDtoRequest request)
         {
             DateTime fechaDesde = Convert.ToDateTime(request.FechaDesde);
             DateTime fechaHasta = Convert.ToDateTime(request.FechaHasta);
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
             var resoluciones = await _resolucionSolicitudRepository.GetAllAsync(x => x.FechaResolucion >= fechaDesde
                                 && x.FechaResolucion <= fechaHasta, x => x.OrderByDescending(p => p.FechaResolucion), null, "Solicitud");
 
-            List<AutorizacionesCanceladasDTO> list = new();
+            List<AutorizacionesCanceladasDto> list = new();
 
             foreach (var res in resoluciones)
             {
@@ -58,15 +54,15 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
 
                     foreach (var cap in capacitadores)
                     {
-                        list.Add(new AutorizacionesCanceladasDTO
+                        list.Add(new AutorizacionesCanceladasDto
                         {
 
                             RadicadoSolicitud = res.Solicitud.VcRadicado,
                             FechaAutorizacionResolucion = res.FechaResolucion.ToString("dd/MM/yyyy"),
-                            NumeroResolucion = res.IntNumeroResolucion.ToString("00000"),
+                            NumeroResolucion = res.VcNumeroResolucion,
                             NombreSolicitante = res.Solicitud.VcNombreUsuario,
                             TipoIdentificacionSolicitante = res.Solicitud.VcTipoSolicitante.Contains("Natural") == true ? "Cédula Ciudadanía" : "NIT", // Resvisar este tema con pablo
-                            MotivoCancelacion = await _seguimientoAuditoriaRepository.ConcatObservaciones(observaciones),
+                            MotivoCancelacion = _seguimientoAuditoriaRepository.ConcatObservaciones(observaciones),
                             NombreCapacitador = await _capacitadorRepository.GetNombreCapacitador(cap.IdCapacitadorSolicitud.ToString()),
                             NumeroIdentificacionCapacitador = cap.IntNumeroIdentificacion,
                             NumeroMatriculaProfesional = cap.vcNumeroTarjetaProfesional,
@@ -81,7 +77,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
             return list;
         }
 
-        public async Task<XLWorkbook> GetReporteAutorizacionesCanceladas(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteAutorizacionesCanceladas(ReportesDtoRequest request)
         {
 
             XLWorkbook lWorkbook = new();
@@ -109,7 +105,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
         }
 
 
-        private async void SetTittle(IXLWorksheet ws)
+        private void SetTittle(IXLWorksheet ws)
         {
             var rowOne = ws.Row(1);
 
@@ -131,7 +127,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
         /// Método para dar anchura a las celdas
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnWidth(IXLWorksheet ws)
+        private void SetColumnWidth(IXLWorksheet ws)
         {
             ws.Column(1).Width = 20;
             ws.Column(2).Width = 20;
@@ -150,7 +146,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
         /// Metodo para dar nombre a las columnas de excel
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnNames(IXLRow ws)
+        private void SetColumnNames(IXLRow ws)
         {
 
             ws.Cells("1:11").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
@@ -172,7 +168,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
         /// </summary>
         /// <param name="row"></param>
         /// <param name="dto"></param>
-        private void SetRowData(IXLRow row, AutorizacionesCanceladasDTO dto)
+        private void SetRowData(IXLRow row, AutorizacionesCanceladasDto dto)
         {
             row.Style.Font.Bold = false;
 

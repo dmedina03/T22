@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
 {
-    public interface ICapacitacionCapacitadorService : ICreateService<CapacitacionCapacitadorSolicitudDTORequest>, IGetService<CapacitacionCapacitadorDTOResponse>
+    public interface ICapacitacionCapacitadorService : ICreateService<CapacitacionCapacitadorSolicitudDtoRequest>, IGetService<CapacitacionCapacitadorDtoResponse>
     {
-        Task<ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>> GetBandejaRegistrarCapacitaciones();
-        Task<ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>> GetBandejaSeguimientoCapacitaciones();
-        Task<ResponseBase<bool>> CreateRevisionCapacitacion(RevisionCapacitacionDTORequest request);
+        Task<ResponseBase<List<BandejaResgistrarCapacitacionesDtoResponse>>> GetBandejaRegistrarCapacitaciones();
+        Task<ResponseBase<List<BandejaSeguimientoCapacitacionDtoResponse>>> GetBandejaSeguimientoCapacitaciones();
+        Task<ResponseBase<bool>> CreateRevisionCapacitacion(RevisionCapacitacionDtoRequest request);
 
     }
 }

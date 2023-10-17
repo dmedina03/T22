@@ -19,19 +19,19 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("TiposSolicitud/{IdUsuario}")]
-        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> GetAllTipoSolicitud(string IdUsuario)
+        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDto>>>> GetAllTipoSolicitud(string IdUsuario)
             => await _parametroDetalleService.GetTipoSolicitud(IdUsuario);
 
         [HttpGet("ResultadoValidacion/{IdSolicitud}")]
-        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> GetAllResultadoValidacion(int IdSolicitud)
+        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDto>>>> GetAllResultadoValidacion(int IdSolicitud)
             => await _parametroDetalleService.GetResultadoValidacion(IdSolicitud);
 
         [HttpGet("PorCodigoInterno/{codigoInterno}")]
-        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> listarPorCodigoInterno(string codigoInterno)
+        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDto>>>> listarPorCodigoInterno(string codigoInterno)
             => await _parametroDetalleService.listarPorCodigoInterno(codigoInterno);
 
         [HttpGet("PorCodigoInternoIdPadre/{codigoInterno}/{idPadre}")]
-        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDTO>>>> listarPorCodigoInternoIdPadre(string codigoInterno, long idPadre)
+        public async Task<ActionResult<ResponseBase<List<ParametroDetalleDto>>>> listarPorCodigoInternoIdPadre(string codigoInterno, long idPadre)
             => await _parametroDetalleService.listarPorCodigoInternoIdPadre(codigoInterno,idPadre);
 
     }

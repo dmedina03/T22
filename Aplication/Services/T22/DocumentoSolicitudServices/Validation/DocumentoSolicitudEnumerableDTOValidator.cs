@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.DocumentoSolicitudServices.Validation
 {
-    public class DocumentoSolicitudEnumerableDTOValidator : AbstractValidator<IEnumerable<DocumentoSolicitudDTORequest>>
+    public class DocumentoSolicitudEnumerableDtoValidator : AbstractValidator<IEnumerable<DocumentoSolicitudDtoRequest>>
     {
-        public DocumentoSolicitudEnumerableDTOValidator()
+        public DocumentoSolicitudEnumerableDtoValidator()
         {
 
             RuleSet("Create", () =>

@@ -7,18 +7,21 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.T22
 {
-    public class SolicitudDTOResponse
+    public class SolicitudDtoResponse
     {
         public int IdSolicitud { get; set; }
-        public string VcRadicado { get; set; }
-        public string VcEstado { get; set; }
-        public string VcFechaSolicitud { get; set; }
-        public string VcTipoTramite { get; set; }
-        public string UsuarioId { get; set; }
-        public string? UsuarioAsignadoId { get; set; }
-        public List<CapacitadorSolicitudDTOResponse> CapacitadoresSolicitud { get; set; }
-        public List<SeguimientoAuditoriaSolicitudDTOResponse>? SeguimientoAuditoriaSolicitud { get; set; }
-        public List<DocumentosSolicitudDTOResponse>? DocumentosRecursoReposicion { get; set; }
+        public string VcRadicado { get; set; } = string.Empty;
+        public string VcEstado { get; set; } = string.Empty;
+        public string VcFechaSolicitud { get; set; } = string.Empty;
+        public string VcTipoTramite { get; set; } = string.Empty;
+        public string UsuarioId { get; set; } = string.Empty;
+        public string? UsuarioAsignadoValidadorId { get; set; }
+        public string? UsuarioAsignadoCoordinadorId { get; set; }
+        public string? UsuarioAsignadoSubdirectorId { get; set; }
+        public List<CapacitadorSolicitudDtoResponse> CapacitadoresSolicitud { get; set; } = new();
+        public List<SeguimientoAuditoriaSolicitudDtoResponse>? SeguimientoAuditoriaSolicitud { get; set; }
+        public List<DocumentosSolicitudDtoResponse>? DocumentosRecursoReposicion { get; set; }
+        public List<ResolucionSolicitudesDTOResponse> ResolucionSolicitudes { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
 {
     public interface ICapacitadoresAutorizadosInvima
     {
-        Task<XLWorkbook> GetReporteCapacitadoresAutorizados(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteCapacitadoresAutorizados(ReportesDtoRequest request);
 
     }
 }

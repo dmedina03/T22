@@ -24,23 +24,23 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
 {
     public class CapacitacionCapacitadorService : ICapacitacionCapacitadorService
     {
-
+#pragma warning disable
         private readonly ICapacitacionCapacitadorRepository _capacitacionCapacitadorRepository;
         private readonly ISolicitudRespository _solicitudRespository;
         private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly IDocumentoSolicitudRepository _documentoSolicitudRepository;
         private readonly ICapacitadorSolicitudRepository _capacitadorSolicitudRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
-        private readonly IValidator<CapacitacionCapacitadorSolicitudDTORequest> _validatorCapacitacionCapacitadorSolicitud;
-        private readonly IValidator<RevisionCapacitacionDTORequest> _validatorRevisionCapacitacion;
+        private readonly IValidator<CapacitacionCapacitadorSolicitudDtoRequest> _validatorCapacitacionCapacitadorSolicitud;
+        private readonly IValidator<RevisionCapacitacionDtoRequest> _validatorRevisionCapacitacion;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public CapacitacionCapacitadorService(ICapacitacionCapacitadorRepository capacitacionCapacitadorRepository, ISolicitudRespository solicitudRespository,
             IParametroDetalleRepository parametroDetalleRepository, IDocumentoSolicitudRepository documentoSolicitudRepository,
-            IValidator<CapacitacionCapacitadorSolicitudDTORequest> validatorCapacitacionCapacitadorSolicitud, IMapper mapper, IUnitOfWork unitOfWork,
+            IValidator<CapacitacionCapacitadorSolicitudDtoRequest> validatorCapacitacionCapacitadorSolicitud, IMapper mapper, IUnitOfWork unitOfWork,
             ICapacitadorSolicitudRepository capacitadorSolicitudRepository, IResolucionSolicitudRepository resolucionSolicitudRepository, 
-            IValidator<RevisionCapacitacionDTORequest> validatorRevisionCapacitacion)
+            IValidator<RevisionCapacitacionDtoRequest> validatorRevisionCapacitacion)
         {
             _capacitacionCapacitadorRepository = capacitacionCapacitadorRepository;
             _solicitudRespository = solicitudRespository;
@@ -54,7 +54,7 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
             _validatorRevisionCapacitacion = validatorRevisionCapacitacion;
         }
 
-        public async Task<ResponseBase<bool>> CreateAsync(CapacitacionCapacitadorSolicitudDTORequest request)
+        public async Task<ResponseBase<bool>> CreateAsync(CapacitacionCapacitadorSolicitudDtoRequest request)
         {
             var result = await _validatorCapacitacionCapacitadorSolicitud.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
 
@@ -73,18 +73,18 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
         }
 
 
-        public async Task<ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>> GetBandejaRegistrarCapacitaciones()
+        public async Task<ResponseBase<List<BandejaResgistrarCapacitacionesDtoResponse>>> GetBandejaRegistrarCapacitaciones()
         {
 
             var Solicitudes = (await _solicitudRespository.GetAllAsync(x => x.EstadoId == (int)EnumEstado.Aprobado, null, x => x.Include(p => p.ResolucionSolicitud))).ToList();
 
             Solicitudes = Solicitudes.OrderByDescending(x => x.DtFechaSolicitud).ToList();
 
-            List<BandejaResgistrarCapacitacionesDTOResponse> list = new List<BandejaResgistrarCapacitacionesDTOResponse>();
+            List<BandejaResgistrarCapacitacionesDtoResponse> list = new();
 
             if (Solicitudes is null || Solicitudes.Count == 0)
             {
-                return new ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondío OK, pero sin datos", list, list.Count);
+                return new ResponseBase<List<BandejaResgistrarCapacitacionesDtoResponse>>(HttpStatusCode.NoContent, "La solicitud respondío OK, pero sin datos", list, list.Count);
             }
 
             foreach (var solicitud in Solicitudes)
@@ -94,11 +94,11 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
                     //valida si la solicitud esta activa o no, realiza la respectiva actualizacion
                     await _resolucionSolicitudRepository.UpdateIsValid(resolucion.IdResolucionSolicitud);
 
-                    list.Add(new BandejaResgistrarCapacitacionesDTOResponse
+                    list.Add(new BandejaResgistrarCapacitacionesDtoResponse
                     {
                         IdSolicitud = solicitud.IdSolicitud,
                         IdResolucionSolicitud = resolucion.IdResolucionSolicitud,
-                        IntNumeroResolucion = resolucion.IntNumeroResolucion.ToString("00000"),
+                        IntNumeroResolucion = resolucion.VcNumeroResolucion,
                         FechaResolucion = resolucion.FechaResolucion.ToString("dd/MM/yyyy"),
                         TipoSolicitudId = solicitud.TipoSolicitudId,
                         VcNombre = await _parametroDetalleRepository.VcNombre(solicitud.TipoSolicitudId),
@@ -110,26 +110,27 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
 
             }
             list = list.OrderBy(x => x.FechaResolucion).ToList();
-            return new ResponseBase<List<BandejaResgistrarCapacitacionesDTOResponse>>(HttpStatusCode.OK, "OK", list, list.Count);
+            return new ResponseBase<List<BandejaResgistrarCapacitacionesDtoResponse>>(HttpStatusCode.OK, "OK", list, list.Count);
         }
 
-        public async Task<ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>> GetBandejaSeguimientoCapacitaciones()
+        public async Task<ResponseBase<List<BandejaSeguimientoCapacitacionDtoResponse>>> GetBandejaSeguimientoCapacitaciones()
         {
             var capacitaciones = (await _capacitacionCapacitadorRepository.GetAllAsync(null, x => x.OrderBy(p => p.DtFechaCreacionCapacitacion))).ToList();
 
             capacitaciones = capacitaciones.OrderByDescending(x => x.DtFechaCreacionCapacitacion).ToList();
 
-            List<BandejaSeguimientoCapacitacionDTOResponse> list = new();
+            List<BandejaSeguimientoCapacitacionDtoResponse> list = new();
 
             if (capacitaciones is null || capacitaciones.Count == 0)
             {
-                return new ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", list, list.Count);
+                return new ResponseBase<List<BandejaSeguimientoCapacitacionDtoResponse>>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", list, list.Count);
             }
 
             foreach (var cap in capacitaciones)
             {
 
                 var capacitador = await _capacitadorSolicitudRepository.GetAsync(x => x.IdCapacitadorSolicitud == cap.CapacitadorId);
+#pragma warning disable  // No se puede convertir un literal NULL en un tipo de referencia que no acepta valores NULL.
                 var solicitud = await _solicitudRespository.GetAsync(x => x.IdSolicitud == capacitador.SolicitudId, null, null, "ResolucionSolicitud");
 
                 foreach (var resolucion in solicitud.ResolucionSolicitud)
@@ -142,10 +143,10 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
 
                         var documento = await _documentoSolicitudRepository.GetAsync(x => x.IdDocumento == resolucion.DocumentoSolicitudId);
 
-                        list.Add(new BandejaSeguimientoCapacitacionDTOResponse
+                        list.Add(new BandejaSeguimientoCapacitacionDtoResponse
                         {
                             IdResolucionSolicitud = resolucion.IdResolucionSolicitud,
-                            IntNumeroResolucion = resolucion.IntNumeroResolucion.ToString("00000"),
+                            IntNumeroResolucion = resolucion.VcNumeroResolucion,
                             IdSolicitud = solicitud.IdSolicitud,
                             NombreCiudadanoEntidad = solicitud.VcNombreUsuario,
                             IntNumeroIdentificacion = solicitud.IntNumeroIdentificacionUsuario,
@@ -160,21 +161,21 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
 
             }
 
-            return new ResponseBase<List<BandejaSeguimientoCapacitacionDTOResponse>>(HttpStatusCode.OK, default, list, list.Count);
+            return new ResponseBase<List<BandejaSeguimientoCapacitacionDtoResponse>>(HttpStatusCode.OK, default, list, list.Count);
 
         }
 
-        public async Task<ResponseBase<CapacitacionCapacitadorDTOResponse>> GetById(int Id)
+        public async Task<ResponseBase<CapacitacionCapacitadorDtoResponse>> GetById(int Id)
         {
             var capacitacion = await _capacitacionCapacitadorRepository.GetAsync(x => x.IdCapacitacionSolicitud == Id, null, null, "HorariosCapacitacionSolicitud");
 
             if (capacitacion is null)
             {
-                return new ResponseBase<CapacitacionCapacitadorDTOResponse>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", null, 0);
+                return new ResponseBase<CapacitacionCapacitadorDtoResponse>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", null, 0);
             }
 
             int i = 1;
-            CapacitacionCapacitadorDTOResponse response = new CapacitacionCapacitadorDTOResponse()
+            CapacitacionCapacitadorDtoResponse response = new CapacitacionCapacitadorDtoResponse()
             {
                 VcNombreCapacitador = await _capacitadorSolicitudRepository.GetNombreCapacitador(capacitacion.CapacitadorId.ToString()),
                 VcPublicoObjetivo = capacitacion.VcPublicoObjetivo,
@@ -185,7 +186,7 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
                 VcInformacionAdicional = capacitacion.VcInformacionAdicional,
                 DepartamentoId = capacitacion.DepartamentoId,
                 CiudadId = capacitacion.CiudadId,
-                HorariosCapacitacion = capacitacion.HorariosCapacitacionSolicitud.OrderBy(x => x.DtFechaCapacitacion).Select(p => new HorariosCapacitacionSolcitudDTOResponse
+                HorariosCapacitacion = capacitacion.HorariosCapacitacionSolicitud.OrderBy(x => x.DtFechaCapacitacion).Select(p => new HorariosCapacitacionSolcitudDtoResponse
                 {
                     Numero = i++,
                     FechaCapacitacion = p.DtFechaCapacitacion.ToString("dd/MM/yyyy"),
@@ -194,10 +195,10 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
                 }).ToList()
             };
 
-            return new ResponseBase<CapacitacionCapacitadorDTOResponse>(HttpStatusCode.OK, "OK", response, 1);
+            return new ResponseBase<CapacitacionCapacitadorDtoResponse>(HttpStatusCode.OK, "OK", response, 1);
         }
 
-        public async Task<ResponseBase<bool>> CreateRevisionCapacitacion(RevisionCapacitacionDTORequest request)
+        public async Task<ResponseBase<bool>> CreateRevisionCapacitacion(RevisionCapacitacionDtoRequest request)
         {
 
             var result = await _validatorRevisionCapacitacion.ValidateAsync(request, opt => opt.IncludeRuleSets("Any"));
@@ -242,7 +243,7 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices
         }
 
 
-        public Task<ResponseBase<List<CapacitacionCapacitadorDTOResponse>>> GetAll()
+        public Task<ResponseBase<List<CapacitacionCapacitadorDtoResponse>>> GetAll()
         {
             throw new NotImplementedException();
         }

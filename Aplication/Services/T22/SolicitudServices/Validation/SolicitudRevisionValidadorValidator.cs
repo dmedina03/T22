@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.SolicitudServices.Validation
 {
-    public class SolicitudRevisionValidadorValidator : AbstractValidator<SolicitudRevisionValidadorDTORequest>
+    public class SolicitudRevisionValidadorValidator : AbstractValidator<SolicitudRevisionValidadorDtoRequest>
     {
         public SolicitudRevisionValidadorValidator()
         {
@@ -44,6 +44,7 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
                     //Se multiplica por 8, ya que son los documentos minimos requeridos 
                         .GreaterThanOrEqualTo(x => x.CapacitadorSolicitud.Count * 8)
                         .WithMessage("{PropertyName} debe validar todos los documentos.");
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
 
                     When(x => x.SeguimientoAuditoriaSolicitud is not null, () =>
                     {
@@ -66,8 +67,6 @@ namespace Aplication.Services.T22.SolicitudServices.Validation
                             .WithMessage("{PropertyName} no puede ser nulo o vacio.");
 
                         RuleFor(p => p.SubsanacionSolicitud.UsuarioId)
-                            .NotEqual(0)
-                            .WithMessage("{PropertyName} no puede ser 0.")
                             .NotEmpty()
                             .NotNull()
                             .WithMessage("{PropertyName} no puede ser nulo o vacio.");

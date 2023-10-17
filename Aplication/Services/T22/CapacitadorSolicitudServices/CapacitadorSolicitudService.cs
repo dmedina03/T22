@@ -20,22 +20,22 @@ namespace Aplication.Services.T22.CapacitadorSolicitudServices
             _capacitadorSolicitudRepository = capacitadorSolicitudRepository;
         }
 
-        public async Task<ResponseBase<List<CapacitadorSolicitudMiniDTOResponse>>> GetListadoCapacitadores(int IdSolicitud)
+        public async Task<ResponseBase<List<CapacitadorSolicitudMiniDtoResponse>>> GetListadoCapacitadores(int IdSolicitud)
         {
             var capacitadores = (await _capacitadorSolicitudRepository.GetAllAsync(x => x.SolicitudId == IdSolicitud));
 
-            if (capacitadores is null || capacitadores.Count() == 0)
+            if (capacitadores is null || !capacitadores.Any())
             {
-                return new ResponseBase<List<CapacitadorSolicitudMiniDTOResponse>>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", null, 0);
+                return new ResponseBase<List<CapacitadorSolicitudMiniDtoResponse>>(HttpStatusCode.NoContent, "La solicitud respondio OK, pero sin datos", null, 0);
             }
 
-            var data = capacitadores.Select(x => new CapacitadorSolicitudMiniDTOResponse
+            var data = capacitadores.Select(x => new CapacitadorSolicitudMiniDtoResponse
             {
                 IdCapacitadorSolicitud = x.IdCapacitadorSolicitud.ToString(),
                 VcNombre = $"{x.VcPrimerNombre} {x.VcSegundoNombre} {x.VcPrimerApellido} {x.VcSegundoApellido}"
             }).ToList();
 
-            return new ResponseBase<List<CapacitadorSolicitudMiniDTOResponse>>(HttpStatusCode.OK,"OK",data,data.Count);
+            return new ResponseBase<List<CapacitadorSolicitudMiniDtoResponse>>(HttpStatusCode.OK,"OK",data,data.Count);
         }
     }
 }

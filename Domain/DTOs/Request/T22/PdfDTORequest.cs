@@ -3,9 +3,9 @@
     /// <summary>
     /// EmailInfo
     /// </summary>
-    public class PdfDTORequest
+    public class PdfDtoRequest
     {
     
-        public string html { get; set; }
+        public string Html { get; set; } = string.Empty;
     }
 }

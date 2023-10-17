@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.T22
 {
-    public class SeguimientoAuditoriaSolicitudDTOResponse
+    public class SeguimientoAuditoriaSolicitudDtoResponse
     {
         public int IdObservacion { get; set; }
-        public string DtFechaObservacion { get; set; }
-        public string VcObservacion { get; set; }
-        public string UsuarioId { get; set; }
-        public string VcNombreUsuario { get; set; }
-        public string VcEstado { get; set; }
+        public string DtFechaObservacion { get; set; } = string.Empty;
+        public string VcObservacion { get; set; } = string.Empty;
+        public string UsuarioId { get; set; } = string.Empty;
+        public string VcNombreUsuario { get; set; } = string.Empty;
+        public string VcEstado { get; set; } = string.Empty;
     }
 }

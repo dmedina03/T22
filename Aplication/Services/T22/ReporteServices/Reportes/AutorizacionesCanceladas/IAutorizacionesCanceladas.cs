@@ -11,7 +11,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.AutorizacionesCancela
     public interface IAutorizacionesCanceladas
     {
 
-        Task<XLWorkbook> GetReporteAutorizacionesCanceladas(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteAutorizacionesCanceladas(ReportesDtoRequest request);
 
     }
 }

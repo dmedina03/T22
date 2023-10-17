@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class ReporteSeguimientoCapacitacionDTO
+    public class ReporteSeguimientoCapacitacionDto
     {
-        public string FechaAutorizacionResolucion { get; set; }
-        public string NumeroActoAdministrativoResolucion { get; set; }
-        public string NombreSolicitante { get; set; }
-        public string NombreCapacitador { get; set; }
-        public long NumeroIdentificacionCapacitador { get; set; }
-        public string PublicoObjetivo { get; set; }
-        public int NumeroAsistentes { get; set; }
-        public string TemaCapacitacion { get; set; }
-        public string Localidad { get; set; }
-        public string Seguimiento { get; set; }
-    }
+        public string FechaAutorizacionResolucion { get; set; } = string.Empty;
+        public string NumeroActoAdministrativoResolucion { get; set; } = string.Empty   ;
+        public string NombreSolicitante { get; set; } = string.Empty;
+        public string NombreCapacitador { get; set; } = string.Empty;
+        public long NumeroIdentificacionCapacitador { get; set; }   
+        public string PublicoObjetivo { get; set; } = string.Empty;
+        public int NumeroAsistentes { get; set; }   
+        public string TemaCapacitacion { get; set; } = string.Empty;
+        public string Localidad { get; set; } = string.Empty;
+        public string Seguimiento { get; set; } = string.Empty;
+    }   
 }

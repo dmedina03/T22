@@ -24,12 +24,12 @@ namespace Aplication.Services.T22.ReporteServices
         private readonly IAutorizacionesCanceladas _autorizacionesCanceladas;
         private readonly ICapacitadoresAutorizadosInvima _capacitadoresAutorizados;
         private readonly ICapacitadoresSuspendidosInivima _capacitadoresSuspendidos;
-        private readonly IValidator<ReportesDTORequest> _validator;
+        private readonly IValidator<ReportesDtoRequest> _validator;
 
 
         public ReporteServices(IActosAdministrativosGenerados actosAdministrativosGenerados, ISeguimientoCapacitaciones seguimientoCapacitaciones,
             IAutorizacionesCanceladas autorizacionesCanceladas, ICapacitadoresAutorizadosInvima capacitadoresAutorizados, ICapacitadoresSuspendidosInivima capacitadoresSuspendidos,
-            IValidator<ReportesDTORequest> validator)
+            IValidator<ReportesDtoRequest> validator)
         {
             _actosAdministrativosGenerados = actosAdministrativosGenerados;
             _seguimientoCapacitaciones = seguimientoCapacitaciones;
@@ -39,7 +39,7 @@ namespace Aplication.Services.T22.ReporteServices
             _validator = validator;
         }
 
-        public async Task<XLWorkbook> GetReporteActosAdministrativosGeneradosService(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteActosAdministrativosGeneradosService(ReportesDtoRequest request)
         {
 
             var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
@@ -51,7 +51,7 @@ namespace Aplication.Services.T22.ReporteServices
             
         }
 
-        public async Task<XLWorkbook> GetReporteSeguimientoCapacitacionesService(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteSeguimientoCapacitacionesService(ReportesDtoRequest request)
         {
             var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
             if (!result.IsValid)
@@ -61,7 +61,7 @@ namespace Aplication.Services.T22.ReporteServices
             return await _seguimientoCapacitaciones.GetReporteActosAdministrativosGenerados(request);
         }
 
-        public async Task<XLWorkbook> GetReporteAutorizacionesCanceladasService(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteAutorizacionesCanceladasService(ReportesDtoRequest request)
         {
             var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
             if (!result.IsValid)
@@ -71,7 +71,7 @@ namespace Aplication.Services.T22.ReporteServices
             return await _autorizacionesCanceladas.GetReporteAutorizacionesCanceladas(request);
 
         }
-        public async Task<XLWorkbook> GetReporteCapacitadoresAutorizadosService(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteCapacitadoresAutorizadosService(ReportesDtoRequest request)
         {
             var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
             if (!result.IsValid)
@@ -82,7 +82,7 @@ namespace Aplication.Services.T22.ReporteServices
 
         }
 
-        public async Task<XLWorkbook> GetReporteCapacitadoresSuspendidosService(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteCapacitadoresSuspendidosService(ReportesDtoRequest request)
         {
             var result = await _validator.ValidateAsync(request, opt => opt.IncludeAllRuleSets());
             if (!result.IsValid)

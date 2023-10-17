@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class ReporteActosAdministrativosGeneradosDTO
+    public class ReporteActosAdministrativosGeneradosDto
     {
-        public string RadicadoSolicitud { get; set; }
-        public string TipoSolicitante { get; set; }
-        public string NombreSolicitante { get; set; }
-        public long NumeroIdentificacionSolicitante { get; set; }
-        public string TipoSolicitud { get; set; }
-        public string FechaAutorizacionResolucion { get; set; }
-        public string NumeroResolucion { get; set; }
-        public string TipoActoAdminsitrativo { get; set; }
-        public string FechaRadicacion { get; set; }
-        public string EstadoSolicitud { get; set; }
-        public string TipoAutorizacion { get; set; }
-        public string EstadoAutorizacion { get; set; }
+        public string RadicadoSolicitud { get; set; } = string.Empty;
+        public string TipoSolicitante { get; set; } = string.Empty;
+        public string NombreSolicitante { get; set; } = string.Empty;
+        public long NumeroIdentificacionSolicitante { get; set; }   
+        public string TipoSolicitud { get; set; } = string.Empty;
+        public string FechaAutorizacionResolucion { get; set; } = string.Empty;
+        public string NumeroResolucion { get; set; } = string.Empty;
+        public string TipoActoAdminsitrativo { get; set; } = string.Empty;
+        public string FechaRadicacion { get; set; } = string.Empty;
+        public string EstadoSolicitud { get; set; } = string.Empty;
+        public string TipoAutorizacion { get; set; } = string.Empty;
+        public string EstadoAutorizacion { get; set; } = string.Empty;
     }
 }

@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("NombreCapacitadores/{IdSolicitud}")]
-        public async Task<ActionResult<ResponseBase<List<CapacitadorSolicitudMiniDTOResponse>>>> GetNombreCapacitadores(int IdSolicitud)
+        public async Task<ActionResult<ResponseBase<List<CapacitadorSolicitudMiniDtoResponse>>>> GetNombreCapacitadores(int IdSolicitud)
             => await _capacitadorSolicitudService.GetListadoCapacitadores(IdSolicitud);
 
     }

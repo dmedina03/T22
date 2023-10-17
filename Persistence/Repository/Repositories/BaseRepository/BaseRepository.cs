@@ -75,7 +75,8 @@ namespace Persistence.Repository.Repositories.BaseRepository
 
         }
 
-        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> whereCondition = null)
+#pragma warning disable // El método asincrónico carece de operadores "await" y se ejecutará de forma sincrónica
+        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>>? whereCondition = null)
         {
             var count = _unitOfWork.GetSet<TId, TEntity>().Where(whereCondition).Count();
             return count > 0;

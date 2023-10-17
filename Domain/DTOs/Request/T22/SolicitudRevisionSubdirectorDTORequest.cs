@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class SolicitudRevisionSubdirectorDTORequest : SolicitudRevisionDTORequest
+    public class SolicitudRevisionSubdirectorDtoRequest : SolicitudRevisionDtoRequest
     {
         public bool ResultadoValidacion { get; set; }
-        public ResolucionSolicitudDTORequest ResolucionSolicitud { get; set; }
+        public ResolucionSolicitudDtoRequest ResolucionSolicitud { get; set; } = new();
 
     }
 }

@@ -475,3 +475,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+.scannerwork/*
+.sonarqube/*
+sonar-project.properties

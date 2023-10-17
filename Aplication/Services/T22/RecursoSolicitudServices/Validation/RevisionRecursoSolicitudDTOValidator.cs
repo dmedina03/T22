@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.RecursoSolicitudServices.Validation
 {
-    public class RevisionRecursoSolicitudDTOValidator : AbstractValidator<RevisionRecursoSolicitudDTORequest>
+    public class RevisionRecursoSolicitudDtoValidator : AbstractValidator<RevisionRecursoSolicitudDtoRequest>
     {
-        public RevisionRecursoSolicitudDTOValidator()
+        public RevisionRecursoSolicitudDtoValidator()
         {
             RuleSet("Any", () =>
             {
@@ -25,7 +25,8 @@ namespace Aplication.Services.T22.RecursoSolicitudServices.Validation
 
                 When(P => P.RespuestaRecurso is not null, () =>
                 {
-                    RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDTOValidator(), "Any");
+#pragma warning disable // El tipo no se puede usar como parámetro de tipo en el tipo o método genérico. La nulabilidad del argumento de tipo no coincide con el tipo de restricción
+                    RuleFor(p => p.RespuestaRecurso).SetValidator(p => new DocumentoSolicitudDtoValidator(), "Any");
                 });
 
 

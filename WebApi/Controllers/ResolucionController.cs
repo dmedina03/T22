@@ -19,13 +19,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("obtenerResolucion")]
-        public async Task<ActionResult<ResponseBase<string>>> obtenerResolucion(PdfDTORequest pdfDTORequest)
+        public async Task<ActionResult<ResponseBase<string>>> ObtenerResolucion(PdfDtoRequest pdfDTORequest)
         {
             return await _resolucionService.GetResolucion(pdfDTORequest);
         }
 
         [HttpGet("obtenerPlantilla/{idPlantilla}")]
-        public async Task<ActionResult<ResponseBase<FormatoPlantilla>>> obtenerPlantilla(int idPlantilla)
+        public async Task<ActionResult<ResponseBase<FormatoPlantilla>>> ObtenerPlantilla(int idPlantilla)
         {
             return await _resolucionService.GetFormato(idPlantilla);
         }

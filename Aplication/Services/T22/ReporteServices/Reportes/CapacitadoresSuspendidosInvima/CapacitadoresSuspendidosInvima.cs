@@ -15,36 +15,31 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
 {
     public class CapacitadoresSuspendidosInvima : ICapacitadoresSuspendidosInivima
     {
-        private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly ICapacitadorSolicitudRepository _capacitadorRepository;
-        private readonly ISolicitudRespository _solicitudRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
         private readonly ISeguimientoAuditoriaSolicitudRepository _seguimientoAuditoriaSolicitudRepository;
         private readonly ReporteDesign _reporteDesign;
-        public CapacitadoresSuspendidosInvima(IParametroDetalleRepository parametroDetalleRepository, ICapacitadorSolicitudRepository capacitadorSolicitud,
-            ReporteDesign reporteDesign, ISolicitudRespository solicitudRepository, IResolucionSolicitudRepository resolucionSolicitudRepository, 
-            ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitudRepository)
+        public CapacitadoresSuspendidosInvima(ICapacitadorSolicitudRepository capacitadorSolicitud, ReporteDesign reporteDesign, 
+            IResolucionSolicitudRepository resolucionSolicitudRepository, ISeguimientoAuditoriaSolicitudRepository seguimientoAuditoriaSolicitudRepository)
         {
-            _parametroDetalleRepository = parametroDetalleRepository;
             _capacitadorRepository = capacitadorSolicitud;
             _reporteDesign = reporteDesign;
-            _solicitudRepository = solicitudRepository;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
             _seguimientoAuditoriaSolicitudRepository = seguimientoAuditoriaSolicitudRepository;
         }
 
 
-        public async Task<List<CapacitadoresSuspendidosInvimaDTO>> GetInfoCapacitadoresSuspendidos(ReportesDTORequest request)
+        public async Task<List<CapacitadoresSuspendidosInvimaDto>> GetInfoCapacitadoresSuspendidos(ReportesDtoRequest request)
         {
             DateTime fechaDesde = Convert.ToDateTime(request.FechaDesde);
             DateTime fechaHasta = Convert.ToDateTime(request.FechaHasta);
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
             var resoluciones = await _resolucionSolicitudRepository.GetAllAsync(x => x.FechaResolucion >= fechaDesde
                                 && x.FechaResolucion <= fechaHasta, x => x.OrderByDescending(p => p.FechaResolucion), null, "Solicitud");
 
             string existTipoCapacitacion = "X";
 
-            List<CapacitadoresSuspendidosInvimaDTO> list = new();
+            List<CapacitadoresSuspendidosInvimaDto> list = new();
 
 
 
@@ -58,15 +53,15 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
 
                     foreach (var cap in capacitadores)
                     {
-                        list.Add(new CapacitadoresSuspendidosInvimaDTO
+                        list.Add(new CapacitadoresSuspendidosInvimaDto
                         {
 
                             EntidadTerritorial = _reporteDesign.EntidadTerritorial,
                             FechaResolucionCancelacion = res.FechaResolucion.ToString("dd/MM/yyyy"),
-                            NumeroActoAdministrativoResolucion = res.IntNumeroResolucion.ToString("00000"),
+                            NumeroActoAdministrativoResolucion = res.VcNumeroResolucion,
                             NombreSolicitante = res.Solicitud.VcNombreUsuario,
                             TipoIdentificacionSolicitante = res.Solicitud.VcTipoSolicitante.Contains("Natural") == true ? "Cédula Ciudadanía" : "NIT",
-                            Motivo = await _seguimientoAuditoriaSolicitudRepository.ConcatObservaciones(observaciones),
+                            Motivo = _seguimientoAuditoriaSolicitudRepository.ConcatObservaciones(observaciones),
                             NombreCapacitador = await _capacitadorRepository.GetNombreCapacitador(cap.IdCapacitadorSolicitud.ToString()),
                             NumeroIdentificacionCapacitador  = cap.IntNumeroIdentificacion,
                             TituloProfesional = cap.VcTituloProfesional,
@@ -85,7 +80,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
             return list;
         }
 
-        public async Task<XLWorkbook> GetReporteCapacitadoresSuspendidos(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteCapacitadoresSuspendidos(ReportesDtoRequest request)
         {
 
             XLWorkbook lWorkbook = new();
@@ -113,7 +108,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
         }
 
 
-        private async void SetTittle(IXLWorksheet ws)
+        private void SetTittle(IXLWorksheet ws)
         {
             var rowOne = ws.Row(1);
 
@@ -135,7 +130,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
         /// Método para dar anchura a las celdas
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnWidth(IXLWorksheet ws)
+        private void SetColumnWidth(IXLWorksheet ws)
         {
             ws.Column(1).Width = 20;
             ws.Column(2).Width = 20;
@@ -158,7 +153,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
         /// Metodo para dar nombre a las columnas de excel
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnNames(IXLRow ws)
+        private void SetColumnNames(IXLRow ws)
         {
 
             ws.Cells("1:15").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
@@ -184,7 +179,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresSuspendi
         /// </summary>
         /// <param name="row"></param>
         /// <param name="dto"></param>
-        private void SetRowData(IXLRow row, CapacitadoresSuspendidosInvimaDTO dto)
+        private void SetRowData(IXLRow row, CapacitadoresSuspendidosInvimaDto dto)
         {
             row.Style.Font.Bold = false;
 

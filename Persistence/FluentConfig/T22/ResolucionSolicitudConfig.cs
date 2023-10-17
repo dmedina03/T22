@@ -25,7 +25,7 @@ namespace Persistence.FluentConfig.T22
             entity.Property(p => p.DocumentoSolicitudId).IsRequired();
             entity.Property(p => p.TipoResolucionId).IsRequired();
             entity.Property(p => p.FechaResolucion).IsRequired();
-            entity.Property(p => p.IntNumeroResolucion).IsRequired();
+            entity.Property(p => p.VcNumeroResolucion).IsRequired();
             entity.Property(p => p.BlActiva).IsRequired();
         }
     }

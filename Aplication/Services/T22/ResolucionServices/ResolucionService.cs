@@ -19,8 +19,8 @@ namespace Aplication.Services.T22.ResolucionServices
         {
             _formatoPlantillaRepository = formatoPlantillaRepository;
         }
-
-        public async Task<ResponseBase<string>> GetResolucion(PdfDTORequest requestPDFDTO)
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
+        public async Task<ResponseBase<string>> GetResolucion(PdfDtoRequest requestPDFDTO)
         {
 
             try
@@ -35,12 +35,12 @@ namespace Aplication.Services.T22.ResolucionServices
 
                 MemoryStream stream = new MemoryStream();
 
-                HtmlConverter.ConvertToPdf(requestPDFDTO.html, stream);
+                HtmlConverter.ConvertToPdf(requestPDFDTO.Html, stream);
 
 
                 //Crear otras isntaciaas de MemoryStream
 
-                //Para obtener acceso al pdf trasformado del html se almacena el array de bytes en un nuevo MemoryStream
+                //Para obtener acceso al pdf trasformado del Html se almacena el array de bytes en un nuevo MemoryStream
 
                 MemoryStream pdfStream = new MemoryStream(stream.ToArray());
 

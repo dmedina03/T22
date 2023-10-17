@@ -10,7 +10,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.SeguimientoCapacitaci
 {
     public interface ISeguimientoCapacitaciones
     {
-        Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDTORequest request);
+        Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDtoRequest request);
 
     }
 }

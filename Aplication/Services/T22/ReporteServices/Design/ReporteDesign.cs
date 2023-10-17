@@ -15,10 +15,10 @@ namespace Aplication.Services.T22.ReporteServices.Design
 {
     public class ReporteDesign
     {
-        private readonly ICapacitadorSolicitudRepository _capacitadorRepository;
-        private readonly ITipoCapacitacionRepository _tipoCapacitacionRepository;
-        private readonly ICapacitadorTipoCapacitacionRepository _capacitadorTipoCapacitacionRepository;
-        public int HeightRow = 20;
+        private readonly ICapacitadorSolicitudRepository? _capacitadorRepository;
+        private readonly ITipoCapacitacionRepository? _tipoCapacitacionRepository;
+        private readonly ICapacitadorTipoCapacitacionRepository? _capacitadorTipoCapacitacionRepository;
+        private readonly int HeightRow = 20;
         public readonly string EntidadTerritorial = "SECRETARIA DISTRITAL DE SALUD BOGOTÁ D.C";
         public ReporteDesign()
         {
@@ -41,9 +41,9 @@ namespace Aplication.Services.T22.ReporteServices.Design
 
             row.Style.Alignment.WrapText = true;
 
-            row.Cells($"1:{i.ToString()}").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
+            row.Cells($"1:{i}").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
         }
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
         public async Task<string> GetTipoCapacitacionesByCapcitador(string idCapacitador)
         {
             var capacitador = await _capacitadorRepository.GetAsync(x => x.IdCapacitadorSolicitud == Guid.Parse(idCapacitador), null,null, "CapacitadorTipoCapacitacion");

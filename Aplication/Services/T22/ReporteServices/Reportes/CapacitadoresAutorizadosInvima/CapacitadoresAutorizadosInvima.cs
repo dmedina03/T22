@@ -16,34 +16,30 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
 {
     public class CapacitadoresAutorizadosInvima : ICapacitadoresAutorizadosInvima
     {
-        private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly ICapacitadorSolicitudRepository _capacitadorRepository;
-        private readonly ISolicitudRespository _solicitudRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
         private readonly ReporteDesign _reporteDesign;
-        public CapacitadoresAutorizadosInvima(IParametroDetalleRepository parametroDetalleRepository, ICapacitadorSolicitudRepository capacitadorSolicitud,
-            ReporteDesign reporteDesign, ISolicitudRespository solicitudRepository, IResolucionSolicitudRepository resolucionSolicitudRepository)
+        public CapacitadoresAutorizadosInvima(ICapacitadorSolicitudRepository capacitadorSolicitud,
+            ReporteDesign reporteDesign, IResolucionSolicitudRepository resolucionSolicitudRepository)
         {
-            _parametroDetalleRepository = parametroDetalleRepository;
             _capacitadorRepository = capacitadorSolicitud;
             _reporteDesign = reporteDesign;
-            _solicitudRepository = solicitudRepository;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
 
         }
 
 
-        public async Task<List<CapacitadoresAutorizadosInvimaDTO>> GetInfoCapacitadoresAutorizados(ReportesDTORequest request)
+        public async Task<List<CapacitadoresAutorizadosInvimaDto>> GetInfoCapacitadoresAutorizados(ReportesDtoRequest request)
         {
             DateTime fechaDesde = Convert.ToDateTime(request.FechaDesde);
             DateTime fechaHasta = Convert.ToDateTime(request.FechaHasta);
-
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
             var resoluciones = await _resolucionSolicitudRepository.GetAllAsync(x => x.FechaResolucion >= fechaDesde
                                 && x.FechaResolucion <= fechaHasta,x => x.OrderByDescending(p => p.FechaResolucion),null,"Solicitud");
 
             string existTipoCapacitacion = "X";
 
-            List<CapacitadoresAutorizadosInvimaDTO> list = new();
+            List<CapacitadoresAutorizadosInvimaDto> list = new();
 
             foreach (var res in resoluciones)
             {
@@ -54,12 +50,12 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
 
                     foreach (var cap in capacitadores)
                     {
-                        list.Add(new CapacitadoresAutorizadosInvimaDTO
+                        list.Add(new CapacitadoresAutorizadosInvimaDto
                         {
 
                             EntidadTerritorialSalud = _reporteDesign.EntidadTerritorial,//_reporteDesign.EntidadTerritorial,
                             FechaAutorizacionResolucion = res.FechaResolucion.ToString("dd/MM/yyyy"),
-                            NumeroActoAdiminstrativoResolucion = res.IntNumeroResolucion.ToString("00000"),
+                            NumeroActoAdiminstrativoResolucion = res.VcNumeroResolucion,
                             NombreSolicitante = res.Solicitud.VcNombreUsuario,
                             TipoIdentificacion = res.Solicitud.VcTipoSolicitante.Contains("Natural") == true ? "Cédula Ciudadanía" : "NIT", // Resvisar este tema con pablo
                             NombreCapacitador = await _capacitadorRepository.GetNombreCapacitador(cap.IdCapacitadorSolicitud.ToString()),
@@ -80,7 +76,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
             return list;
         }
 
-        public async Task<XLWorkbook> GetReporteCapacitadoresAutorizados(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteCapacitadoresAutorizados(ReportesDtoRequest request)
         {
 
             XLWorkbook lWorkbook = new();
@@ -108,7 +104,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
         }
 
 
-        private async void SetTittle(IXLWorksheet ws)
+        private void SetTittle(IXLWorksheet ws)
         {
             var rowOne = ws.Row(1);
 
@@ -130,7 +126,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
         /// Método para dar anchura a las celdas
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnWidth(IXLWorksheet ws)
+        private void SetColumnWidth(IXLWorksheet ws)
         {
             ws.Column(1).Width = 20;
             ws.Column(2).Width = 20;
@@ -152,7 +148,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
         /// Metodo para dar nombre a las columnas de excel
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnNames(IXLRow ws)
+        private void SetColumnNames(IXLRow ws)
         {
 
             ws.Cells("1:14").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
@@ -177,7 +173,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.CapacitadoresAutoriza
         /// </summary>
         /// <param name="row"></param>
         /// <param name="dto"></param>
-        private void SetRowData(IXLRow row, CapacitadoresAutorizadosInvimaDTO dto)
+        private void SetRowData(IXLRow row, CapacitadoresAutorizadosInvimaDto dto)
         {
             row.Style.Font.Bold = false;
 

@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class SeguimientoAuditoriaSolicitudDTORequest
+    public class SeguimientoAuditoriaSolicitudDtoRequest
     {
         public int IdObservacion { get; set; }
         [JsonIgnore]
         public int SolicitudId { get; set; }
         [JsonIgnore]
         public DateTime DtFechaObservacion { get; set; } = DateTime.UtcNow.AddHours(-5);
-        public string VcObservacion { get; set; }
+        public string VcObservacion { get; set; } = string.Empty;
         /// <summary>
         /// Usuario quien realiza la observacion
         /// </summary>
         public Guid UsuarioId { get; set; }
-        public string VcNombreUsuario { get; set; }
+        public string VcNombreUsuario { get; set; } = string.Empty;
 
         /// <summary>
         /// Estado en el cual se encuentra la solicitud cuando se realiza la observacion

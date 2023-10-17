@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class SolicitudRevisionCoordinadorDTORequest : SolicitudRevisionDTORequest
+    public class SolicitudRevisionCoordinadorDtoRequest : SolicitudRevisionDtoRequest
     {
         public bool ResultadoValidacion { get; set; }
     }

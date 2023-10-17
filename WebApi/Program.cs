@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Azure.Identity;
 using Aplication.Utilities;
 using Aplication.Utilities.Middleware;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,13 @@ var mysql = builder.Configuration.GetSection(KeyVault.SQLDBManipAli).Value;
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(mysql));
+//string connectionString = "";
+//connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//{
+//    builder.Configuration.GetConnectionString("CONNECTION_STRING");
+//});
+
 
 builder.Services.AddControllers().AddJsonOptions(opt =>
 {
@@ -34,11 +42,6 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("CONNECTION_STRING"));
-//});
 
 //Inyeccion de dependencias
 builder.Services.AddInterfacesInjection();

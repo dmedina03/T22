@@ -18,21 +18,19 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
         private readonly IParametroDetalleRepository _parametroDetalleRepository;
         private readonly IResolucionSolicitudRepository _resolucionSolicitudRepository;
         private readonly IEstadoRepository _estadoRepository;
-        private readonly ICapacitadorSolicitudRepository _capacitadorRepository;
         private readonly ReporteDesign _reporteDesign;
         public ActosAdministrativosGenerados(IParametroDetalleRepository parametroDetalleRepository, IResolucionSolicitudRepository resolucionSolicitudRepository,
-            IEstadoRepository estadoRepository, ICapacitadorSolicitudRepository capacitadorSolicitud, ReporteDesign reporteDesign)
+            IEstadoRepository estadoRepository, ReporteDesign reporteDesign)
         {
             _parametroDetalleRepository = parametroDetalleRepository;
             _resolucionSolicitudRepository = resolucionSolicitudRepository;
             _estadoRepository = estadoRepository;
-            _capacitadorRepository = capacitadorSolicitud;
             _reporteDesign = reporteDesign;
 
         }
 
 
-        public async Task<List<ReporteActosAdministrativosGeneradosDTO>> GetInfoActosAdministrativosGenerados(ReportesDTORequest request)
+        public async Task<List<ReporteActosAdministrativosGeneradosDto>> GetInfoActosAdministrativosGenerados(ReportesDtoRequest request)
         {
             DateTime fechaDesde = Convert.ToDateTime(request.FechaDesde);
             DateTime fechaHasta = Convert.ToDateTime(request.FechaHasta);
@@ -42,19 +40,20 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
 
             data = data.OrderByDescending(x => x.FechaResolucion).ToList();
             
-            List<ReporteActosAdministrativosGeneradosDTO> list = new();
+            List<ReporteActosAdministrativosGeneradosDto> list = new();
 
             foreach (var item in data)
             {
-                list.Add(new ReporteActosAdministrativosGeneradosDTO
+                list.Add(new ReporteActosAdministrativosGeneradosDto
                 {
+#pragma warning disable // Desreferencia de una referencia posiblemente NULL.
                     RadicadoSolicitud = item.Solicitud.VcRadicado,
                     TipoSolicitante = item.Solicitud.VcTipoSolicitante,
                     NombreSolicitante = item.Solicitud.VcNombreUsuario,
                     NumeroIdentificacionSolicitante = item.Solicitud.IntNumeroIdentificacionUsuario,
                     TipoSolicitud = await _parametroDetalleRepository.VcNombre(item.Solicitud.TipoSolicitudId),
                     FechaAutorizacionResolucion = item.FechaResolucion.ToString("dd/MM/yyyy"),
-                    NumeroResolucion = item.IntNumeroResolucion.ToString("00000"),
+                    NumeroResolucion = item.VcNumeroResolucion,
                     TipoActoAdminsitrativo = await _parametroDetalleRepository.VcNombre(item.Solicitud.TipoSolicitudId),
                     FechaRadicacion = item.Solicitud.DtFechaSolicitud.ToString("dd/MM/yyyy"),
                     EstadoSolicitud = await _estadoRepository.GetNombre(item.Solicitud.EstadoId),
@@ -66,7 +65,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
             return list;
         }
 
-        public async Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDTORequest request)
+        public async Task<XLWorkbook> GetReporteActosAdministrativosGenerados(ReportesDtoRequest request)
         {
 
             XLWorkbook lWorkbook = new();
@@ -94,7 +93,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
         }
 
 
-        private async void SetTittle(IXLWorksheet ws)
+        private void SetTittle(IXLWorksheet ws)
         {
             var rowOne = ws.Row(1);
 
@@ -116,7 +115,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
         /// Método para dar anchura a las celdas
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnWidth(IXLWorksheet ws)
+        private void SetColumnWidth(IXLWorksheet ws)
         {
             ws.Column(1).Width = 20;
             ws.Column(2).Width = 20;
@@ -136,7 +135,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
         /// Metodo para dar nombre a las columnas de excel
         /// </summary>
         /// <param name="ws"></param>
-        private async void SetColumnNames(IXLRow ws)
+        private void SetColumnNames(IXLRow ws)
         {
 
             ws.Cells("1:12").Style.Border.SetOutsideBorder(XLBorderStyleValues.Thin);
@@ -159,7 +158,7 @@ namespace Aplication.Services.T22.ReporteServices.Reportes.ActosAdministrativos
         /// </summary>
         /// <param name="row"></param>
         /// <param name="dto"></param>
-        private void SetRowData(IXLRow row, ReporteActosAdministrativosGeneradosDTO dto)
+        private void SetRowData(IXLRow row, ReporteActosAdministrativosGeneradosDto dto)
         {
             row.Style.Font.Bold = false;
 

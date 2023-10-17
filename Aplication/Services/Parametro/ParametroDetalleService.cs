@@ -1,19 +1,10 @@
 ﻿using Aplication.Utilities.Enum;
 using AutoMapper;
 using Domain.DTOs.Response.Parametro;
-using Domain.Models.Parametro;
-using Domain.Models.T22;
 using Dominio.DTOs.Response.ResponseBase;
-using Persistence.Repository.IRepositories.Generic;
 using Persistence.Repository.IRepositories.IParametroRepository;
 using Persistence.Repository.IRepositories.IT22;
-using Persistence.Repository.Repositories.ParametroRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplication.Services.Parametro
 {
@@ -23,62 +14,78 @@ namespace Aplication.Services.Parametro
         private readonly ISolicitudRespository _solicitudRepository;
         private readonly IParametroRepository _parametroRepository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
         public ParametroDetalleService(IParametroDetalleRepository parametroDetalleRepository, ISolicitudRespository solicitudRepository, IParametroRepository parametroRepository,
-            IMapper mapper, IUnitOfWork unitOfWork)
+            IMapper mapper)
         {
             _parametroDetalleRepository = parametroDetalleRepository;
             _solicitudRepository = solicitudRepository;
             _parametroRepository = parametroRepository;
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseBase<List<ParametroDetalleDTO>>> GetTipoSolicitud(string Id)
+        public async Task<ResponseBase<List<ParametroDetalleDto>>> GetTipoSolicitud(string Id)
         {
             var query = await _solicitudRepository.GetAsync(x => x.UsuarioId.ToString().ToLower() == Id.ToLower());
 
-            var solicitud = (await listarPorCodigoInterno("bTipoSolicitud")).Data;
+            List<ParametroDetalleDto>? solicitud = (await listarPorCodigoInterno("bTipoSolicitud")).Data;
+
+            ParametroDetalleDto element = new();
 
             if (query is not null)
             {
-                return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", solicitud, solicitud.Count());
-
+                return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", solicitud, solicitud == null ? 0 :  solicitud.Count);
             }
-            
-            var lista = new List<ParametroDetalleDTO>();
-            lista.Add(solicitud.ElementAt(0));
 
-            return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+            if (solicitud != null)
+            {
+                element = solicitud.ElementAt(0);
+            }
+            var lista = new List<ParametroDetalleDto>
+            {
+                element
+            };
+
+            return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", lista, lista.Count);
         }
 
-        public async Task<ResponseBase<List<ParametroDetalleDTO>>> GetResultadoValidacion(int SolicitudId)
+        public async Task<ResponseBase<List<ParametroDetalleDto>>> GetResultadoValidacion(int SolicitudId)
         {
             var query = (await _solicitudRepository.GetAsync(x => x.IdSolicitud == SolicitudId)).EstadoId;
 
             var resultadoValidacion = (await listarPorCodigoInterno("bResultadoValidacion")).Data;
 
-            var lista = new List<ParametroDetalleDTO>();
-
-            resultadoValidacion = resultadoValidacion.OrderByDescending(x => x.IdParametroDetalle).ToList();
+            var lista = new List<ParametroDetalleDto>();
 
             if (query == (int)EnumEstado.Aprobado)
             {
-                lista.Add(resultadoValidacion.ElementAt(0));
+                if (resultadoValidacion != null)
+                {
+                    resultadoValidacion = resultadoValidacion.Where(x => x.VcNombre.Contains("incumplimiento")).ToList();
+                    lista.Add(resultadoValidacion.ElementAt(0));
+                }
 
-                return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", lista, lista.Count());
+                return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", lista, lista.Count);
             }
             else
             {
-                resultadoValidacion.RemoveAt(0);
-                resultadoValidacion = resultadoValidacion.OrderBy(x => x.IdParametroDetalle).ToList();
-                return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", resultadoValidacion, resultadoValidacion.Count());
+                if (resultadoValidacion != null)
+                {
+                    var result = resultadoValidacion.First(x => x.VcNombre.ToUpper().Contains("incumplimiento".ToUpper()));
+                    resultadoValidacion.Remove(result);
+
+                    result = resultadoValidacion.First(x => x.VcNombre.ToUpper().Contains("recurso".ToUpper()));
+                    resultadoValidacion.Remove(result);
+
+                    resultadoValidacion = resultadoValidacion.OrderBy(x => x.IdParametroDetalle).ToList();
+                }
+
+                return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", resultadoValidacion, resultadoValidacion == null ? 0 : resultadoValidacion.Count);
 
             }
         }
 
-        public async Task<ResponseBase<List<ParametroDetalleDTO>>> listarPorCodigoInterno(string codigoInterno)
+        public async Task<ResponseBase<List<ParametroDetalleDto>>> listarPorCodigoInterno(string codigoInterno)
         {
             var resultQueryParamento = await _parametroRepository.GetAsync(prop => prop.VcCodigoInterno == codigoInterno);
 
@@ -88,13 +95,13 @@ namespace Aplication.Services.Parametro
 
                 if (listado != null)
                 {
-                    return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", _mapper.Map<List<ParametroDetalleDTO>>(listado), listado.Count());
+                    return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", _mapper.Map<List<ParametroDetalleDto>>(listado), listado.Count());
                 }
             }
-            return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.InternalServerError, "Ocurrio un error, No se puede listar los parametros", new List<ParametroDetalleDTO>(), 0);
+            return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.InternalServerError, "Ocurrio un error, No se puede listar los parametros", new List<ParametroDetalleDto>(), 0);
         }
 
-        public async Task<ResponseBase<List<ParametroDetalleDTO>>> listarPorCodigoInternoIdPadre(string codigoInterno, long idPadre)
+        public async Task<ResponseBase<List<ParametroDetalleDto>>> listarPorCodigoInternoIdPadre(string codigoInterno, long idPadre)
         {
             var resultQueryParamento = await _parametroRepository.GetAsync(prop => prop.VcCodigoInterno == codigoInterno);
 
@@ -104,12 +111,12 @@ namespace Aplication.Services.Parametro
 
                 if (listado != null)
                 {
-                    return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.OK, "OK", _mapper.Map<List<ParametroDetalleDTO>>(listado), listado.Count());
+                    return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.OK, "OK", _mapper.Map<List<ParametroDetalleDto>>(listado), listado.Count());
                 }
 
             }
 
-            return new ResponseBase<List<ParametroDetalleDTO>>(HttpStatusCode.InternalServerError, "Ocurrio un error, No se puede listar los parametros", new List<ParametroDetalleDTO>(), 0);
+            return new ResponseBase<List<ParametroDetalleDto>>(HttpStatusCode.InternalServerError, "Ocurrio un error, No se puede listar los parametros", new List<ParametroDetalleDto>(), 0);
         }
 
 

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.T22
 {
-    public class TipoCapacitacionDTOResponse
+    public class TipoCapacitacionDtoResponse
     {
         public int IdTipoCapacitacion { get; set; }
-        public string VcDescripcion { get; set; }
+        public string VcDescripcion { get; set; } = string.Empty;
     }
 }

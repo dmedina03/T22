@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,6 +106,25 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SpBandejaFuncionarioDto",
+                columns: table => new
+                {
+                    IdSolicitud = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VcRadicado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VcNombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IntNumeroIdentificacionUsuario = table.Column<long>(type: "bigint", nullable: false),
+                    VcNombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoSolicitudId = table.Column<int>(type: "int", nullable: false),
+                    DtFechaSolicitud = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VcTipoEstado = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpBandejaFuncionarioDto", x => x.IdSolicitud);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TipoCapacitaciones",
                 schema: "manipalimentos",
                 columns: table => new
@@ -130,9 +149,12 @@ namespace Persistence.Migrations
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VcNombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IntNumeroIdentificacionUsuario = table.Column<long>(type: "bigint", nullable: false),
+                    VcDireccionUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoSolicitudId = table.Column<int>(type: "int", nullable: false),
                     VcTipoSolicitante = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsuarioAsignadoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UsuarioAsignadoValidadorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UsuarioAsignadoCoordinadorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UsuarioAsignadoSubdirectorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DtFechaSolicitud = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EstadoId = table.Column<int>(type: "int", nullable: false),
                     ResultadoValidacionId = table.Column<int>(type: "int", nullable: true),
@@ -253,7 +275,7 @@ namespace Persistence.Migrations
                     DocumentoSolicitudId = table.Column<int>(type: "int", nullable: false),
                     TipoResolucionId = table.Column<int>(type: "int", nullable: false),
                     FechaResolucion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IntNumeroResolucion = table.Column<long>(type: "bigint", nullable: false),
+                    VcNumeroResolucion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BlActiva = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -419,19 +441,8 @@ namespace Persistence.Migrations
                     { 8, true, "", "En Subsanación" },
                     { 9, true, "", "Cancelado" },
                     { 10, true, "", "Negado" },
-                    { 11, true, "", "Cancelado por incumplimiento" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "manipalimentos",
-                table: "Parametro",
-                columns: new[] { "IdParametro", "BEstado", "DtFechaActualizacion", "DtFechaAnulacion", "DtFechaCreacion", "VcCodigoInterno", "VcNombre" },
-                values: new object[,]
-                {
-                    { 1L, true, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7507), null, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7487), "bTipoResolucion", "Tipo resolución" },
-                    { 2L, true, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7511), null, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7510), "bResultadoValidacion", "Resultado de la validación" },
-                    { 3L, true, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7513), null, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7512), "bTipoSolicitud", "Tipo de solicitud" },
-                    { 4L, true, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7514), null, new DateTime(2023, 9, 15, 12, 53, 38, 499, DateTimeKind.Local).AddTicks(7513), "bReportes", "Reportes" }
+                    { 11, true, "", "Cancelado por incumplimiento" },
+                    { 12, true, "", "Recurso respondido" }
                 });
 
             migrationBuilder.InsertData(
@@ -443,34 +454,6 @@ namespace Persistence.Migrations
                     { 1, true, "Carnes y productos cárnicos comestibles" },
                     { 2, true, "Leche cruda" },
                     { 3, true, "Alimentos en vía publica" }
-                });
-
-            migrationBuilder.InsertData(
-                schema: "manipalimentos",
-                table: "ParametroDetalle",
-                columns: new[] { "IdParametroDetalle", "BEstado", "DCodigoIterno", "IdPadre", "ParametroId", "RangoDesde", "RangoHasta", "TxDescripcion", "VcCodigoInterno", "VcNombre" },
-                values: new object[,]
-                {
-                    { 1L, true, 0m, null, 1L, 0, 0, "", "", "Resolución de aprobación" },
-                    { 2L, true, 0m, null, 1L, 0, 0, "", "", "Resolución de cancelación" },
-                    { 3L, true, 0m, null, 1L, 0, 0, "", "", "Resolución de negación" },
-                    { 4L, true, 0m, null, 1L, 0, 0, "", "", "Resolución de modificación" },
-                    { 5L, true, 0m, null, 1L, 0, 0, "", "", "Resolución de cancelación por incumplimiento" },
-                    { 6L, true, 0m, null, 2L, 0, 0, "Aprobación", "", "Aprobar solicitud" },
-                    { 7L, true, 0m, null, 2L, 0, 0, "Cancelación", "", "Cancelar solicitud" },
-                    { 8L, true, 0m, null, 2L, 0, 0, "Negación", "", "Negar solicitud" },
-                    { 9L, true, 0m, null, 2L, 0, 0, "Subsanación", "", "Para Subsanación" },
-                    { 10L, true, 0m, null, 2L, 0, 0, "Cancelación por incumplimiento", "", "Cancelar por incumplimiento" },
-                    { 11L, true, 0m, null, 3L, 0, 0, "", "", "Primera vez" },
-                    { 12L, true, 0m, null, 3L, 0, 0, "", "", "Renovación" },
-                    { 13L, true, 0m, null, 3L, 0, 0, "", "", "Modificación" },
-                    { 14L, true, 0m, null, 3L, 0, 0, "", "", "Recurso de reposición" },
-                    { 15L, true, 0m, null, 3L, 0, 0, "", "", "Cancelación" },
-                    { 16L, true, 0m, null, 4L, 0, 0, "", "", "Actos administrativos generados" },
-                    { 17L, true, 0m, null, 4L, 0, 0, "", "", "Autorizaciones canceladas" },
-                    { 18L, true, 0m, null, 4L, 0, 0, "", "", "Seguimiento capacitaciones" },
-                    { 19L, true, 0m, null, 4L, 0, 0, "", "", "Listado de capacitadores autorizados INVIMA" },
-                    { 20L, true, 0m, null, 4L, 0, 0, "", "", "Listado de capacitadores suspendidos INVIMA" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -529,6 +512,13 @@ namespace Persistence.Migrations
                 column: "SolicitudId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Solicitudes_EstadoId",
+                schema: "manipalimentos",
+                table: "Solicitudes",
+                column: "EstadoId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubsanacionSolicitudes_SolicitudId",
                 schema: "manipalimentos",
                 table: "SubsanacionSolicitudes",
@@ -574,6 +564,9 @@ namespace Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "SeguimientoAuditoriaSolicitudes",
                 schema: "manipalimentos");
+
+            migrationBuilder.DropTable(
+                name: "SpBandejaFuncionarioDto");
 
             migrationBuilder.DropTable(
                 name: "SubsanacionSolicitudes",

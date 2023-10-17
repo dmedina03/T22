@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Validation
 {
-    public class CapacitacionCapacitadorRevisionValidator : AbstractValidator<RevisionCapacitacionDTORequest>
+    public class CapacitacionCapacitadorRevisionValidator : AbstractValidator<RevisionCapacitacionDtoRequest>
     {
 
         public CapacitacionCapacitadorRevisionValidator()
@@ -36,7 +36,7 @@ namespace Aplication.Services.T22.CapacitacionCapacitadorSolicitudServices.Valid
                 {
 
                     RuleFor(x => x.Documentos)
-                       .SetValidator(x => new DocumentoSolicitudEnumerableDTOValidator(), "Create");
+                       .SetValidator(x => new DocumentoSolicitudEnumerableDtoValidator(), "Create");
 
                 }).Otherwise(() =>
                 {

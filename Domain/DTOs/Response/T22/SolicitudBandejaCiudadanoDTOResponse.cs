@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Response.T22
 {
-    public class SolicitudBandejaCiudadanoDTOResponse
+    public class SolicitudBandejaCiudadanoDtoResponse
     {
         public int IdSolcitud { get; set; }
-        public string VcRadicado { get; set; }
-        public string VcNombreTramite { get; set; }
-        public string DtFechaSolicitud { get; set; }
-        public string VcEstado { get; set; }
+        public string VcRadicado { get; set; } = string.Empty;
+        public string VcNombreTramite { get; set; } = string.Empty;
+        public string DtFechaSolicitud { get; set; } = string.Empty;
+        public string VcEstado { get; set; } = string.Empty;
     }
 }

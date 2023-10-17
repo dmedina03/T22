@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs.Request.T22
 {
-    public class ReportesDTORequest
+    public class ReportesDtoRequest
     {
 
         //[DataType(DataType.Date)]
-        public string FechaDesde { get; set; }
+        public string FechaDesde { get; set; } = string.Empty;
         //[DataType(DataType.Date)]
-        public string FechaHasta { get; set; }
+        public string FechaHasta { get; set; } = string.Empty;
 
     }
 }
